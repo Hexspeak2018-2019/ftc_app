@@ -100,7 +100,9 @@ public class PushbotTeleopPOV_Linear extends LinearOpMode {
             }
 
             // Output the safe vales to the motor drives.
-            robot.leftDrive.setPower(left);
+
+            robot.leftDrive2.setPower(left);
+            robot.rightDrive2.setPower(right);
             robot.rightDrive.setPower(right);
 
             // Use gamepad left & right Bumpers to open and close the claw
