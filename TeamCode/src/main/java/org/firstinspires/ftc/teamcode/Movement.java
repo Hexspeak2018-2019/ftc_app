@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode; //package org.firstinspires.ftc.teamcode is just stating the program
+/**package org.firstinspires.ftc.teamcode; //package org.firstinspires.ftc.teamcode is just stating the program
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 //@Disabled
 public class Movement extends LinearOpMode {
 
-  HardwareHexbot robot = new HardwareHexbot();
+    HardwareHexbot robot = new HardwareHexbot();
 
   private ElapsedTime runtime = new ElapsedTime();
 
@@ -75,3 +75,4 @@ public class Movement extends LinearOpMode {
     }
   }
 }
+*/
