@@ -84,6 +84,7 @@ public class HexbotTeleop {
             // run until the end of the match (driver presses STOP)
             while (opModeIsActive()) {
 
+
                 // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
                 // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
                 // This way it's also easy to just drive straight, or just turn.
@@ -101,7 +102,8 @@ public class HexbotTeleop {
                     left /= max;
                     right /= max;
                 }
-
+                telemetry.addData("Say", "Hello Driver");    //
+                telemetry.update();
                 // Output the safe vales to the motor drives.
 
                 robot.leftDrive2.setPower(left);
