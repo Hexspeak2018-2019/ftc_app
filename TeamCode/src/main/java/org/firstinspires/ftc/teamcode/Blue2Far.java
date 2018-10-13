@@ -1,3 +1,4 @@
+/**
 package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 import com.qualcomm.robotcore.util.Hardware;
@@ -30,10 +31,12 @@ public class Blue2Far extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     try {
 
-      /*
+      */
+/*
        * Initialize the drive system variables.
        * The init() method of the hardware class does all the work here
-       */
+       *//*
+
       robot.init(hardwareMap, telemetry);
 
       // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -184,4 +187,4 @@ public class Blue2Far extends LinearOpMode {
     }
   }
 
-}
+}*/
