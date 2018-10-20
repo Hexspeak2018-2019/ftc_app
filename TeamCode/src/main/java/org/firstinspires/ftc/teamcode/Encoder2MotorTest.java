@@ -9,76 +9,177 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "TeleOp 2 Tutorial", group = "Tutorial")
 public class Encoder2MotorTest extends LinearOpMode {
-    private DcMotor encoderMotor1;
-    private DcMotor encoderMotor2;
-    double motorPower = 0.5;
+    private DcMotor ArmMotor;
+    private DcMotor LinkMotor;
+    //double motorPower = 0.5;
     //double a = 0;
     final static double ANDYMARK_TICKS_PER_REV = 1440;
-    final static double STOP_POSITION = ANDYMARK_TICKS_PER_REV / 2;
-    //double formula = (ANDYMARK_TICKS_PER_REV/360)*180;
-    //double degrees = 0;
+    final static double WormGearRatio = 27;
+    final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio)/360;
+
+    final static double ArmFinalPosition = 200*TickPerDeg;
+    final static double ArmLiftPosition = 100*TickPerDeg;
+    final static double ArmHomePosition = 0*TickPerDeg;
+    final static double LinkFinalPosition = 100*TickPerDeg;
+    final static double LinkHomePosition = 0*TickPerDeg;
 
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        encoderMotor1 = hardwareMap.dcMotor.get("encoderMotor");
-        encoderMotor2 = hardwareMap.dcMotor.get("encoderMotor");
+        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
+        LinkMotor = hardwareMap.dcMotor.get("LinkMotor");
 
-        encoderMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        encoderMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LinkMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        encoderMotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        encoderMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LinkMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //encoderMotor.goto
 
-        telemetry.addData("Encoder1 Position", "Starting at %7d",
-                encoderMotor1.getCurrentPosition());
-        telemetry.addData("Encoder2 Position", "Starting at %7d",
-                encoderMotor2.getCurrentPosition());
+        telemetry.addData("Arm Position", "Starting at %7d",
+                ArmMotor.getCurrentPosition());
+        telemetry.addData("Link Position", "Starting at %7d",
+                LinkMotor.getCurrentPosition());
         telemetry.update();
+        ArmMotor.setDirection(DcMotor.Direction.REVERSE);
+        LinkMotor.setDirection(DcMotor.Direction.FORWARD);
 
 
         waitForStart();
 
         while (opModeIsActive()) {
+            double differenceRange = ArmMotor.getCurrentPosition()-LinkMotor.getCurrentPosition();
 
-            if (gamepad1.dpad_up && (encoderMotor1.getCurrentPosition() < STOP_POSITION)) { //if both current position and the d-pad up is pressed, and less than 180 degrees
 
-                encoderMotor1.setPower(.4);// then power is set to .3
-                encoderMotor2.setPower(.4);// then power is set to .3
+            /*if (gamepad1.dpad_up && (ArmMotor.getCurrentPosition() < ArmLiftPosition) && (LinkMotor.getCurrentPosition() < 10))
 
-                telemetry.addData("Encoder1 Position", encoderMotor1.getCurrentPosition()); // updates telemetry to display current postion of motor
-                telemetry.addData("Encoder2 Position", encoderMotor2.getCurrentPosition());
-                telemetry.update();
-            }
-            encoderMotor1.setPower(0);// if criteria is not met, then power is set to 0!!!!!
-            encoderMotor2.setPower(0);
-            if (gamepad1.dpad_down && (encoderMotor1.getCurrentPosition() > 0)){
-                encoderMotor1.setDirection(DcMotor.Direction.FORWARD);
-                encoderMotor2.setDirection(DcMotor.Direction.FORWARD);
-                encoderMotor1.setPower(-.4); // then power is set to .3
-                encoderMotor2.setPower(-.4);
-
-                telemetry.addData("Encoder1 Position", encoderMotor1.getCurrentPosition());
-                telemetry.addData("Encoder2 Position", encoderMotor2.getCurrentPosition());// updates telemetry to display current postion of motor
-                telemetry.update();
-            }
-            encoderMotor1.setPower(0);
-            encoderMotor2.setPower(0);// if criteria is not met, then power is set to 0!!!!!
-
-           /* if (gamepad1.dpad_up && (encoderMotor1.getCurrentPosition()==10))
             {
+                *//*armMotorPower = 0.5;
+
+                ArmMotor.setPower(armMotorPower);*//*
 
             }*/
-            //if (gamepad1.a) {
-            //motorPower = a;
-            //}
+
+            if(gamepad1.dpad_up) {
+                if ((ArmMotor.getCurrentPosition() < ArmLiftPosition) && (LinkMotor.getCurrentPosition() < 10))
+
+                {
+
+                    ArmMotor.setPower(.5);
+                    LinkMotor.setPower(0);
+
+                }
+                else if ((ArmMotor.getCurrentPosition() < ArmFinalPosition) && (LinkMotor.getCurrentPosition() < LinkFinalPosition))
+
+                {
+
+                    ArmMotor.setPower(.5);
+                    LinkMotor.setPower(.4);
+
+                } else if ((ArmMotor.getCurrentPosition() >= ArmFinalPosition) && (LinkMotor.getCurrentPosition() < LinkFinalPosition))
+
+                {
+
+                    ArmMotor.setPower(0);
+                    LinkMotor.setPower(.5);
+
+                } else if ((ArmMotor.getCurrentPosition() < ArmFinalPosition) && (LinkMotor.getCurrentPosition() >= LinkFinalPosition))
+
+                {
+
+                    ArmMotor.setPower(.5);
+                    LinkMotor.setPower(0);
+
+                }
+                else {
+                    ArmMotor.setPower(0);
+                    LinkMotor.setPower(0);
+                }
+
+
+
+
+            }
+
+            else if (gamepad1.dpad_down)
+            {
+                if (( ArmMotor.getCurrentPosition() > 100) && (LinkMotor.getCurrentPosition() > 50) )
+                {
+                    ArmMotor.setPower(-.5);
+                    LinkMotor.setPower(-.3);
+                    telemetry.addData("I am not in less than 20", (LinkMotor.getCurrentPosition()/TickPerDeg));
+                }
+                else if (LinkMotor.getCurrentPosition() <=20)
+                {
+
+                    ArmMotor.setPower(-.2);
+                    LinkMotor.setPower(-.2);
+                    telemetry.addData("I am in less than 20", (LinkMotor.getCurrentPosition()/TickPerDeg));
+
+                }
+                /*else if (LinkMotor.getCurrentPosition() < LinkHomePosition && ArmMotor.getCurrentPosition() < ArmHomePosition)
+                {
+                    LinkMotor.setPower(.1);
+                    ArmMotor.setPower(.1);
+                }*/
+                else {
+                    ArmMotor.setPower(0);
+                    LinkMotor.setPower(0);
+                    telemetry.addData("I stopped", (LinkMotor.getCurrentPosition()/TickPerDeg));
+                }
+            }
+            else {
+                ArmMotor.setPower(0);
+                LinkMotor.setPower(0);
+            }
+             /*else if (gamepad1.dpad_down && ArmMotor.getCurrentPosition() >100 && LinkMotor.getCurrentPosition() > 50)
+            {
+                ArmMotor.setPower(-.3);
+
+                LinkMotor.setPower(-.5);
+            }
+           // else if ()
+            else{
+                ArmMotor.setPower(0);
+                LinkMotor.setPower(0);
+            }
+
+            if (gamepad1.dpad_up){
+                // if leftmotor > 100
+                //
+                //
+            } else if (gamepad1.dpad_down)
+            {
+                // if
+            }*/
+            /*if (gamepad1.dpad_down && (ArmMotor.getCurrentPosition() > 0) &&  (LinkMotor.getCurrentPosition() > 0) && differenceRange < 100.5)
+
+            {
+
+                ArmMotor.setPower(-.3);
+                LinkMotor.setPower(-.5);
+
+            }*/
+
+
+
+            telemetry.addData("Arm Position", (ArmMotor.getCurrentPosition()/TickPerDeg)); // updates telemetry to display current postion of motor
+            telemetry.addData("Link Position", (LinkMotor.getCurrentPosition()/TickPerDeg));
+            telemetry.addData("Arm Position", (ArmMotor.getPower())); // updates telemetry to display current postion of motor
+            telemetry.addData("Link Position", (LinkMotor.getPower()));
+            telemetry.update();
+        }
+
+
+            // if criteria is not met, then power is set to 0!!!!!
+
+
+
             idle();
         }
-        //  if gamepad is pressed && degrees < 180 then set power .5
-        //
+
 
 
     }
@@ -128,4 +229,3 @@ public class Encoder2MotorTest extends LinearOpMode {
 
 
 */
-}
