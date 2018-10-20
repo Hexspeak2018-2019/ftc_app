@@ -105,18 +105,28 @@ public class Encoder2MotorTest extends LinearOpMode {
 
             else if (gamepad1.dpad_down)
             {
-                if (( ArmMotor.getCurrentPosition() > 100) && (LinkMotor.getCurrentPosition() > 50) )
+                if (( ArmMotor.getCurrentPosition() > 100) && (LinkMotor.getCurrentPosition() >50 ))
                 {
                     ArmMotor.setPower(-.5);
-                    LinkMotor.setPower(-.3);
+                    LinkMotor.setPower(-.5);
                     telemetry.addData("I am not in less than 20", (LinkMotor.getCurrentPosition()/TickPerDeg));
                 }
-                else if (LinkMotor.getCurrentPosition() <=20)
+               /* else if ((ArmMotor.getCurrentPosition() >= 100 && (LinkMotor.getCurrentPosition() >= 0)))
+                {
+                    ArmMotor.setPower(-.5);
+                    LinkMotor.setPower(-.5);
+                }*/
+                /*else if (( ArmMotor.getCurrentPosition() <= 100))
+                {
+                    ArmMotor.setPower(-.5);
+                    LinkMotor.setPower(0);
+                }*/
+                else if ( ArmMotor.getCurrentPosition() >= 0 && LinkMotor.getCurrentPosition() <=0)//LinkMotor.getCurrentPosition() <=20 && LinkMotor.getCurrentPosition() <0)
                 {
 
-                    ArmMotor.setPower(-.2);
-                    LinkMotor.setPower(-.2);
-                    telemetry.addData("I am in less than 20", (LinkMotor.getCurrentPosition()/TickPerDeg));
+                    ArmMotor.setPower(-.5);
+                    LinkMotor.setPower(0);
+                    telemetry.addData("I am in less than 20", (LinkMotor.getCurrentPosition() / TickPerDeg));
 
                 }
                 /*else if (LinkMotor.getCurrentPosition() < LinkHomePosition && ArmMotor.getCurrentPosition() < ArmHomePosition)
@@ -124,11 +134,19 @@ public class Encoder2MotorTest extends LinearOpMode {
                     LinkMotor.setPower(.1);
                     ArmMotor.setPower(.1);
                 }*/
+
+                else if(ArmMotor.getCurrentPosition() <= 2)
+                {
+
+                ArmMotor.setPower(0);
+                LinkMotor.setPower(0);
+            }
                 else {
                     ArmMotor.setPower(0);
                     LinkMotor.setPower(0);
                     telemetry.addData("I stopped", (LinkMotor.getCurrentPosition()/TickPerDeg));
                 }
+
             }
             else {
                 ArmMotor.setPower(0);
