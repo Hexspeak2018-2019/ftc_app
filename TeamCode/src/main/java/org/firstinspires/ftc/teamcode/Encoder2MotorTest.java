@@ -7,21 +7,22 @@ import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
-@TeleOp(name = "TeleOp 2 Tutorial", group = "Tutorial")
+@TeleOp(name = "ArmTest", group = "Tutorial")
 public class Encoder2MotorTest extends LinearOpMode {
     private DcMotor ArmMotor;
     private DcMotor LinkMotor;
-    //double motorPower = 0.5;
-    //double a = 0;
+    private DcMotor RotationMotor;
     final static double ANDYMARK_TICKS_PER_REV = 1440;
-    final static double WormGearRatio = 27;
+    final static double WormGearRatio = 9;
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio)/360;
 
     final static double ArmFinalPosition = 200*TickPerDeg;
-    final static double ArmLiftPosition = 100*TickPerDeg;
-    final static double ArmHomePosition = 0*TickPerDeg;
-    final static double LinkFinalPosition = 100*TickPerDeg;
-    final static double LinkHomePosition = 0*TickPerDeg;
+    final static double ArmLiftPosition = 120*TickPerDeg;
+    final static double ArmHomePosition = 0;
+    final static double LinkFinalPosition = -100*TickPerDeg;
+    final static double LinkHomePosition = 0;
+    final static double RotationHomePosition = 0*TickPerDeg;
+    final static double RotationFinalPosition = 200*TickPerDeg;
 
 
 
@@ -29,15 +30,13 @@ public class Encoder2MotorTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
         LinkMotor = hardwareMap.dcMotor.get("LinkMotor");
-
+        RotationMotor = hardwareMap.dcMotor.get("RotatingMotor");
         ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         LinkMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        RotationMotor.setMode((DcMotor.RunMode.STOP_AND_RESET_ENCODER));
         ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         LinkMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        //encoderMotor.goto
-
+        RotationMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         telemetry.addData("Arm Position", "Starting at %7d",
                 ArmMotor.getCurrentPosition());
         telemetry.addData("Link Position", "Starting at %7d",
@@ -45,7 +44,7 @@ public class Encoder2MotorTest extends LinearOpMode {
         telemetry.update();
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
-
+        RotationMotor.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
 
@@ -53,43 +52,36 @@ public class Encoder2MotorTest extends LinearOpMode {
             double differenceRange = ArmMotor.getCurrentPosition()-LinkMotor.getCurrentPosition();
 
 
-            /*if (gamepad1.dpad_up && (ArmMotor.getCurrentPosition() < ArmLiftPosition) && (LinkMotor.getCurrentPosition() < 10))
 
-            {
-                *//*armMotorPower = 0.5;
-
-                ArmMotor.setPower(armMotorPower);*//*
-
-            }*/
 
             if(gamepad1.dpad_up) {
                 if ((ArmMotor.getCurrentPosition() < ArmLiftPosition) && (LinkMotor.getCurrentPosition() < 10))
 
                 {
 
-                    ArmMotor.setPower(.5);
+                    ArmMotor.setPower(.8);
                     LinkMotor.setPower(0);
 
                 }
-                else if ((ArmMotor.getCurrentPosition() < ArmFinalPosition) && (LinkMotor.getCurrentPosition() < LinkFinalPosition))
+                else if ((ArmMotor.getCurrentPosition() < ArmFinalPosition) && (LinkMotor.getCurrentPosition() > LinkFinalPosition))
 
                 {
 
-                    ArmMotor.setPower(.5);
-                    LinkMotor.setPower(.4);
+                    ArmMotor.setPower(.7);
+                    LinkMotor.setPower(-.9);
 
-                } else if ((ArmMotor.getCurrentPosition() >= ArmFinalPosition) && (LinkMotor.getCurrentPosition() < LinkFinalPosition))
+                } else if ((ArmMotor.getCurrentPosition() >= ArmFinalPosition) && (LinkMotor.getCurrentPosition() > LinkFinalPosition))
 
                 {
 
                     ArmMotor.setPower(0);
-                    LinkMotor.setPower(.5);
+                    LinkMotor.setPower(-.8);
 
-                } else if ((ArmMotor.getCurrentPosition() < ArmFinalPosition) && (LinkMotor.getCurrentPosition() >= LinkFinalPosition))
+                } else if ((ArmMotor.getCurrentPosition() < ArmFinalPosition) && (LinkMotor.getCurrentPosition() <= LinkFinalPosition))
 
                 {
 
-                    ArmMotor.setPower(.5);
+                    ArmMotor.setPower(.8);
                     LinkMotor.setPower(0);
 
                 }
@@ -97,54 +89,38 @@ public class Encoder2MotorTest extends LinearOpMode {
                     ArmMotor.setPower(0);
                     LinkMotor.setPower(0);
                 }
-
-
-
 
             }
 
             else if (gamepad1.dpad_down)
             {
-                if (( ArmMotor.getCurrentPosition() > 100) && (LinkMotor.getCurrentPosition() >50 ))
+                if (( ArmMotor.getCurrentPosition() > 100) && (LinkMotor.getCurrentPosition() < -50 ))
                 {
-                    ArmMotor.setPower(-.5);
-                    LinkMotor.setPower(-.5);
+                    ArmMotor.setPower(-.8);
+                    LinkMotor.setPower(.8);
                     telemetry.addData("I am not in less than 20", (LinkMotor.getCurrentPosition()/TickPerDeg));
                 }
-               /* else if ((ArmMotor.getCurrentPosition() >= 100 && (LinkMotor.getCurrentPosition() >= 0)))
-                {
-                    ArmMotor.setPower(-.5);
-                    LinkMotor.setPower(-.5);
-                }*/
-                /*else if (( ArmMotor.getCurrentPosition() <= 100))
-                {
-                    ArmMotor.setPower(-.5);
-                    LinkMotor.setPower(0);
-                }*/
-                else if ( ArmMotor.getCurrentPosition() >= 0 && LinkMotor.getCurrentPosition() <=0)//LinkMotor.getCurrentPosition() <=20 && LinkMotor.getCurrentPosition() <0)
+
+                else if ( ArmMotor.getCurrentPosition() >= 0 && LinkMotor.getCurrentPosition() >=0)//LinkMotor.getCurrentPosition() <=20 && LinkMotor.getCurrentPosition() <0)
                 {
 
-                    ArmMotor.setPower(-.5);
+                    ArmMotor.setPower(-.8);
                     LinkMotor.setPower(0);
                     telemetry.addData("I am in less than 20", (LinkMotor.getCurrentPosition() / TickPerDeg));
 
                 }
-                /*else if (LinkMotor.getCurrentPosition() < LinkHomePosition && ArmMotor.getCurrentPosition() < ArmHomePosition)
-                {
-                    LinkMotor.setPower(.1);
-                    ArmMotor.setPower(.1);
-                }*/
 
-                else if(ArmMotor.getCurrentPosition() <= 2)
+
+                else if(ArmMotor.getCurrentPosition() >= 2)
                 {
 
-                ArmMotor.setPower(0);
-                LinkMotor.setPower(0);
-            }
+                    ArmMotor.setPower(0);
+                    LinkMotor.setPower(0);
+                }
                 else {
                     ArmMotor.setPower(0);
                     LinkMotor.setPower(0);
-                    telemetry.addData("I stopped", (LinkMotor.getCurrentPosition()/TickPerDeg));
+                    telemetry.addData("Link  stopped at ", (LinkMotor.getCurrentPosition()/TickPerDeg));
                 }
 
             }
@@ -152,36 +128,34 @@ public class Encoder2MotorTest extends LinearOpMode {
                 ArmMotor.setPower(0);
                 LinkMotor.setPower(0);
             }
-             /*else if (gamepad1.dpad_down && ArmMotor.getCurrentPosition() >100 && LinkMotor.getCurrentPosition() > 50)
+            if (gamepad1.dpad_right)
             {
-                ArmMotor.setPower(-.3);
-
-                LinkMotor.setPower(-.5);
+                if (RotationMotor.getCurrentPosition() <= RotationFinalPosition)
+                {
+                    RotationMotor.setPower(.3);
+                }
+                else {
+                    RotationMotor.setPower(0);
+                }
             }
-           // else if ()
-            else{
-                ArmMotor.setPower(0);
-                LinkMotor.setPower(0);
+            else if (gamepad1.dpad_left)
+            {
+                if (RotationMotor.getCurrentPosition() >= RotationHomePosition)
+                {
+                    RotationMotor.setPower(-.3);
+                }
+                else if (RotationMotor.getCurrentPosition() <= 0)
+                {
+                    RotationMotor.setPower(0);
+                }
+                else{
+                    RotationMotor.setPower(0);
+                }
             }
-
-            if (gamepad1.dpad_up){
-                // if leftmotor > 100
-                //
-                //
-            } else if (gamepad1.dpad_down)
+            else
             {
-                // if
-            }*/
-            /*if (gamepad1.dpad_down && (ArmMotor.getCurrentPosition() > 0) &&  (LinkMotor.getCurrentPosition() > 0) && differenceRange < 100.5)
-
-            {
-
-                ArmMotor.setPower(-.3);
-                LinkMotor.setPower(-.5);
-
-            }*/
-
-
+                RotationMotor.setPower(0);
+            }
 
             telemetry.addData("Arm Position", (ArmMotor.getCurrentPosition()/TickPerDeg)); // updates telemetry to display current postion of motor
             telemetry.addData("Link Position", (LinkMotor.getCurrentPosition()/TickPerDeg));
@@ -190,60 +164,8 @@ public class Encoder2MotorTest extends LinearOpMode {
             telemetry.update();
         }
 
-
-            // if criteria is not met, then power is set to 0!!!!!
-
-
-
-            idle();
-        }
-
-
-
+        idle();
     }
 
-
-   /* public void driveForwardInches(int counts, double power) {
-
-        int tolerance = 20;
-
-//must set direction first
-        encoderMotor.setDirection(DcMotor.Direction.FORWARD);
-
-//then set position
-        encoderMotor.setTargetPosition(-counts);
-
-//then set the mode
-        encoderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-//then set the desired power
-
-        encoderMotor.setPower(power);
-
-        telemetry.addData("Current LeftDriveFront Counts:", (encoderMotor.getCurrentPosition()));
-
-        telemetry.addData("LeftDriveFront Power:", encoderMotor.getPower());
-
-        telemetry.addData("LeftDriveFront Target Pos:", encoderMotor.getTargetPosition());
-
-        telemetry.update();
-
-        while (Math.abs(encoderMotor.getTargetPosition() - encoderMotor.getCurrentPosition())
-                > tolerance) {
-
-
-        }
-        encoderMotor.setPower(0);
-
-        telemetry.addData("Current LeftDriveFront Counts:", (encoderMotor.getCurrentPosition()));
-
-        telemetry.addData("LeftDriveFront Power:", encoderMotor.getPower());
-
-        telemetry.addData("LeftDriveFront Target Pos:", encoderMotor.getTargetPosition());
-
-        telemetry.update();
-    }
 }
 
-
-*/
