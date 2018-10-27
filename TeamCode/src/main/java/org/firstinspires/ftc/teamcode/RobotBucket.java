@@ -43,7 +43,7 @@ public class RobotBucket extends LinearOpMode {
     // Declare OpMode members.
         private DcMotor motor = null;
 
-    @Override
+    //@Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
