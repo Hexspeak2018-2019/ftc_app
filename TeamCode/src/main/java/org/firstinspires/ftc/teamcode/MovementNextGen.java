@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "MovementNextGen", group = "Linear")
+
 public class MovementNextGen extends LinearOpMode {
     private DcMotor topLeft;
     private DcMotor topRight;
@@ -35,8 +36,8 @@ public class MovementNextGen extends LinearOpMode {
             float left_stick_x = gamepad1.left_stick_x;
             float left_stick_y = gamepad1.left_stick_y;
             float right_stick_x = gamepad1.right_stick_x;
-            float turtle2 = -gamepad1.left_stick_x;
-            float sideToSide = gamepad1.right_stick_x;
+            /*float turtle2 = -gamepad1.left_stick_x;
+            float sideToSide = gamepad1.right_stick_x;*/
 
         /*  float topLeftSpeed = (throttle - turn + turtle);//+
            float topRightSpeed = -(throttle + turn + turtle);//-
