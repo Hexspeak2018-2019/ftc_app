@@ -26,7 +26,7 @@ public class Blue2Far extends LinearOpMode {
 
   //instance of VumarkDetection
   HexbotVuMarkDetection vuDetector = new HexbotVuMarkDetection();
-  HardwareHexbot robot = new HardwareHexbot();
+
   @Override
   public void runOpMode() throws InterruptedException {
     try {
