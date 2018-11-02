@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -40,9 +41,20 @@ public class Qualifier2019Teleop extends LinearOpMode {
             double leadScrewPower;
             double leadScrewUpPower = gamepad1.left_trigger * 0.7;
             double leadScrewDownPower  = -gamepad1.right_trigger * 0.7;
-
             leadScrewPower    = Range.clip(leadScrewUpPower + leadScrewDownPower, -1.0, 1.0) ;
-            robot.leadScrewMotor.setPower(leadScrewPower);
+
+            if (leadScrewUpPower>leadScrewDownPower)
+            {
+                robot.leadScrewMotor.setPower(leadScrewPower);
+            }
+
+            else if ((leadScrewDownPower > leadScrewUpPower) && robot.LimitSwitchLsBottom.getState() == false)
+            {
+                robot.leadScrewMotor.setPower(leadScrewPower);
+            }
+            else{
+                robot.leadScrewMotor.setPower(0);
+            }
 
 
             //Tank Drive with Joystick
@@ -54,12 +66,15 @@ public class Qualifier2019Teleop extends LinearOpMode {
             robot.tankDrive(drivePower,robotAngle,rotPwr);
 
 
-            if (gamepad1.dpad_right && bucketPosition > robot.BucketHomePosition) bucketPosition -= .005;
+            if (gamepad1.dpad_left && bucketPosition > robot.BucketHomePosition) bucketPosition -= 0.005;
 
-            // move arm up on B button if not already at the highest position.
-            if (gamepad1.dpad_left && bucketPosition < bucketMaxPosition) bucketPosition += .005;
 
-            // set the servo position/power values as we have computed them.
+            else if (gamepad1.dpad_right && bucketPosition < bucketMaxPosition)
+            {
+                bucketPosition += 0.005;
+            }
+
+
             robot.BucketServo.setPosition(Range.clip(bucketPosition ,robot.BucketHomePosition, bucketMaxPosition));
 
 
@@ -67,29 +82,60 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
             if(gamepad1.dpad_up) {
-                if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition) && (robot.LinkMotor.getCurrentPosition() < 10))
+                if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition)
+                       // && (robot.LinkMotor.getCurrentPosition() < -10)
+                        && (robot.LimitSwitchLinkBottom.getState() == false))
 
                 {
 
                     robot.ArmMotor.setPower(.4);
+
+                    robot.LinkMotor.setPower(0.3);
+
+                }
+
+               else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition) )
+
+                {
+
+                    robot.ArmMotor.setPower(.4);
+
                     robot.LinkMotor.setPower(0);
 
                 }
-                else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition))
+
+
+                else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition)
+                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)
+                        && (robot.LimitSwitchLinkTop.getState() == false))
 
                 {
 
                     robot.ArmMotor.setPower(.3);
                     robot.LinkMotor.setPower(-.5);
 
-                } else if ((robot.ArmMotor.getCurrentPosition() >= robot.ArmFinalPosition) && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition))
+                }
+                else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) &&
+                        (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)
+                        && (robot.LimitSwitchLinkTop.getState() == true))
+
+                {
+
+                    robot.ArmMotor.setPower(.3);
+                    robot.LinkMotor.setPower(0);
+
+                }
+                else if ((robot.ArmMotor.getCurrentPosition() >= robot.ArmFinalPosition)
+                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)
+                        && (robot.LimitSwitchLinkTop.getState() == false))
 
                 {
 
                     robot.ArmMotor.setPower(0);
                     robot.LinkMotor.setPower(-.4);
 
-                } else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) && (robot.LinkMotor.getCurrentPosition() <= robot.LinkFinalPosition))
+                } else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition)
+                        && (robot.LinkMotor.getCurrentPosition() <= robot.LinkFinalPosition))
 
                 {
 
@@ -113,7 +159,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
                     telemetry.addData("I am not in less than 20", (robot.LinkMotor.getCurrentPosition()/robot.TickPerDeg));
                 }
 
-                else if ( robot.ArmMotor.getCurrentPosition() >= 0 && robot.LinkMotor.getCurrentPosition() >=0)//LinkMotor.getCurrentPosition() <=20 && LinkMotor.getCurrentPosition() <0)
+                else if ( robot.ArmMotor.getCurrentPosition() >= 0 && robot.LinkMotor.getCurrentPosition() >=0)
                 {
 
                     robot.ArmMotor.setPower(-.4);
@@ -144,13 +190,13 @@ public class Qualifier2019Teleop extends LinearOpMode {
             if (gamepad1.left_bumper)
             {
 
-                robot.BucketMotor.setPower(1);
+                robot.BucketMotor.setPower(-1);
 
             }
             else if (gamepad1.right_bumper)
             {
 
-                robot.BucketMotor.setPower(-1);
+                robot.BucketMotor.setPower(1);
 
             }
             else
@@ -158,16 +204,36 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 robot.BucketMotor.setPower(0);
             }
 
+            if (robot.LimitSwitchLinkBottom.getState() == false) {
+                telemetry.addData("LimitSwitchLinkBottom", "Is Not Pressed");
+            }
+            else {
+                telemetry.addData("LimitSwitchLinkBottom", "Is  Pressed");
+            }
+            if (robot.LimitSwitchLinkTop.getState() == false) {
+                telemetry.addData("LimitSwitchLinkTop", "Is Not Pressed");
+            }
+            else {
+                telemetry.addData("LimitSwitchLinkTop", "Is  Pressed");
+            }
+
+            if (robot.LimitSwitchLsBottom.getState() == false) {
+                telemetry.addData("LimitSwitchLsBottom", "Is Not Pressed");
+            }
+            else {
+                telemetry.addData("LimitSwitchLsBottom", "Is  Pressed");
+            }
+
+            telemetry.addData("ARM  stopped at ", (robot.ArmMotor.getCurrentPosition()/robot.TickPerDeg));
+            telemetry.addData("Link  stopped at ", (robot.LinkMotor.getCurrentPosition()/robot.TickPerDeg));
 
 
-            telemetry.addData("LM Encoder value is", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
-            telemetry.addData("AM Encoder value is", (robot.ArmMotor.getCurrentPosition() / robot.TickPerDeg));
-            telemetry.addData("Servo Position is", bucketPosition);
             telemetry.update();
 
-
-
-
+/*            telemetry.addData("LM Encoder value is", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
+            telemetry.addData("AM Encoder value is", (robot.ArmMotor.getCurrentPosition() / robot.TickPerDeg));
+            telemetry.addData("Servo Position is", bucketPosition);
+            telemetry.update();*/
 
 
         }

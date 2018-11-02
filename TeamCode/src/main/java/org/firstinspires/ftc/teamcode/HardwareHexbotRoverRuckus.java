@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -32,6 +33,9 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
     public Servo BucketServo = null;
+    public DigitalChannel LimitSwitchLinkBottom;
+    public DigitalChannel LimitSwitchLinkTop;
+    public DigitalChannel LimitSwitchLsBottom;
 
     BNO055IMU imu;
     Orientation angles;
@@ -44,10 +48,10 @@ public class HardwareHexbotRoverRuckus {
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
 
-    final static double ArmFinalPosition = 200 * TickPerDeg;
-    final static double ArmLiftPosition = 120 * TickPerDeg;
+    final static double ArmFinalPosition = 210 * TickPerDeg;
+    final static double ArmLiftPosition =115 * TickPerDeg;
     final static double ArmHomePosition = 0;
-    final static double LinkFinalPosition = -100 * TickPerDeg;
+    final static double LinkFinalPosition = -55 * TickPerDeg;
     final static double LinkHomePosition = 0;
     final static double BucketHomePosition = .33;
 
@@ -85,6 +89,15 @@ public class HardwareHexbotRoverRuckus {
         // Define and initialize ALL installed servos.
         BucketServo = hwMap.get(Servo.class, "bucket_Servo");
 
+
+        LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
+        LimitSwitchLinkTop = hwMap.get(DigitalChannel.class, "SwitchLinkTop");
+        LimitSwitchLsBottom = hwMap.get(DigitalChannel.class, "SwitchLsBottom");
+
+        LimitSwitchLinkBottom.setMode(DigitalChannel.Mode.INPUT);
+        LimitSwitchLinkTop.setMode(DigitalChannel.Mode.INPUT);
+        LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);
+
         //adding rev imu (gyro,accelerometer,etc.)
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -113,10 +126,10 @@ public class HardwareHexbotRoverRuckus {
 
     public void setMotorDirections() {
 
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
         leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
