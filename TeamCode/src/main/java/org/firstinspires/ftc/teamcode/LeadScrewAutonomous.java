@@ -2,7 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @Autonomous(name = "LeadScrewP", group = "Linear")
 
@@ -16,7 +20,7 @@ public class LeadScrewAutonomous extends LinearOpMode {
     //private DcMotor RotationMotor;
     private DcMotor leadScrew = null;
     final static double ANDYMARK_TICKS_PER_REV = 1440;
-    final static double teeth = ANDYMARK_TICKS_PER_REV*9;
+   final static double teeth = ANDYMARK_TICKS_PER_REV*9;
 
 
     double leadPower = -.4;
