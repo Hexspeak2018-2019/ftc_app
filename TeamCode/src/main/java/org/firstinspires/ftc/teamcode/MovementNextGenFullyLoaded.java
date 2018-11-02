@@ -13,8 +13,8 @@ public class MovementNextGenFullyLoaded extends LinearOpMode {
     private DcMotor topRight;
     private DcMotor bottomLeft;
     private DcMotor bottomRight;
-//    private DcMotor ArmMotor;
-//    private DcMotor LinkMotor;
+   private DcMotor ArmMotor;
+   private DcMotor LinkMotor;
     //private DcMotor RotationMotor;
     private DcMotor leadScrew = null;
 
@@ -41,23 +41,23 @@ public class MovementNextGenFullyLoaded extends LinearOpMode {
         topRight = hardwareMap.dcMotor.get("topRight");
         bottomLeft = hardwareMap.dcMotor.get("bottomLeft");
         bottomRight = hardwareMap.dcMotor.get("bottomRight");
-//        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
-//        LinkMotor = hardwareMap.dcMotor.get("LinkMotor");
+        ArmMotor = hardwareMap.dcMotor.get("ArmMotor");
+        LinkMotor = hardwareMap.dcMotor.get("LinkMotor");
        // RotationMotor = hardwareMap.dcMotor.get("RotatingMotor");
         leadScrew  = hardwareMap.get(DcMotor.class, "lead_screw");
-//        ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        LinkMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      LinkMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        //RotationMotor.setMode((DcMotor.RunMode.STOP_AND_RESET_ENCODER));
-//        ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        LinkMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      LinkMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        //RotationMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        telemetry.addData("Arm Position", "Starting at %7d",
 //                ArmMotor.getCurrentPosition());
 //        telemetry.addData("Link Position", "Starting at %7d",
 //                LinkMotor.getCurrentPosition());
 //        telemetry.update();
-//        ArmMotor.setDirection(DcMotor.Direction.REVERSE);
-//        LinkMotor.setDirection(DcMotor.Direction.FORWARD);
+        ArmMotor.setDirection(DcMotor.Direction.REVERSE);
+       LinkMotor.setDirection(DcMotor.Direction.FORWARD);
 //        //RotationMotor.setDirection(DcMotor.Direction.FORWARD);
         leadScrew.setDirection(DcMotor.Direction.FORWARD);
         // double a;
@@ -73,7 +73,7 @@ public class MovementNextGenFullyLoaded extends LinearOpMode {
             telemetry.update();
 
 
-            /*if(gamepad1.dpad_up) {
+            if(gamepad1.dpad_up) {
                 if ((ArmMotor.getCurrentPosition() < ArmLiftPosition) && (LinkMotor.getCurrentPosition() < 10))
 
                 {
@@ -146,7 +146,7 @@ public class MovementNextGenFullyLoaded extends LinearOpMode {
             else {
                 ArmMotor.setPower(0);
                 LinkMotor.setPower(0);
-            }*/
+            }
             /*if (gamepad1.dpad_right)
             {
                 if (RotationMotor.getCurrentPosition() <= RotationFinalPosition)
