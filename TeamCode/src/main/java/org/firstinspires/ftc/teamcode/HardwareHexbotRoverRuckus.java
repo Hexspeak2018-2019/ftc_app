@@ -104,6 +104,15 @@ public class HardwareHexbotRoverRuckus {
 
         runtime.reset();
 
+        resetMotorsAndEncoders();
+        setMotorDirections();
+    }
+    //----------------------------------------------------------------------------------------------
+    // Methods to Reset Motors and Encoders
+    //----------------------------------------------------------------------------------------------
+
+    public void setMotorDirections() {
+
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -113,12 +122,8 @@ public class HardwareHexbotRoverRuckus {
         leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
         BucketMotor.setDirection(DcMotor.Direction.FORWARD);
 
-
-        resetMotorsAndEncoders();
     }
-    //----------------------------------------------------------------------------------------------
-    // Methods to Reset Motors and Encoders
-    //----------------------------------------------------------------------------------------------
+
     public void resetMotorsAndEncoders() {
         resetMotors();
         resetEncoderValues();
