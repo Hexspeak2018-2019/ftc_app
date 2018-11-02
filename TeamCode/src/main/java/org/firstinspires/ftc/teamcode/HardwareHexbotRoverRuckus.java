@@ -4,9 +4,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -30,6 +32,7 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
     public Servo BucketServo = null;
+
     BNO055IMU imu;
     Orientation angles;
     Telemetry localtelemetry;
@@ -46,6 +49,8 @@ public class HardwareHexbotRoverRuckus {
     final static double ArmHomePosition = 0;
     final static double LinkFinalPosition = -100 * TickPerDeg;
     final static double LinkHomePosition = 0;
+    final static double BucketHomePosition = .33;
+
 
 
 
@@ -98,6 +103,17 @@ public class HardwareHexbotRoverRuckus {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         runtime.reset();
+
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        ArmMotor.setDirection(DcMotor.Direction.REVERSE);
+        LinkMotor.setDirection(DcMotor.Direction.FORWARD);
+        leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
+        BucketMotor.setDirection(DcMotor.Direction.FORWARD);
+
+
         resetMotorsAndEncoders();
     }
     //----------------------------------------------------------------------------------------------
@@ -137,9 +153,9 @@ public class HardwareHexbotRoverRuckus {
     }
 
 
-    public void reset() {
-        resetMotorsAndEncoders();
-        BucketServo.setPosition(0);
+    public void resetServo() {
+        BucketServo.setPosition(BucketHomePosition);
+
     }
 
     //----------------------------------------------------------------------------------------------
@@ -148,14 +164,14 @@ public class HardwareHexbotRoverRuckus {
 
     public void tankDrive(double drivePower, double robotAngle, double rotPwr,long duration)
     {
-        double angleInRad = robotAngle*(Math.PI/180);
+        double angleInRad = (robotAngle + 180)*(Math.PI/180);
 
         double wheelSpeeds[] = new double[4];
 
-        wheelSpeeds[0]  = - (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
-        wheelSpeeds[1]  =   (drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
-        wheelSpeeds[2]  = - (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
-        wheelSpeeds[3]  =   (drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
 
         normalize(wheelSpeeds);
 
@@ -178,14 +194,13 @@ public class HardwareHexbotRoverRuckus {
     }
     public void tankDrive(double drivePower, double robotAngle, double rotPwr)
     {
-        double angleInRad = robotAngle*(Math.PI/180);
 
         double wheelSpeeds[] = new double[4];
 
-        wheelSpeeds[0]  = (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
-        wheelSpeeds[1]  =   (drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
-        wheelSpeeds[2]  =  (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
-        wheelSpeeds[3]  =   (drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[0]  = (drivePower* Math.sin(robotAngle + Math.PI/4) +rotPwr);
+        wheelSpeeds[1]  =  - (drivePower*  Math.cos(robotAngle + Math.PI/4) - rotPwr);
+        wheelSpeeds[2]  =  (drivePower* Math.cos(robotAngle + Math.PI/4) + rotPwr);
+        wheelSpeeds[3]  =  - (drivePower*  Math.sin(robotAngle + Math.PI/4) - rotPwr);
 
         normalize(wheelSpeeds);
 
