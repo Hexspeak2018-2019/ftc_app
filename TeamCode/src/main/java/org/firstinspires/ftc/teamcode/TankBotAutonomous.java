@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "TheMiniGodAutonomous", group = "Linear")
+@Autonomous(name = "TheMiniGodAutonomous2", group = "Linear")
 
 public class TankBotAutonomous extends LinearOpMode {
     public DcMotor topLeft;
