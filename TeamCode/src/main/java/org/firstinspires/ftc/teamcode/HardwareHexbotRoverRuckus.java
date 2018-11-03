@@ -4,12 +4,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -33,14 +31,13 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
     public Servo BucketServo = null;
-<<<<<<< HEAD
+
     public Servo TeamMarker = null;
-=======
+
     public DigitalChannel LimitSwitchLinkBottom;
     public DigitalChannel LimitSwitchLinkTop;
     public DigitalChannel LimitSwitchLsBottom;
 
->>>>>>> 70567762fa8582c0890f73e6cf5059fe5c47cce4
     BNO055IMU imu;
     Orientation angles;
     Telemetry localtelemetry;
