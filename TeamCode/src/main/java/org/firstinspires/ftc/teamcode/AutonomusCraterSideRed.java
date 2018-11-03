@@ -15,7 +15,9 @@ public class AutonomusCraterSideRed extends LinearOpMode {
         waitForStart();
 
         robot.leadScrewUp(15,1,20);
-       robot.tankDrive(.5, 180,0,0.5);
+       robot.tankDrive(.3, 180,0,0.5);
+    robot.tankDrive(.3, 270,0,1);
+
 
 
         }
