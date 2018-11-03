@@ -181,7 +181,7 @@ public class HardwareHexbotRoverRuckus {
     // Methods for Drive Motors
     //----------------------------------------------------------------------------------------------
 
-    public void tankDrive(double drivePower, double robotAngle, double rotPwr,long duration)
+    public void tankDrive(double drivePower, double robotAngle, double rotPwr,double duration)
     {
         double angleInRad = (robotAngle + 180)*(Math.PI/180);
 
@@ -201,7 +201,7 @@ public class HardwareHexbotRoverRuckus {
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
 
-        long SleepTime = (duration*1000);
+        long SleepTime = Math.round(duration*1000);
         sleep(SleepTime);
 
 
