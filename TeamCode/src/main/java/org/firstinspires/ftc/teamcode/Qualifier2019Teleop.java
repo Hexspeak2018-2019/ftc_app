@@ -43,17 +43,13 @@ public class Qualifier2019Teleop extends LinearOpMode {
             double leadScrewDownPower  = -gamepad1.right_trigger * 0.7;
             leadScrewPower    = Range.clip(leadScrewUpPower + leadScrewDownPower, -1.0, 1.0) ;
 
-            if (leadScrewUpPower>leadScrewDownPower)
+            if (robot.LimitSwitchLsBottom.getState() == true && leadScrewPower > 0 )
             {
-                robot.leadScrewMotor.setPower(leadScrewPower);
+                robot.leadScrewMotor.setPower(0);
             }
 
-            else if ((leadScrewDownPower > leadScrewUpPower) && robot.LimitSwitchLsBottom.getState() == false)
-            {
-                robot.leadScrewMotor.setPower(leadScrewPower);
-            }
             else{
-                robot.leadScrewMotor.setPower(0);
+                robot.leadScrewMotor.setPower(leadScrewPower);
             }
 
 

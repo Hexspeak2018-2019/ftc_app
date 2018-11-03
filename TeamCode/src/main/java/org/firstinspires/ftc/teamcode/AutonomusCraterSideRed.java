@@ -11,12 +11,14 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 @Override
     public void runOpMode () throws InterruptedException {
     robot.init(hardwareMap, telemetry);
+
         waitForStart();
-    while(opModeIsActive()) {
-        robot.leadScrewUp(90,.7,2);
-        robot.tankDrive(.5, 270,0,1);
-        robot.tankDrive(.5, 180,0,3);
-        break;
+
+        robot.leadScrewUp(15,1,20);
+       robot.tankDrive(.5, 180,0,0.5);
+
+
         }
     }
-}
+
+

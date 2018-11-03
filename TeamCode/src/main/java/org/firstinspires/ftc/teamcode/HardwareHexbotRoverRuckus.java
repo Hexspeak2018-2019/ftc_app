@@ -33,6 +33,7 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
     public Servo BucketServo = null;
+    public Servo tmServo = null;
     public DigitalChannel LimitSwitchLinkBottom;
     public DigitalChannel LimitSwitchLinkTop;
     public DigitalChannel LimitSwitchLsBottom;
@@ -88,6 +89,7 @@ public class HardwareHexbotRoverRuckus {
 
         // Define and initialize ALL installed servos.
         BucketServo = hwMap.get(Servo.class, "bucket_Servo");
+        tmServo = hwMap.get(Servo.class, "tm_Servo");
 
 
         LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
@@ -126,10 +128,10 @@ public class HardwareHexbotRoverRuckus {
 
     public void setMotorDirections() {
 
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
         leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -180,9 +182,9 @@ public class HardwareHexbotRoverRuckus {
     // Methods for Drive Motors
     //----------------------------------------------------------------------------------------------
 
-    public void tankDrive(double drivePower, double robotAngle, double rotPwr,long duration)
+    public void tankDrive(double drivePower, double robotAngle, double rotPwr,double duration)
     {
-        double angleInRad = (robotAngle + 180)*(Math.PI/180);
+        double angleInRad = (robotAngle +180 )*(Math.PI/180);
 
         double wheelSpeeds[] = new double[4];
 
@@ -200,7 +202,7 @@ public class HardwareHexbotRoverRuckus {
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
 
-        long SleepTime = (duration*1000);
+        long SleepTime = Math.round (duration*1000);
         sleep(SleepTime);
 
 
@@ -266,9 +268,9 @@ public class HardwareHexbotRoverRuckus {
         resetMotorsAndEncoders();
         int tolerance = 50;
         int leadScrewPitch = 2;
-        int counts = (int) Math.round(distance/leadScrewPitch * ANDYMARK_TICKS_PER_REV);
+        int counts = ((int) Math.round(distance/leadScrewPitch * ANDYMARK_TICKS_PER_REV));
 //must set direction first
-        leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
+        leadScrewMotor.setDirection(DcMotor.Direction.REVERSE);
 //then set position
         leadScrewMotor.setTargetPosition(counts);
 //then set the mode
@@ -291,6 +293,8 @@ public class HardwareHexbotRoverRuckus {
         }
         resetMotorsAndEncoders();
     }
+
+
     public void leadScrewDown(double distance, double power, double timeout) {
         resetMotorsAndEncoders();
         int tolerance = 50;
