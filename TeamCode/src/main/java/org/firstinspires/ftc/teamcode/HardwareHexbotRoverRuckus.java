@@ -30,6 +30,7 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
     public Servo BucketServo = null;
+    public Servo TeamMarker = null;
     BNO055IMU imu;
     Orientation angles;
     Telemetry localtelemetry;

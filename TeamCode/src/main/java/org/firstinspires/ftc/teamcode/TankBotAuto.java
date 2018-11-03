@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "TheMiniGodAutonomous", group = "Linear")
+@Disabled
+@Autonomous(name = "ous", group = "Linear")
 
 public class TankBotAuto extends LinearOpMode {
     public DcMotor  leftFrontMotor;
