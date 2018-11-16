@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -263,7 +264,7 @@ public class HardwareHexbotRoverRuckus {
     // Methods for Lead Screw
     //----------------------------------------------------------------------------------------------
 
-    public void leadScrewUp(double distance, double power, double timeout) {
+    public void leadScrewUp(double distance, double power, double timeout, LinearOpMode aStop ) {
         resetMotorsAndEncoders();
         int tolerance = 50;
         int leadScrewPitch = 2;
@@ -280,8 +281,8 @@ public class HardwareHexbotRoverRuckus {
 
         while (Math.abs(leadScrewMotor.getTargetPosition() - leadScrewMotor.getCurrentPosition())
                 > tolerance || Math.abs(leadScrewMotor.getTargetPosition() - leadScrewMotor.getCurrentPosition())
-                > tolerance) {
-            if (runtime.seconds() > timeout) {
+                > tolerance ) {
+            if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
                 break;
             }
 

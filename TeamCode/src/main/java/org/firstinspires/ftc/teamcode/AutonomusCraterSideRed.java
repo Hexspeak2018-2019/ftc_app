@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "AutonomousRedSideCrater", group = "Linear")
+@Autonomous(name = "AutonomousRedSideCratercs", group = "Linear")
 
 public class AutonomusCraterSideRed extends LinearOpMode {
 
@@ -14,10 +14,9 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 
         waitForStart();
 
-        robot.leadScrewUp(15,1,20);
-       robot.tankDrive(.3, 180,0,0.5);
-    robot.tankDrive(.3, 270,0,1);
-
+        robot.leadScrewUp(15,1,20,this);
+/*       robot.tankDrive(.3, 180,0,0.5);
+    robot.tankDrive(.3, 270,0,1);*/
 
 
         }
