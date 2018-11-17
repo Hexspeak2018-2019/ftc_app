@@ -4,14 +4,11 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -35,7 +32,9 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
     public Servo BucketServo = null;
-    public Servo tmServo = null;
+
+    public Servo TeamMarker = null;
+
     public DigitalChannel LimitSwitchLinkBottom;
     public DigitalChannel LimitSwitchLinkTop;
     public DigitalChannel LimitSwitchLsBottom;
@@ -44,10 +43,9 @@ public class HardwareHexbotRoverRuckus {
     Orientation angles;
     Telemetry localtelemetry;
     ElapsedTime runtime = new ElapsedTime(); //what are we doing here
-    final static double ROTATION_FOR_10 = 10*1.5;
-    final static double ANDYMARK_TICKS_PER_REV = 1120;
-    public final double WHEEL_DIAMETER = 4.3;
-    public final double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
+
+    final static double ANDYMARK_TICKS_PER_REV = 1440;
+
     final static double WormGearRatio = 9;
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
@@ -69,7 +67,7 @@ public class HardwareHexbotRoverRuckus {
 
 
     public void init(HardwareMap ahwMap, Telemetry telemetry) {
-        ElapsedTime runtime = new ElapsedTime();
+
         localtelemetry = telemetry;
 
         // Save reference to Hardware map
@@ -92,7 +90,6 @@ public class HardwareHexbotRoverRuckus {
 
         // Define and initialize ALL installed servos.
         BucketServo = hwMap.get(Servo.class, "bucket_Servo");
-        tmServo = hwMap.get(Servo.class, "tm_Servo");
 
 
         LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
@@ -104,7 +101,7 @@ public class HardwareHexbotRoverRuckus {
         LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);
 
         //adding rev imu (gyro,accelerometer,etc.)
-       /* BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
 
@@ -118,7 +115,7 @@ public class HardwareHexbotRoverRuckus {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);*/
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         runtime.reset();
 
@@ -187,7 +184,7 @@ public class HardwareHexbotRoverRuckus {
 
     public void tankDrive(double drivePower, double robotAngle, double rotPwr,double duration)
     {
-        double angleInRad = (robotAngle +180 )*(Math.PI/180);
+        double angleInRad = (robotAngle + 180)*(Math.PI/180);
 
         double wheelSpeeds[] = new double[4];
 
@@ -205,7 +202,8 @@ public class HardwareHexbotRoverRuckus {
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
 
-        long SleepTime = Math.round (duration*1000);
+        long SleepTime = Math.round(duration*1000);
+        sleep(SleepTime);
 
 
         leftFrontMotor.setPower(0);
@@ -232,10 +230,6 @@ public class HardwareHexbotRoverRuckus {
         rightFrontMotor.setPower(wheelSpeeds[1]);
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
-        localtelemetry.addData("Left Front Power", (leftFrontMotor.getCurrentPosition()));
-        localtelemetry.addData("Right Front Power", (rightFrontMotor.getCurrentPosition()));
-        localtelemetry.addData("Left Rear Power", (leftRearMotor.getCurrentPosition()));
-        localtelemetry.addData("Right Rear Power", (rightRearMotor.getCurrentPosition()));
 
     }
 
@@ -266,28 +260,17 @@ public class HardwareHexbotRoverRuckus {
         }
     }
 
-    public void reset() {
-        resetMotorsAndEncoders();
-        leftFrontMotor.setPower(0);
-        rightFrontMotor.setPower(0);
-        leftRearMotor.setPower(0);
-        rightRearMotor.setPower(0);
-        leadScrewMotor.setPower(0);
-
-    }
 //----------------------------------------------------------------------------------------------
     // Methods for Lead Screw
     //----------------------------------------------------------------------------------------------
 
-    public void leadScrewUp(double distance, double power, double timeout) {
-
+    public void leadScrewUp(double distance, double power, double timeout, LinearOpMode aStop ) {
         resetMotorsAndEncoders();
-
         int tolerance = 50;
         int leadScrewPitch = 2;
-        int counts = ((int) Math.round(distance/leadScrewPitch * ANDYMARK_TICKS_PER_REV));
+        int counts = (int) Math.round(distance/leadScrewPitch * ANDYMARK_TICKS_PER_REV);
 //must set direction first
-        leadScrewMotor.setDirection(DcMotor.Direction.REVERSE);
+        leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
 //then set position
         leadScrewMotor.setTargetPosition(counts);
 //then set the mode
@@ -298,13 +281,10 @@ public class HardwareHexbotRoverRuckus {
 
         while (Math.abs(leadScrewMotor.getTargetPosition() - leadScrewMotor.getCurrentPosition())
                 > tolerance || Math.abs(leadScrewMotor.getTargetPosition() - leadScrewMotor.getCurrentPosition())
-                > tolerance) {
-            if (runtime.seconds() > timeout) {
+                > tolerance ) {
+            if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
                 break;
             }
-
-
-
 
             localtelemetry.addData("Current LeadScrew Counts:", (leadScrewMotor.getCurrentPosition()));
             localtelemetry.addData("LeadScrew Power:", leadScrewMotor.getPower());
@@ -313,9 +293,6 @@ public class HardwareHexbotRoverRuckus {
         }
         resetMotorsAndEncoders();
     }
-
-
-
     public void leadScrewDown(double distance, double power, double timeout) {
         resetMotorsAndEncoders();
         int tolerance = 50;
