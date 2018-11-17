@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -42,9 +44,10 @@ public class HardwareHexbotRoverRuckus {
     Orientation angles;
     Telemetry localtelemetry;
     ElapsedTime runtime = new ElapsedTime(); //what are we doing here
-
-    final static double ANDYMARK_TICKS_PER_REV = 1440;
-
+    final static double ROTATION_FOR_10 = 10*1.5;
+    final static double ANDYMARK_TICKS_PER_REV = 1120;
+    public final double WHEEL_DIAMETER = 4.3;
+    public final double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
     final static double WormGearRatio = 9;
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
@@ -66,7 +69,7 @@ public class HardwareHexbotRoverRuckus {
 
 
     public void init(HardwareMap ahwMap, Telemetry telemetry) {
-
+        ElapsedTime runtime = new ElapsedTime();
         localtelemetry = telemetry;
 
         // Save reference to Hardware map
@@ -101,7 +104,7 @@ public class HardwareHexbotRoverRuckus {
         LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);
 
         //adding rev imu (gyro,accelerometer,etc.)
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+       /* BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
 
@@ -115,7 +118,7 @@ public class HardwareHexbotRoverRuckus {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);*/
 
         runtime.reset();
 
@@ -128,10 +131,10 @@ public class HardwareHexbotRoverRuckus {
 
     public void setMotorDirections() {
 
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
         leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -203,7 +206,6 @@ public class HardwareHexbotRoverRuckus {
         rightRearMotor.setPower(wheelSpeeds[3]);
 
         long SleepTime = Math.round (duration*1000);
-        sleep(SleepTime);
 
 
         leftFrontMotor.setPower(0);
@@ -230,6 +232,10 @@ public class HardwareHexbotRoverRuckus {
         rightFrontMotor.setPower(wheelSpeeds[1]);
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
+        localtelemetry.addData("Left Front Power", (leftFrontMotor.getCurrentPosition()));
+        localtelemetry.addData("Right Front Power", (rightFrontMotor.getCurrentPosition()));
+        localtelemetry.addData("Left Rear Power", (leftRearMotor.getCurrentPosition()));
+        localtelemetry.addData("Right Rear Power", (rightRearMotor.getCurrentPosition()));
 
     }
 
@@ -260,12 +266,23 @@ public class HardwareHexbotRoverRuckus {
         }
     }
 
+    public void reset() {
+        resetMotorsAndEncoders();
+        leftFrontMotor.setPower(0);
+        rightFrontMotor.setPower(0);
+        leftRearMotor.setPower(0);
+        rightRearMotor.setPower(0);
+        leadScrewMotor.setPower(0);
+
+    }
 //----------------------------------------------------------------------------------------------
     // Methods for Lead Screw
     //----------------------------------------------------------------------------------------------
 
     public void leadScrewUp(double distance, double power, double timeout) {
+
         resetMotorsAndEncoders();
+
         int tolerance = 50;
         int leadScrewPitch = 2;
         int counts = ((int) Math.round(distance/leadScrewPitch * ANDYMARK_TICKS_PER_REV));
@@ -286,6 +303,9 @@ public class HardwareHexbotRoverRuckus {
                 break;
             }
 
+
+
+
             localtelemetry.addData("Current LeadScrew Counts:", (leadScrewMotor.getCurrentPosition()));
             localtelemetry.addData("LeadScrew Power:", leadScrewMotor.getPower());
             localtelemetry.addData("LeadScrew Target Pos:", leadScrewMotor.getTargetPosition());
@@ -293,6 +313,7 @@ public class HardwareHexbotRoverRuckus {
         }
         resetMotorsAndEncoders();
     }
+
 
 
     public void leadScrewDown(double distance, double power, double timeout) {

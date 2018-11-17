@@ -199,6 +199,51 @@ public class Qualifier2019Teleop extends LinearOpMode {
             {
                 robot.BucketMotor.setPower(0);
             }
+            //
+            if ( gamepad2.dpad_up)
+            {
+                robot.ArmMotor.setPower(.3);
+            }
+
+            else if ( gamepad2.dpad_down)
+            {
+                robot.ArmMotor.setPower(-.3);
+            }
+            else
+            {
+                robot.ArmMotor.setPower(0);
+            }
+
+            if (gamepad2.a && robot.LimitSwitchLinkBottom.getState() == false)
+            {
+                robot.LinkMotor.setPower(.4);
+            }
+            else if (gamepad2.y)
+            {
+                robot.LinkMotor.setPower(-.4);
+            }
+
+            else
+
+                {
+                robot.LinkMotor.setPower(0);
+            }
+
+
+            if (gamepad2.dpad_left && bucketPosition > robot.BucketHomePosition) bucketPosition -= 0.005;
+
+
+            else if (gamepad2.dpad_right && bucketPosition < bucketMaxPosition)
+            {
+                bucketPosition += 0.005;
+            }
+
+
+            robot.BucketServo.setPosition(Range.clip(bucketPosition ,robot.BucketHomePosition, bucketMaxPosition));
+
+
+
+
 
             if (robot.LimitSwitchLinkBottom.getState() == false) {
                 telemetry.addData("LimitSwitchLinkBottom", "Is Not Pressed");
