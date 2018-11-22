@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.TimestampedI2cData;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -14,13 +15,14 @@ import java.util.concurrent.TimeUnit;
 //import java.util.concurrent.InterruptedException;
 
 @Autonomous(name="TestAuto",group = "Red Autonomus")
-//@Disabled
+@Disabled
 public class CraterSideFinal extends LinearOpMode {
 
     //instance of VumarkDetection
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
 
     @Override
+
     public void runOpMode() throws CancellationException {
         try {
             while (opModeIsActive()) {
@@ -30,9 +32,9 @@ public class CraterSideFinal extends LinearOpMode {
                 robot.localtelemetry.addData("I reached here step 1", (robot.leadScrewMotor));
                 robot.localtelemetry.update();
 
-                robot.leadScrewUp(167, 1, 20);
-                robot.tankDrive(.3, 180, 0, 0.5);
-                robot.tankDrive(.4, 270, 0, 4.5);
+                robot.leadScrewUp(167, 1, 20,this);
+                robot.tankDrive(.3, 180, 0, 10,this);
+                robot.tankDrive(.4, 270, 0, 6,this);
                 robot.localtelemetry.addData("I reached here", (robot.leadScrewMotor));
                 robot.localtelemetry.update();
             }
