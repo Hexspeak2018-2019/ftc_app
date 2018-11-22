@@ -21,7 +21,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@Autonomous(name = "GoldDetection" , group = "Concept")
 
 public class GoldDetection extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
@@ -91,7 +91,7 @@ public class GoldDetection extends LinearOpMode {
                             int goldMineralX = -1;
                             int silverMineral1X = -1;
                             int silverMineral2X = -1;
-                            for (Recognition recognition : updatedRecognitions) {
+                                for (Recognition recognition : updatedRecognitions) {
                                 if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                                     goldMineralX = (int) recognition.getLeft();
                                 } else if (silverMineral1X == -1) {
@@ -103,15 +103,18 @@ public class GoldDetection extends LinearOpMode {
                             if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                                 if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                                     telemetry.addData("Gold Mineral Position", "Left");
-                                robot.tankDrive(-1,-45,0,1);
+                                    int position = 0;
+                                    goldStrike(position);
 
                                 } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                                     telemetry.addData("Gold Mineral Position", "Right");
-                                    robot.tankDrive(-1,45,0,1);
+                                    int position = 2;
+                                    goldStrike(position);
 
                                 } else {
                                     telemetry.addData("Gold Mineral Position", "Center");
-                                    robot.tankDrive(-1,0,0,1);
+                                    int position = 1;
+                                    goldStrike(position);
 
                                 }
                             }
@@ -125,6 +128,18 @@ public class GoldDetection extends LinearOpMode {
         if (tfod != null) {
             tfod.shutdown();
         }
+    }
+
+    public void goldStrike(int position) {
+        if(position == 0) {
+            robot.tankDrive(1,-40,0,2);
+
+        } else if (position == 1){
+            robot.tankDrive(1,0,0,2);
+        } else {
+            robot.tankDrive(1,40,0,2);
+        }
+
     }
 
     /**
