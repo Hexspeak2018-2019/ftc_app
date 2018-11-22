@@ -23,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  */
 @Autonomous(name = "GoldDetection" , group = "Concept")
 
-public class GoldDetection extends LinearOpMode {
+public class GoldDetection  {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -56,91 +56,95 @@ public class GoldDetection extends LinearOpMode {
      */
     private TFObjectDetector tfod;
 
-    @Override
+   /* @Override
     public void runOpMode() {
         robot.init(hardwareMap, telemetry);
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         initVuforia();
 
-        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
-        } else {
-            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
-        }
-
-        /** Wait for the game to begin */
+        *//** Wait for the game to begin *//*
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         waitForStart();
 
         if (opModeIsActive()) {
-            /** Activate Tensor Flow Object Detection. */
-            if (tfod != null) {
-                tfod.activate();
-            }
+            *//** Activate Tensor Flow Object Detection. *//*
+            activateTF();
 
             while (opModeIsActive()) {
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        if (updatedRecognitions.size() == 3) {
-                            int goldMineralX = -1;
-                            int silverMineral1X = -1;
-                            int silverMineral2X = -1;
-                                for (Recognition recognition : updatedRecognitions) {
-                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                    goldMineralX = (int) recognition.getLeft();
-                                } else if (silverMineral1X == -1) {
-                                    silverMineral1X = (int) recognition.getLeft();
-                                } else {
-                                    silverMineral2X = (int) recognition.getLeft();
-                                }
-                            }
-                            if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                                if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                                    telemetry.addData("Gold Mineral Position", "Left");
-                                    int position = 0;
-                                    goldStrike(position);
-
-                                } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-                                    telemetry.addData("Gold Mineral Position", "Right");
-                                    int position = 2;
-                                    goldStrike(position);
-
-                                } else {
-                                    telemetry.addData("Gold Mineral Position", "Center");
-                                    int position = 1;
-                                    goldStrike(position);
-
-                                }
-                            }
-                        }
-                        telemetry.update();
-                    }
-                }
+                int objectPosition = detectObject();
             }
         }
 
+        shutdownTF();
+    }
+*/
+    public GoldDetection()
+    {
+        if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+            initTfod();
+        } else {
+//            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
+        }
+    }
+
+    public void activateTF() {
+        if (tfod != null) {
+            tfod.activate();
+        }
+    }
+
+    public void shutdownTF() {
         if (tfod != null) {
             tfod.shutdown();
         }
     }
 
-    public void goldStrike(int position) {
-        if(position == 0) {
-            robot.tankDrive(1,-40,0,2);
+   public int detectObject() {
+        int position = -1;
+       if (tfod != null) {
+           // getUpdatedRecognitions() will return null if no new information is available since
+           // the last time that call was made.
+           List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+           if (updatedRecognitions != null) {
+//               telemetry.addData("# Object Detected", updatedRecognitions.size());
+               if (updatedRecognitions.size() == 3) {
+                   int goldMineralX = -1;
+                   int silverMineral1X = -1;
+                   int silverMineral2X = -1;
+                   for (Recognition recognition : updatedRecognitions) {
+                       if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                           goldMineralX = (int) recognition.getLeft();
+                       } else if (silverMineral1X == -1) {
+                           silverMineral1X = (int) recognition.getLeft();
+                       } else {
+                           silverMineral2X = (int) recognition.getLeft();
+                       }
+                   }
+                   if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                       if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+//                           telemetry.addData("Gold Mineral Position", "Left");
+                           position = 0;
 
-        } else if (position == 1){
-            robot.tankDrive(1,0,0,2);
-        } else {
-            robot.tankDrive(1,40,0,2);
-        }
 
-    }
+                       } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+//                           telemetry.addData("Gold Mineral Position", "Right");
+                           position = 2;
+
+                       } else {
+//                           telemetry.addData("Gold Mineral Position", "Center");
+                           position = 1;
+
+
+                       }
+                   }
+               }
+//               telemetry.update();
+           }
+       }
+       return position;
+   }
 
     /**
      * Initialize the Vuforia localization engine.
