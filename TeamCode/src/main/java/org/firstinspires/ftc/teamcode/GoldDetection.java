@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -23,11 +25,11 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  */
 @Autonomous(name = "GoldDetection" , group = "Concept")
 
-public class GoldDetection  {
+public class GoldDetection {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
- HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
+// HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
 
 
      /*
@@ -52,8 +54,10 @@ public class GoldDetection  {
 
     /**
      * {@link #tfod} is the variable we will use to store our instance of the Tensor Flow Object
-     * Detection engine.
-     */
+     * Detection engine.\
+     *
+     * |
+     * |*/
     private TFObjectDetector tfod;
 
    /* @Override
@@ -79,17 +83,20 @@ public class GoldDetection  {
 
         shutdownTF();
     }
+
 */
+
     public GoldDetection()
     {
+    }
+
+    public void activateTF(HardwareMap hardwareMap) {
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
-            initTfod();
+            initTfod(hardwareMap);
         } else {
 //            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
-    }
 
-    public void activateTF() {
         if (tfod != null) {
             tfod.activate();
         }
@@ -146,6 +153,7 @@ public class GoldDetection  {
        return position;
    }
 
+
     /**
      * Initialize the Vuforia localization engine.
      */
@@ -167,7 +175,7 @@ public class GoldDetection  {
     /**
      * Initialize the Tensor Flow Object Detection engine.
      */
-    private void initTfod() {
+    private void initTfod(HardwareMap hardwareMap) {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
