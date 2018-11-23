@@ -17,9 +17,10 @@ public class AutonomusCraterSideRed extends LinearOpMode {
         robot.leadScrewUp(15,1,20);
        robot.tankDrive(.3, 180,0,0.5);
 
-       detector.activateTF();
+       detector.activateTF(hardwareMap);
 
-       int goldPosition = detector.detectObject();
+   int position =detector.detectObject();
+   telemetry.addData("position is " + position, position);
 
        // do what ever here based on gold Position
         robot.tankDrive(.3, 270,0,1);
