@@ -14,7 +14,7 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 
         waitForStart();
 
-        robot.leadScrewUp(15,1,20);
+        robot.leadScrewUp(15,1,20, this);
        robot.tankDrive(.3, 180,0,0.5);
 
        detector.activateTF(hardwareMap);
