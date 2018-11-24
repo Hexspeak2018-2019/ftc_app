@@ -1,4 +1,5 @@
 /*
+
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -18,10 +19,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import java.util.Locale;
 
-
 public class HardwareHexbot {
-  */
+
+*/
 /* Public OpMode members. *//*
+
 
   public DcMotor leftDriveFront = null;
   public DcMotor leftDriveBack = null;
@@ -54,21 +56,27 @@ public class HardwareHexbot {
   public static final double SLIDER_DOWN_POWER = -0.5;
   public static final double JEWEL_INITIAL_POS = 0;
 
-  */
+
+*/
 /* local OpMode members. *//*
+
 
   HardwareMap hwMap = null;
 
 
-  */
+
+*/
 /* Constructor *//*
+
 
   public HardwareHexbot() {
 
   }
 
-  */
+
+*/
 /* Initialize standard Hardware interfaces *//*
+
 
   public void init(HardwareMap ahwMap, Telemetry telemetry) {
 
@@ -534,4 +542,5 @@ public class HardwareHexbot {
     linearSlide.setPower(0);
   }
 
-}*/
+}
+*/

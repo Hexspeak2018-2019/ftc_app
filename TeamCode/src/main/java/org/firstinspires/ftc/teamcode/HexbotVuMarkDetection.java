@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 
-
+vxcbbvxcx
 public class HexbotVuMarkDetection {
 
   public static final String TAG = "Vuforia VuMark Sample";
@@ -69,7 +69,7 @@ public class HexbotVuMarkDetection {
      * and paste it in to your code onthe next line, between the double quotes.
      *//*
 
-    parameters.vuforiaLicenseKey = "AYQZYn3/////AAAAGSkSt08YTU7pgAyVJekZ3kAVBO0ATcrH++JAMO51kAjixNVjkZt6bNGVDGZnrJGCtHgVi6AQp6smjQJYdWrM/ALkFOWj4JGnzO6r9aO34naOlw/urREwbL+Go3tiUd6+bk2bBLKenyUXi6P2RyZ+7BfO8gErTYVZTkTjQ8/oiazY+rq9J7Ier5j/gBYnMC1i7XwSl3tLFvMWGnD8I79XCOdV2vls5YUKsXcZx5QPAFrEaCnxPMeiH+IXD6fy6OlllV6fQ1vMKunOK6LWB+4Xa8vGM4TFUM7AxEWbfrwIDRyac0hUM1xuGZfVB1drd9KDhLK0+ZDNL984aIt5IVSoMMSGMlTSbU9vYTOqv2atVKTS";
+    parameters.vuforiaLicenseKey = "AYQZYn3/////AAdcAAGSkSt08YTU7pgAyVJekZ3kAVBO0ATcrH++JAMO51kAjixNVjkZt6bNGVDGZnrJGCtHgVi6AQp6smjQJYdWrM/ALkFOWj4JGnzO6r9aO34naOlw/urREwbL+Go3tiUd6+bk2bBLKenyUXi6P2RyZ+7BfO8gErTYVZTkTjQ8/oiazY+rq9J7Ier5j/gBYnMC1i7XwSl3tLFvMWGnD8I79XCOdV2vls5YUKsXcZx5QPAFrEaCnxPMeiH+IXD6fy6OlllV6fQ1vMKunOK6LWB+4Xa8vGM4TFUM7AxEWbfrwIDRyac0hUM1xuGZfVB1drd9KDhLK0+ZDNL984aIt5IVSoMMSGMlTSbU9vYTOqv2atVKTS";
 
     */
 /*
