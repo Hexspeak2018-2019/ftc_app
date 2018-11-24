@@ -191,9 +191,14 @@ public class HardwareHexbotRoverRuckus {
         setMotorDirections();
 //then set position
         leftFrontMotor.setTargetPosition(counts);
-
+        rightFrontMotor.setTargetPosition(-counts);
+        leftRearMotor.setTargetPosition(counts);
+        rightRearMotor.setTargetPosition(-counts);
 //then set the mode
         leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
         wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
@@ -212,7 +217,11 @@ public class HardwareHexbotRoverRuckus {
         runtime.reset();
 
         while ((leftFrontMotor.getCurrentPosition () < leftFrontMotor.getTargetPosition()) && aStop.opModeIsActive()) {
-
+            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+            localtelemetry.update();
         }
         resetMotors();
     }//----------------------------------------------------------------------------------------------
@@ -241,7 +250,11 @@ public class HardwareHexbotRoverRuckus {
         runtime.reset();
 
         while ((runtime.seconds () < duration) && aStop.opModeIsActive()) {
-
+            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+            localtelemetry.update();
     }
         resetMotors();
     }

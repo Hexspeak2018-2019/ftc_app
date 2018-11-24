@@ -33,9 +33,6 @@ public class Blue2Far extends LinearOpMode {
 
       */
 /*
-       * Initialize the drive system variables.
-       * The init() method of the hardware class does all the work here
-       *//*
 
       robot.init(hardwareMap, telemetry);
 
@@ -131,29 +128,29 @@ public class Blue2Far extends LinearOpMode {
         case UNKNOWN:
           //if unknown, assume center and continue
 
-          robot.driveBackwardInches(23,0.4,6);
-          robot.turnDegrees(142);
-          robot.driveForwardInches(12,0.4,6);
-          break;
-
-        case CENTER:
-
-          robot.driveBackwardInches(23,0.4,6);
-          robot.turnDegrees(142);
-          robot.driveForwardInches(12,0.4,6);
-          break;
-        case LEFT:
-
-          robot.driveBackwardInches(23,0.4,6);
-          robot.turnDegrees(168);
-          robot.driveForwardInches(8,0.4,6);
-          break;
-        case RIGHT:
-
-          robot.driveBackwardInches(23,0.4,6);
-          robot.turnDegrees(130);
-          robot.driveForwardInches(22,0.4,6);
-
+//          robot.driveBackwardInches(23,0.4,6);
+//          robot.turnDegrees(142);
+//          robot.driveForwardInches(12,0.4,6);
+//          break;
+//
+//        case CENTER:
+//
+//          robot.driveBackwardInches(23,0.4,6);
+//          robot.turnDegrees(142);
+//          robot.driveForwardInches(12,0.4,6);
+//          break;
+//        case LEFT:
+//
+//          robot.driveBackwardInches(23,0.4,6);
+//          robot.turnDegrees(168);
+//          robot.driveForwardInches(8,0.4,6);
+//          break;
+//        case RIGHT:
+//
+//          robot.driveBackwardInches(23,0.4,6);
+//          robot.turnDegrees(130);
+//          robot.driveForwardInches(22,0.4,6);
+//
 
 
           break;
@@ -188,3 +185,7 @@ public class Blue2Far extends LinearOpMode {
   }
 
 }*/
+/*
+       * Initialize the drive system variables.
+       * The init() method of the hardware class does all the work here
+       */

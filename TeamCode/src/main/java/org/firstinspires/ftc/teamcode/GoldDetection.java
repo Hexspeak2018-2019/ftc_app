@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -21,13 +21,13 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "GoldDetection" , group = "Concept")
+
 
 public class GoldDetection {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
-// HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
+   // HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
 
 
      /*
@@ -90,6 +90,7 @@ public class GoldDetection {
 
     public void activateTF(HardwareMap hardwareMap) {
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
+            initVuforia();
             initTfod(hardwareMap);
         } else {
 //            telemetry.addData("Sorry!", "This device is not compatible with TFOD");
