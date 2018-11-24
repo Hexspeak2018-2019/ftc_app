@@ -2,30 +2,22 @@ package org.firstinspires.ftc.teamcode;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "AutonomousRedSideCrater", group = "Linear")
+@Autonomous(name = "AutonomousRedSideCraterCompetition", group = "Linear")
 
 public class AutonomusCraterSideRed extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
-    GoldDetection detector = new GoldDetection();
+    HexBotTensorFlowObjectDetection block = new HexBotTensorFlowObjectDetection();
 @Override
     public void runOpMode () throws InterruptedException {
     robot.init(hardwareMap, telemetry);
 
         waitForStart();
 
-        robot.leadScrewUp(15,1,20, this);
-       robot.tankDrive(.3, 180,0,0.5);
-
-       detector.activateTF(hardwareMap);
-
-   int position =detector.detectObject();
-   telemetry.addData("position is " + position, position);
-
-       // do what ever here based on gold Position
-        robot.tankDrive(.3, 270,0,1);
-
-        detector.shutdownTF();
+        robot.leadScrewUp(15,1,20,this);
+    robot.tankDrive2(1,180,0,3,this);
 
         }
     }
+
+

@@ -16,8 +16,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import static android.os.SystemClock.sleep;
-
 
 public class HardwareHexbotRoverRuckus {
 
@@ -44,18 +42,20 @@ public class HardwareHexbotRoverRuckus {
     Telemetry localtelemetry;
     ElapsedTime runtime = new ElapsedTime(); //what are we doing here
 
-    final static double ANDYMARK_TICKS_PER_REV = 1440;
+    final static double ANDYMARK_TICKS_PER_REV = 1120;
 
     final static double WormGearRatio = 9;
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
-
+    final static double WHEEL_DIAMETER = 3.97401575;
     final static double ArmFinalPosition = 210 * TickPerDeg;
     final static double ArmLiftPosition =115 * TickPerDeg;
     final static double ArmHomePosition = 0;
     final static double LinkFinalPosition = -55 * TickPerDeg;
     final static double LinkHomePosition = 0;
     final static double BucketHomePosition = .33;
+    final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
+
 
 
 
@@ -180,9 +180,45 @@ public class HardwareHexbotRoverRuckus {
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
-    //----------------------------------------------------------------------------------------------
 
-    public void tankDrive(double drivePower, double robotAngle, double rotPwr,double duration)
+    public void tankDrive2(double drivePower, double robotAngle, double rotPwr, int inches, LinearOpMode aStop)
+    {
+        double angleInRad = (robotAngle + 180)*(Math.PI/180);
+
+        double wheelSpeeds[] = new double[4];
+        int counts = (int) Math.round(COUNTS_PER_INCH * inches);
+//must set direction first
+        setMotorDirections();
+//then set position
+        leftFrontMotor.setTargetPosition(counts);
+
+//then set the mode
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
+
+        normalize(wheelSpeeds);
+
+        //make sure all motors run forward when set to positive power
+
+        leftFrontMotor.setPower(wheelSpeeds[0]);
+        rightFrontMotor.setPower(wheelSpeeds[1]);
+        leftRearMotor.setPower(wheelSpeeds[2]);
+        rightRearMotor.setPower(wheelSpeeds[3]);
+
+        runtime.reset();
+
+        while ((leftFrontMotor.getCurrentPosition () < leftFrontMotor.getTargetPosition()) && aStop.opModeIsActive()) {
+
+        }
+        resetMotors();
+    }//----------------------------------------------------------------------------------------------
+
+
+    public void tankDrive(double drivePower, double robotAngle, double rotPwr,double duration,LinearOpMode aStop)
     {
         double angleInRad = (robotAngle + 180)*(Math.PI/180);
 
@@ -202,15 +238,12 @@ public class HardwareHexbotRoverRuckus {
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
 
-        long SleepTime = Math.round(duration*1000);
-        sleep(SleepTime);
+        runtime.reset();
 
+        while ((runtime.seconds () < duration) && aStop.opModeIsActive()) {
 
-        leftFrontMotor.setPower(0);
-        rightFrontMotor.setPower(0);
-        leftRearMotor.setPower(0);
-        rightRearMotor.setPower(0);
-
+    }
+        resetMotors();
     }
     public void tankDrive(double drivePower, double robotAngle, double rotPwr)
     {
