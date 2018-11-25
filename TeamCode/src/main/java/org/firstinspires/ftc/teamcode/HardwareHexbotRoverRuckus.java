@@ -190,21 +190,46 @@ public class HardwareHexbotRoverRuckus {
         int counts = (int) Math.round(COUNTS_PER_INCH * inches);
 //must set direction first
         setMotorDirections();
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
+
 //then set position
-        leftFrontMotor.setTargetPosition(counts);
-        rightFrontMotor.setTargetPosition(-counts);
-        leftRearMotor.setTargetPosition(counts);
-        rightRearMotor.setTargetPosition(-counts);
+        if (wheelSpeeds[0] >= 0) {
+            leftFrontMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            leftFrontMotor.setTargetPosition(-counts);
+        }
+        if (wheelSpeeds[1] >= 0) {
+            rightFrontMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            rightFrontMotor.setTargetPosition(-counts);
+        }
+        if (wheelSpeeds[2] >= 0) {
+            leftRearMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            leftRearMotor.setTargetPosition(-counts);
+        }
+        if (wheelSpeeds[3] >= 0) {
+            rightRearMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            rightRearMotor.setTargetPosition(-counts);
+        }
+
 //then set the mode
         leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
-        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
-        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
-        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
 
         normalize(wheelSpeeds);
 

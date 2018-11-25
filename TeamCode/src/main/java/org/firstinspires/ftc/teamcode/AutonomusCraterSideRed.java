@@ -18,7 +18,7 @@ public class AutonomusCraterSideRed extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-            int position = detector.detectObject();
+            int position = 2;
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
             telemetry.addData("The position is " + position, position);
             telemetry.update();
@@ -50,10 +50,39 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 
                     break;
             }
-            if (position == 1) {
-                robot.tankDrive2(-.5, 0, 0, 25, this);
-
+            if (position == 0) {
+                robot.tankDrive(.5, 205, 0, 2.5, this);
+                robot.tankDrive(.5,0,0,.9,this);
+                robot.tankDrive(.5,90,0,5.5,this);
+                robot.tankDrive(1,45,0,1.2,this);
+                break;
             }
+            else if (position == 1)
+            {
+                robot.tankDrive(.5,176,0,2.4,this);
+                robot.tankDrive(.5,0,0,.9,this);
+                robot.tankDrive(.5,90,0,5,this);
+                robot.tankDrive(1,45,0,1,this);
+                break;
+            }
+            else if (position == 2)
+            {
+                robot.tankDrive(.5,150,0,2.5,this);
+                robot.tankDrive(.5,0,0,.9,this);
+                robot.tankDrive(.5,90,0,2.8,this);
+                robot.tankDrive(1,45,0,1.3,this);
+                
+                break;
+            }
+            else
+            {
+                robot.tankDrive(.5,176,0,2.4,this);
+                robot.tankDrive(.5,0,0,.9,this);
+                robot.tankDrive(.5,90,0,5.5,this);
+                robot.tankDrive(1,45,0,.9,this);
+            }
+
+
 
 
     }
