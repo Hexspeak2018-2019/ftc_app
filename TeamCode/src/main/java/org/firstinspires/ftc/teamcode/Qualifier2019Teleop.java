@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "MovementNextGenRealCss", group = "Linear")
+@TeleOp(name = "MovementNextGenReal", group = "Linear")
 
 public class Qualifier2019Teleop extends LinearOpMode {
 
@@ -20,7 +20,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        double  bucketPosition =robot.BucketHomePosition;
+        double  bucketPosition =robot.BucketHomePosition;   
         double bucketMaxPosition =0.9;
 
         robot.init(hardwareMap, telemetry);
@@ -48,7 +48,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 robot.leadScrewMotor.setPower(leadScrewPower);
             }
 
-            else if ((leadScrewDownPower > leadScrewUpPower) && robot.LimitSwitchLsBottom.getState() == false)
+            else if ((leadScrewDownPower > leadScrewUpPower)) //&& robot.LimitSwitchLsBottom.getState() == false)
             {
                 robot.leadScrewMotor.setPower(leadScrewPower);
             }
@@ -82,9 +82,8 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
             if(gamepad1.dpad_up) {
-                if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition)
-                       // && (robot.LinkMotor.getCurrentPosition() < -10)
-                        && (robot.LimitSwitchLinkBottom.getState() == false))
+                if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition))
+                        //&& (robot.LimitSwitchLinkBottom.getState() == false))
 
                 {
 
@@ -106,8 +105,8 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
                 else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition)
-                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)
-                        && (robot.LimitSwitchLinkTop.getState() == false))
+                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition))
+                        //&& (robot.LimitSwitchLinkTop.getState() == false))
 
                 {
 
@@ -116,8 +115,8 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
                 }
                 else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) &&
-                        (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)
-                        && (robot.LimitSwitchLinkTop.getState() == true))
+                        (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition))
+                        //&& (robot.LimitSwitchLinkTop.getState() == true))
 
                 {
 
@@ -126,8 +125,8 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
                 }
                 else if ((robot.ArmMotor.getCurrentPosition() >= robot.ArmFinalPosition)
-                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)
-                        && (robot.LimitSwitchLinkTop.getState() == false))
+                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition))
+                        //&& (robot.LimitSwitchLinkTop.getState() == false))
 
                 {
 
@@ -218,7 +217,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 robot.ArmMotor.setPower(0);
             }
 
-            if (gamepad2.a && robot.LimitSwitchLinkBottom.getState() == false)
+            if (gamepad2.a )//&& robot.LimitSwitchLinkBottom.getState() == false)
             {
                 robot.LinkMotor.setPower(.4);
             }
@@ -248,6 +247,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
 
+/*
 
             if (robot.LimitSwitchLinkBottom.getState() == false) {
                 telemetry.addData("LimitSwitchLinkBottom", "Is Not Pressed");
@@ -274,6 +274,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
             telemetry.update();
+*/
 
 /*            telemetry.addData("LM Encoder value is", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
             telemetry.addData("AM Encoder value is", (robot.ArmMotor.getCurrentPosition() / robot.TickPerDeg));

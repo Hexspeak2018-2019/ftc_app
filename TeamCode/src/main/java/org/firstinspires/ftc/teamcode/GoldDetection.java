@@ -108,8 +108,9 @@ public class GoldDetection {
     }
 
    public int detectObject() {
-        int position = -1;
+       int position = -1;
        if (tfod != null) {
+           //tfod.activate();
            // getUpdatedRecognitions() will return null if no new information is available since
            // the last time that call was made.
            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
@@ -128,7 +129,10 @@ public class GoldDetection {
                            silverMineral2X = (int) recognition.getLeft();
                        }
                    }
-                   if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+
+
+                   if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1)
+                   {
                        if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
 //                           telemetry.addData("Gold Mineral Position", "Left");
                            position = 0;
@@ -147,11 +151,17 @@ public class GoldDetection {
                    }
                }
 //               telemetry.update();
+
+
            }
        }
-       return position;
-   }
 
+       return position;
+
+
+
+
+   }
 
     /**
      * Initialize the Vuforia localization engine.

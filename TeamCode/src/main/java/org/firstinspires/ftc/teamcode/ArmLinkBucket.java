@@ -196,18 +196,6 @@ public class ArmLinkBucket extends LinearOpMode {
             }
 
 
-            if (gamepad2.dpad_left && bucketPosition > robot.BucketHomePosition) bucketPosition -= 0.005;
-
-
-            else if (gamepad2.dpad_right && bucketPosition < bucketMaxPosition)
-            {
-                bucketPosition += 0.005;
-            }
-
-
-            robot.BucketServo.setPosition(Range.clip(bucketPosition ,robot.BucketHomePosition, bucketMaxPosition));
-
-
 
 
 

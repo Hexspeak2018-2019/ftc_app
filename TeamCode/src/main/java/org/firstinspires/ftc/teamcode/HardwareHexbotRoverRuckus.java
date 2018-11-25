@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -92,13 +93,13 @@ public class HardwareHexbotRoverRuckus {
         BucketServo = hwMap.get(Servo.class, "bucket_Servo");
 
 
-        LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
+        /*LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
         LimitSwitchLinkTop = hwMap.get(DigitalChannel.class, "SwitchLinkTop");
-        LimitSwitchLsBottom = hwMap.get(DigitalChannel.class, "SwitchLsBottom");
+        LimitSwitchLsBottom = hwMap.get(DigitalChannel.class, "SwitchLsBottom");*/
 
-        LimitSwitchLinkBottom.setMode(DigitalChannel.Mode.INPUT);
+        /*LimitSwitchLinkBottom.setMode(DigitalChannel.Mode.INPUT);
         LimitSwitchLinkTop.setMode(DigitalChannel.Mode.INPUT);
-        LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);
+        LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);*/
 
         //adding rev imu (gyro,accelerometer,etc.)
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -128,10 +129,10 @@ public class HardwareHexbotRoverRuckus {
 
     public void setMotorDirections() {
 
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
         leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
