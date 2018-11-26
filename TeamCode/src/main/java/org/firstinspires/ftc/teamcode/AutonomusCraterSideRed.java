@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
-        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+//@Disabled
 @Autonomous(name = "AutonomousRedSideCraterCompetition", group = "Linear")
 
 public class AutonomusCraterSideRed extends LinearOpMode {
@@ -53,8 +55,12 @@ public class AutonomusCraterSideRed extends LinearOpMode {
             if (position == 0) {
                 robot.tankDrive(.5, 205, 0, 2.5, this);
                 robot.tankDrive(.5,0,0,.9,this);
-                robot.tankDrive(.5,90,0,5.5,this);
+                robot.tankDrive(.5,90,0,6.8,this);
                 robot.tankDrive(1,45,0,1.2,this);
+                sleep(500);
+                robot.TeamMarker.setPosition(-100);
+                sleep(500);
+                robot.tankDrive(1,225,0,2.5,this);
                 break;
             }
             else if (position == 1)
@@ -63,15 +69,23 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                 robot.tankDrive(.5,0,0,.9,this);
                 robot.tankDrive(.5,90,0,5,this);
                 robot.tankDrive(1,45,0,1,this);
+                sleep(500);
+                robot.TeamMarker.setPosition(-100);
+                sleep(500);
+                robot.tankDrive(1,225,0,2.5,this);
                 break;
             }
             else if (position == 2)
             {
-                robot.tankDrive(.5,150,0,2.5,this);
+                robot.tankDrive(.5,150,0,2.6,this);
                 robot.tankDrive(.5,0,0,.9,this);
-                robot.tankDrive(.5,90,0,2.8,this);
+                robot.tankDrive(.5,90,0,3,this);
                 robot.tankDrive(1,45,0,1.3,this);
-                
+                sleep(500);
+                robot.TeamMarker.setPosition(-100);
+                sleep(500);
+                robot.tankDrive(1,225,0,2.5,this);
+
                 break;
             }
             else
@@ -80,13 +94,17 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                 robot.tankDrive(.5,0,0,.9,this);
                 robot.tankDrive(.5,90,0,5.5,this);
                 robot.tankDrive(1,45,0,.9,this);
+                sleep(500);
+                robot.TeamMarker.setPosition(-100);
+                sleep(500);
+                robot.tankDrive(1,225,0,2.5,this);
             }
 
 
 
 
+        }
     }
-}
 }
          /*   import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
                     import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -94,7 +112,7 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 @Autonomous(name = "AutonomousRedSideCrater", group = "Linear")
 @Autonomous(name = "AutonomousRedSideCraterCompetition", group = "Linear")
 
-public class AutonomusCraterSideRed extends LinearOpMode {
+public class AutonomusCraterSideRedOnBot extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     GoldDetection detector = new GoldDetection();

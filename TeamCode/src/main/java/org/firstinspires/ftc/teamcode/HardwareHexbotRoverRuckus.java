@@ -90,7 +90,10 @@ public class HardwareHexbotRoverRuckus {
         leadScrewMotor = hwMap.get(DcMotor.class, "lead_ScrewMotor");
 
         // Define and initialize ALL installed servos.
+
         BucketServo = hwMap.get(Servo.class, "bucket_Servo");
+        TeamMarker = hwMap.get(Servo.class, "tm_Servo");
+
 
 
         /*LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
