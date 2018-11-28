@@ -20,7 +20,7 @@ public class AutonomusCraterSideRed extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-            int position = 2;
+            int position = 0;
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
             telemetry.addData("The position is " + position, position);
             telemetry.update();
@@ -53,9 +53,11 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                     break;
             }
             if (position == 0) {
-                robot.tankDrive(.5, 205, 0, 2.5, this);
+                robot.leadScrewUp(36,1,18,this);
+                robot.tankDrive(.5,90,0,.5,this);
+                robot.tankDrive(.5, 209, 0, 2.5, this);
                 robot.tankDrive(.5,0,0,.9,this);
-                robot.tankDrive(.5,90,0,6.8,this);
+                robot.tankDrive(.5,90,0,6.9,this);
                 robot.tankDrive(1,45,0,1.2,this);
                 sleep(500);
                 robot.TeamMarker.setPosition(-100);
@@ -65,6 +67,8 @@ public class AutonomusCraterSideRed extends LinearOpMode {
             }
             else if (position == 1)
             {
+                robot.leadScrewUp(36,1,18,this);
+                robot.tankDrive(.5,90,0,.5,this);
                 robot.tankDrive(.5,176,0,2.4,this);
                 robot.tankDrive(.5,0,0,.9,this);
                 robot.tankDrive(.5,90,0,5,this);
@@ -77,27 +81,32 @@ public class AutonomusCraterSideRed extends LinearOpMode {
             }
             else if (position == 2)
             {
-                robot.tankDrive(.5,150,0,2.6,this);
-                robot.tankDrive(.5,0,0,.9,this);
-                robot.tankDrive(.5,90,0,3,this);
+                robot.leadScrewUp(36,1,18,this);
+                robot.tankDrive(.5,90,0,.5,this);
+                robot.tankDrive(.5,153,0,3.4,this);
+                robot.tankDrive(.5,0,0,1,this);
+                robot.tankDrive(.5,90,0,2.43,this);
                 robot.tankDrive(1,45,0,1.3,this);
                 sleep(500);
                 robot.TeamMarker.setPosition(-100);
                 sleep(500);
-                robot.tankDrive(1,225,0,2.5,this);
+                robot.tankDrive(1,230,0,2.5,this);
 
                 break;
             }
             else
             {
+                robot.leadScrewUp(36,1,18,this);
+                robot.tankDrive(.5,90,0,.5,this);
                 robot.tankDrive(.5,176,0,2.4,this);
                 robot.tankDrive(.5,0,0,.9,this);
-                robot.tankDrive(.5,90,0,5.5,this);
-                robot.tankDrive(1,45,0,.9,this);
+                robot.tankDrive(.5,90,0,5,this);
+                robot.tankDrive(1,45,0,1,this);
                 sleep(500);
                 robot.TeamMarker.setPosition(-100);
                 sleep(500);
                 robot.tankDrive(1,225,0,2.5,this);
+                break;
             }
 
 

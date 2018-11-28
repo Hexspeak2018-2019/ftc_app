@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //@Disabled
-@Autonomous(name = "DepotSideCompetitionOnBot", group = "Linear")
+@Autonomous(name = "DepotSideCompetition", group = "Linear")
 
 public class DepotSide extends LinearOpMode {
 
@@ -52,6 +52,7 @@ public class DepotSide extends LinearOpMode {
                     break;
             }
             if (position == 0) {
+                robot.leadScrewUp(36,1,18,this);
                 robot.tankDrive(.5,90,0,.5,this);
                 robot.tankDrive(.5, 176, 0, .5, this);
                 robot.tankDrive(.5, 270, 0, 1.6, this);
@@ -76,6 +77,7 @@ public class DepotSide extends LinearOpMode {
             }
             else if (position == 1)
             {
+                robot.leadScrewUp(36,1,18,this);
                 robot.tankDrive(.5,90,0,.5,this);
                 robot.tankDrive(.5, 176, 0, .6, this);
                 robot.tankDrive(.5, 270, 0, .3, this);
@@ -95,11 +97,15 @@ public class DepotSide extends LinearOpMode {
             }
             else if (position == 2)
             {
+                robot.leadScrewUp(36,1,18,this);
                 robot.tankDrive(.5,90,0,.5,this);
-                robot.tankDrive(.5, 176, 0, 1.7, this);
-                robot.tankDrive(.5, 90, 0, 2.4, this);
-                robot.tankDrive(.5, 190, 0, 4.5, this);
-                robot.tankDrive(.5, 225, 0, 1, this);
+                robot.tankDrive(.5, 176, 0, .6, this);
+                robot.tankDrive(1, 153, 0, 1.7, this);
+                sleep(500);
+                robot.tankDrive(.5,339,0,.6,this);
+                //robot.tankDrive(.5, 190, 0, 4.5, this);
+                //robot.tankDrive(.5, 225, 0, .5, this);
+                robot.tankDrive(.5,225,0,3.2,this);
 
                 sleep(500);
                 robot.TeamMarker.setPosition(-100);
@@ -110,14 +116,23 @@ public class DepotSide extends LinearOpMode {
             }
             else
             {
-                robot.tankDrive(.5,176,0,2.4,this);
-                robot.tankDrive(.5,0,0,.9,this);
-                robot.tankDrive(.5,90,0,5.5,this);
-                robot.tankDrive(1,45,0,.9,this);
+                robot.leadScrewUp(36,1,18,this);
+                robot.tankDrive(.5,90,0,.5,this);
+                robot.tankDrive(.5, 176, 0, .6, this);
+                robot.tankDrive(.5, 270, 0, .3, this);
+                robot.tankDrive(.5, 176, 0, 4.2, this);
+                robot.tankDrive(.5,189,0,.9,this);
+                robot.tankDrive(.5,182,0,1.2,this);
+                robot.tankDrive(.5,186,0,.5,this);
+                robot.tankDrive(.5,192,0,.2,this);
+                robot.tankDrive(.5,199,0,.2,this);
                 sleep(500);
-                robot.TeamMarker.setPosition(-100);
-                sleep(500);
-                robot.tankDrive(1,225,0,2.5,this);
+                robot.TeamMarker.setPosition(-20);
+
+                sleep(2000);
+
+
+                break;
             }
 
 
