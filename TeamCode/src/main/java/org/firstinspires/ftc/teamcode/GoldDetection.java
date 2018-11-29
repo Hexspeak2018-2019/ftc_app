@@ -6,10 +6,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
 
 /**
  * This 2018-2019 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -107,61 +110,165 @@ public class GoldDetection {
         }
     }
 
-   public int detectObject() {
-       int position = -1;
+   public int detectObject(Telemetry telemetry) {
+        int position = -1;
        if (tfod != null) {
-           //tfod.activate();
            // getUpdatedRecognitions() will return null if no new information is available since
            // the last time that call was made.
            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
            if (updatedRecognitions != null) {
-//               telemetry.addData("# Object Detected", updatedRecognitions.size());
+               telemetry.addData("# Object Detected", updatedRecognitions.size());
                if (updatedRecognitions.size() == 3) {
                    int goldMineralX = -1;
                    int silverMineral1X = -1;
                    int silverMineral2X = -1;
                    for (Recognition recognition : updatedRecognitions) {
                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                           telemetry.addData("The gold position is ", recognition.getLeft());
                            goldMineralX = (int) recognition.getLeft();
                        } else if (silverMineral1X == -1) {
+                           telemetry.addData("The gold position is ", recognition.getLeft());
                            silverMineral1X = (int) recognition.getLeft();
                        } else {
+                           telemetry.addData("The gold position is ", recognition.getLeft());
                            silverMineral2X = (int) recognition.getLeft();
                        }
                    }
-
-
-                   if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1)
-                   {
+                   if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                        if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-//                           telemetry.addData("Gold Mineral Position", "Left");
                            position = 0;
 
+                           telemetry.addData("Gold Mineral Position", "Left");
 
                        } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-//                           telemetry.addData("Gold Mineral Position", "Right");
-                           position = 2;
+                           position = 1;
+                           telemetry.addData("Gold Mineral Position", "Right");
 
                        } else {
-//                           telemetry.addData("Gold Mineral Position", "Center");
-                           position = 1;
-
-
+                           position = 2;
+                           telemetry.addData("Gold Mineral Position", "Center");
                        }
                    }
                }
-//               telemetry.update();
-
-
+               telemetry.update();
            }
        }
-
-       return position;
-
-
+   return position;
+}
 
 
-   }
+
+    public int detectObject2(Telemetry telemetry) {
+        int position = -1;
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                    for (Recognition recognition : updatedRecognitions) {
+                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            double length = recognition.getRight() - recognition.getLeft();
+                            double width = recognition.getBottom() - recognition.getTop();
+
+                            if (Math.abs(length - width) < 20) {
+                                if (recognition.getTop() > 817.1898) {
+
+                                    telemetry.addData("The gold position is ", "Right");
+                                    position = 2;
+                                } else if (recognition.getTop() <= 817.1898 && recognition.getTop() >= 411.6451) {
+
+                                    telemetry.addData("The gold position is ", "Center");
+                                    position = 1;
+                                } else {
+
+                                    telemetry.addData("The gold position is ", "Left");
+                                    position = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                telemetry.update();
+            }
+        return position;
+    }
+    public int detectObjectTimeAct(Telemetry telemetry) {
+        int position = -1;
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                for (Recognition recognition : updatedRecognitions) {
+                    if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                        double length = recognition.getRight() - recognition.getLeft();
+                        double width = recognition.getBottom() - recognition.getTop();
+
+                        if (Math.abs(length - width) < 20) {
+                            if (recognition.getTop() > 817.1898) {
+
+                                telemetry.addData("The gold position is ", "Right");
+                                position = 2;
+                            } else if (recognition.getTop() <= 817.1898 && recognition.getTop() >= 411.6451) {
+
+                                telemetry.addData("The gold position is ", "Center");
+                                position = 1;
+                            } else {
+
+                                telemetry.addData("The gold position is ", "Left");
+                                position = 0;
+                            }
+                        }
+                    }
+                }
+            }
+            telemetry.update();
+        }
+        return position;
+    }
+    public int detectObjectWithTelemetry(Telemetry telemetry) {
+        int position = -1;
+        if (tfod != null) {
+            // getUpdatedRecognitions() will return null if no new information is available since
+            // the last time that call was made.
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                int i = 0;
+                for (Recognition recognition : updatedRecognitions) {
+                    if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                        telemetry.addData("The gold # ", i);
+                         try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException ie) {}
+                     //  telemetry.addData("angle :", recognition.estimateAngleToObject(AngleUnit.DEGREES));
+                     //   telemetry.addData("Confidence :", recognition.getConfidence());
+                     //   telemetry.addData("The getRight is", recognition.getRight());
+                     //   telemetry.addData("The getLeft is ", recognition.getLeft());
+                        telemetry.addData("The getTop is", recognition.getTop());
+                     //   telemetry.addData("The getBottom is ", recognition.getBottom());
+                        double length = recognition.getRight()-  recognition.getLeft();
+                        double width = recognition.getBottom() - recognition.getTop();
+
+                        telemetry.update();
+                        i++;
+
+                        if (Math.abs(length-width) < 20) {
+
+                            break;
+                        }
+                        telemetry.update();
+
+                    }
+                }
+            }
+
+        }
+        return position;
+    }
+
+
+
+
 
     /**
      * Initialize the Vuforia localization engine.
