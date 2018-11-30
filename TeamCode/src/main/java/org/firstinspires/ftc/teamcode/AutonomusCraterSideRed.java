@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class AutonomusCraterSideRed extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
-    HexBotTensorFlowObjectDetection block = new HexBotTensorFlowObjectDetection();
     GoldDetection detector = new GoldDetection();
 
     @Override
@@ -18,12 +17,12 @@ public class AutonomusCraterSideRed extends LinearOpMode {
         robot.init(hardwareMap, telemetry);
         detector.activateTF(hardwareMap);
         waitForStart();
+
         while (opModeIsActive()) {
 
-            int position = 0;
-            //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
-            telemetry.addData("The position is " + position, position);
-            telemetry.update();
+            int position = detector.detectObject2(telemetry);
+             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
+
             //robot.leadScrewUp(15, 1, 20, this);
 
 
@@ -33,14 +32,46 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                     //robot.tankDrive2(1, 180, 0, 3, this);
                     telemetry.addData("Gold Mineral Position 0", "Left");
                     telemetry.update();
+                    robot.leadScrewUp(36,1,18,this);
+                    robot.tankDrive(.5,90,0,.5,this);
+                    robot.tankDrive(.5,153,0,3.4,this);
+                    detector.shutdownTF();
+                    robot.tankDrive(.5,0,0,.9,this);
+                    robot.tankDrive(.5,90,0,6.9,this);
+                    robot.tankDrive(1,45,0,1.2,this);
+                    sleep(500);
+                    robot.TeamMarker.setPosition(-100);
+                    sleep(500);
+                    robot.tankDrive(1,225,0,2.5,this);
                     break;
 
                 case 1: //center
                     //robot.tankDrive2(1, 90, 0, 3, this);
+                    robot.leadScrewUp(36,1,18,this);
+                    robot.tankDrive(.5,90,0,.5,this);
+                    robot.tankDrive(.5,176,0,2.4,this);
+                    detector.shutdownTF();
+                    robot.tankDrive(.5,0,0,.9,this);
+                    robot.tankDrive(.5,90,0,5,this);
+                    robot.tankDrive(1,45,0,1,this);
+                    sleep(500);
+                    robot.TeamMarker.setPosition(-100);
+                    sleep(500);
+                    robot.tankDrive(1,225,0,2.5,this);
                     telemetry.addData("Gold Mineral Position 1", "Center");
                     telemetry.update();
                     break;
                 case 2: //right
+                    robot.leadScrewUp(36,1,18,this);
+                    robot.tankDrive(.5,90,0,.5,this);
+                    robot.tankDrive(.5, 209, 0, 2.5, this);;
+                    detector.shutdownTF();
+                    robot.tankDrive(.5,0,0,1,this);
+                    robot.tankDrive(.5,90,0,2.43,this);
+                    robot.tankDrive(1,45,0,1.3,this);
+                    sleep(500);
+                    robot.TeamMarker.setPosition(-100);
+                    sleep(500);
                     telemetry.addData("Gold Mineral Position 2", "Right");
                     telemetry.update();
                     //robot.tankDrive2(1, 45, 0, 3, this);
@@ -52,7 +83,7 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 
                     break;
             }
-            if (position == 0) {
+          /*  if (position == 0) {
                 robot.leadScrewUp(36,1,18,this);
                 robot.tankDrive(.5,90,0,.5,this);
                 robot.tankDrive(.5, 209, 0, 2.5, this);
@@ -107,7 +138,7 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                 sleep(500);
                 robot.tankDrive(1,225,0,2.5,this);
                 break;
-            }
+            } */
 
 
 

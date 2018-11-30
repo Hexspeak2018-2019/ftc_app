@@ -172,17 +172,22 @@ public class GoldDetection {
 
                             if (Math.abs(length - width) < 20) {
                                 if (recognition.getTop() > 817.1898) {
-
-                                    telemetry.addData("The gold position is ", "Right");
                                     position = 2;
+                                    telemetry.addData("The gold position is ", "Right");
+                                    telemetry.addData("the return value is ",position);
+
                                 } else if (recognition.getTop() <= 817.1898 && recognition.getTop() >= 411.6451) {
-
-                                    telemetry.addData("The gold position is ", "Center");
                                     position = 1;
-                                } else {
+                                    telemetry.addData("The gold position is ", "Center");
+                                    telemetry.addData("the return value is ",position);
 
-                                    telemetry.addData("The gold position is ", "Left");
+
+                                } else {
                                     position = 0;
+                                    telemetry.addData("The gold position is ", "Left");
+                                    telemetry.addData("the return value is ",position);
+
+
                                 }
                             }
                         }
@@ -199,10 +204,13 @@ public class GoldDetection {
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
+                int i = 0;
                 for (Recognition recognition : updatedRecognitions) {
                     if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                         double length = recognition.getRight() - recognition.getLeft();
                         double width = recognition.getBottom() - recognition.getTop();
+
+                        telemetry.addData("This is the  " + i +"th gold test ", "object");
 
                         if (Math.abs(length - width) < 20) {
                             if (recognition.getTop() > 817.1898) {
@@ -218,6 +226,9 @@ public class GoldDetection {
                                 telemetry.addData("The gold position is ", "Left");
                                 position = 0;
                             }
+                        } else {
+                            i++;
+
                         }
                     }
                 }
@@ -252,7 +263,7 @@ public class GoldDetection {
                         telemetry.update();
                         i++;
 
-                        if (Math.abs(length-width) < 20) {
+                        if (Math.abs(length-width) > 20) {
 
                             break;
                         }
