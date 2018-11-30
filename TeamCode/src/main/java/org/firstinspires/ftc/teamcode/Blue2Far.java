@@ -31,8 +31,8 @@ public class Blue2Far extends LinearOpMode {
   public void runOpMode() throws InterruptedException {
     try {
 
-      */
-/*
+
+
 
       robot.init(hardwareMap, telemetry);
 

@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -179,6 +178,28 @@ public class Test extends LinearOpMode {
             robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
+        }
+    }
+
+    @Autonomous(name="OutreachCode",group = "Red Autonomus")
+
+    public static class TestingFrontOfRobot extends LinearOpMode {
+
+        //instance of VumarkDetection
+        HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
+
+        @Override
+
+        public void runOpMode() throws InterruptedException {
+
+            robot.init(hardwareMap, telemetry);
+            waitForStart();
+            while (opModeIsActive()) {
+                robot.tankDrive(.5,0,0,10,this);
+                telemetry.addData("ticks for leftFrontMotor",robot.leftFrontMotor);
+
+
+            }
         }
     }
 }
