@@ -21,6 +21,10 @@ public class AutonomusCraterSideRed extends LinearOpMode {
         while (opModeIsActive()) {
 
             int position = detector.detectObject2(telemetry);
+            detector.shutdownTF();
+            telemetry.addData("Gold Mineral Position is", position);
+            telemetry.update();
+            sleep(30000);
              //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
             //robot.leadScrewUp(15, 1, 20, this);
@@ -35,7 +39,6 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                     robot.leadScrewUp(36,1,18,this);
                     robot.tankDrive(.5,90,0,.5,this);
                     robot.tankDrive(.5,153,0,3.4,this);
-                    detector.shutdownTF();
                     robot.tankDrive(.5,0,0,.9,this);
                     robot.tankDrive(.5,90,0,6.9,this);
                     robot.tankDrive(1,45,0,1.2,this);
@@ -50,7 +53,6 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                     robot.leadScrewUp(36,1,18,this);
                     robot.tankDrive(.5,90,0,.5,this);
                     robot.tankDrive(.5,176,0,2.4,this);
-                    detector.shutdownTF();
                     robot.tankDrive(.5,0,0,.9,this);
                     robot.tankDrive(.5,90,0,5,this);
                     robot.tankDrive(1,45,0,1,this);
@@ -65,7 +67,6 @@ public class AutonomusCraterSideRed extends LinearOpMode {
                     robot.leadScrewUp(36,1,18,this);
                     robot.tankDrive(.5,90,0,.5,this);
                     robot.tankDrive(.5, 209, 0, 2.5, this);;
-                    detector.shutdownTF();
                     robot.tankDrive(.5,0,0,1,this);
                     robot.tankDrive(.5,90,0,2.43,this);
                     robot.tankDrive(1,45,0,1.3,this);
@@ -83,6 +84,8 @@ public class AutonomusCraterSideRed extends LinearOpMode {
 
                     break;
             }
+
+
           /*  if (position == 0) {
                 robot.leadScrewUp(36,1,18,this);
                 robot.tankDrive(.5,90,0,.5,this);
