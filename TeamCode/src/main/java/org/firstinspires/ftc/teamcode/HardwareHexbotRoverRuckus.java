@@ -45,14 +45,14 @@ public class HardwareHexbotRoverRuckus {
 
     final static double ANDYMARK_TICKS_PER_REV = 1120;
 
-    final static double WormGearRatio = 9;
+    final static double WormGearRatio = 20;
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
     final static double WHEEL_DIAMETER = 3.97401575;
-    final static double ArmFinalPosition = 210 * TickPerDeg;
-    final static double ArmLiftPosition =115 * TickPerDeg;
+    final static double ArmFinalPosition = 160 * TickPerDeg;
+    final static double ArmLiftPosition = 80* TickPerDeg;
     final static double ArmHomePosition = 0;
-    final static double LinkFinalPosition = -55 * TickPerDeg;
+    final static double LinkFinalPosition = (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
     final static double BucketHomePosition = .33;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
@@ -284,7 +284,7 @@ public class HardwareHexbotRoverRuckus {
             localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
             localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
             localtelemetry.update();
-    }
+        }
         resetMotors();
     }
     public void tankDrive(double drivePower, double robotAngle, double rotPwr)

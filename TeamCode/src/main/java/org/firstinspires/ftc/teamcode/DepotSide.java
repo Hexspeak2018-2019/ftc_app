@@ -1,10 +1,11 @@
+/*
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //@Disabled
-@Autonomous(name = "DepotSideCompetition", group = "Linear")
+@Autonomous(name = "DepotSideSR", group = "Linear")
 
 public class DepotSide extends LinearOpMode {
 
@@ -141,7 +142,8 @@ public class DepotSide extends LinearOpMode {
         }
     }
 }
-         /*   import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+         */
+/*   import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
                     import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name = "AutonomousRedSideCrater", group = "Linear")
@@ -179,5 +181,6 @@ public class AutonomusCraterSideRedOnBot extends LinearOpMode {
                 }
                 }
 */
+
 
 
