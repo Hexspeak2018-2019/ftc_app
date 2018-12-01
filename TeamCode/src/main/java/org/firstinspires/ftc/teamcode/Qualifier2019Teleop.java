@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "Teleop-SR", group = "Linear")
+@TeleOp(name = "TeleopProjectB", group = "Linear")
 
 public class Qualifier2019Teleop extends LinearOpMode {
 
@@ -59,12 +59,12 @@ public class Qualifier2019Teleop extends LinearOpMode {
             robot.tankDrive(drivePower, robotAngle, rotPwr);
 
 
-            if (gamepad1.dpad_left && bucketPosition > robot.BucketHomePosition)
-                bucketPosition -= 0.005;
+            if (gamepad1.y && bucketPosition > robot.BucketHomePosition)
+                bucketPosition -= 0.0005;
 
 
-            else if (gamepad1.dpad_right && bucketPosition < bucketMaxPosition) {
-                bucketPosition += 0.005;
+            else if (gamepad1.b && bucketPosition < bucketMaxPosition) {
+                bucketPosition += 0.0005;
             }
 
 
@@ -75,43 +75,77 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
             if (gamepad1.dpad_up) {
+
                 if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition)
-                        && (robot.LinkMotor.getCurrentPosition() > -10)) {
-                    robot.ArmMotor.setPower(.4);
+                        && robot.LinkMotor.getCurrentPosition() <  robot.LinkFinalPosition ) {
+
+                    robot.ArmMotor.setPower(.8);
                     robot.LinkMotor.setPower(0);
-                    telemetry.addData("Loop no ", "1");
-                    telemetry.update();
-                } else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition)
-                        && (robot.LinkMotor.getCurrentPosition() < robot.LinkFinalPosition)) {
-                    robot.ArmMotor.setPower(.5);
-                    robot.LinkMotor.setPower(.3);
-                    telemetry.addData("Loop no ", "2");
+                    telemetry.addData("Loop no ",robot.ArmMotor.getCurrentPosition());
                     telemetry.update();
                 }
-               /* else if ((robot.ArmMotor.getCurrentPosition() >= robot.ArmFinalPosition)
-                        && (robot.LinkMotor.getCurrentPosition() > robot.LinkFinalPosition)) {
-                    robot.ArmMotor.setPower(0);
-                    robot.LinkMotor.setPower(-.4);
-                    telemetry.addData("Loop no ", "3");
-                    telemetry.update();
-                } else if ((robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition)
-                        && (robot.LinkMotor.getCurrentPosition() <= robot.LinkFinalPosition)) {
-                    robot.ArmMotor.setPower(.4);
-                    robot.LinkMotor.setPower(0);
-                    telemetry.addData("Loop no ", "4");
-                    telemetry.update();
+                else if ((robot.ArmMotor.getCurrentPosition() >= robot.ArmLiftPosition
+                        && robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition)
+                        && (robot.LinkMotor.getCurrentPosition() < robot.LinkFinalPosition)) {
+                        telemetry.addData("Hi","You made it here");
+                    robot.ArmMotor.setPower(.6);
+                    robot.LinkMotor.setPower(.29);
+                    telemetry.addData("Loop no ", "2");
 
-                } else if (gamepad1.dpad_down) {
-                    if ((robot.ArmMotor.getCurrentPosition() > 100) && (robot.LinkMotor.getCurrentPosition() < -50)) {
-                        robot.ArmMotor.setPower(-.4);
-                        robot.LinkMotor.setPower(.4);
-                        telemetry.addData("I am not in less than 20", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
-                    } else if (robot.ArmMotor.getCurrentPosition() >= 0 && robot.LinkMotor.getCurrentPosition() >= 0) {
-                        robot.ArmMotor.setPower(-.4);
-                        robot.LinkMotor.setPower(0);
-                        telemetry.addData("I am in less than 20", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
-                    }
-                }*/
+                }  else if (robot.LinkMotor.getCurrentPosition() < robot.LinkFinalPosition
+                        && robot.ArmMotor.getCurrentPosition() >= robot.ArmFinalPosition) {
+                    telemetry.addData("Hi","You made it here");
+                    telemetry.update();
+                    robot.ArmMotor.setPower(0);
+                    robot.LinkMotor.setPower(.29);
+                }
+                else if (robot.LinkMotor.getCurrentPosition() >= robot.LinkFinalPosition
+                        && robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) {
+                    telemetry.addData("Hi","You made it here");
+                    telemetry.update();
+                    robot.ArmMotor.setPower(.6);
+                    robot.LinkMotor.setPower(0);
+                }
+
+
+                else {
+                    robot.ArmMotor.setPower(0);
+                    robot.LinkMotor.setPower(0);
+
+
+                }
+
+            }
+            else if (gamepad1.dpad_down) {
+                if ((robot.ArmMotor.getCurrentPosition() >= robot.ArmLiftPosition)
+                        && (robot.LinkMotor.getCurrentPosition() >= robot.LinkHomePosition) ) {
+                    robot.ArmMotor.setPower(-.6);
+                    robot.LinkMotor.setPower(-.29);
+                    telemetry.addData("I am not in less than 20", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
+                }
+                else if (robot.LinkMotor.getCurrentPosition() >= robot.LinkHomePosition ) {
+                    robot.ArmMotor.setPower(0);
+                    robot.LinkMotor.setPower(-.29);
+                    telemetry.addData("I am in less than 20", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
+                }
+                else if (robot.ArmMotor.getCurrentPosition() <= robot.ArmLiftPosition &&
+                robot.ArmMotor.getCurrentPosition() >= robot.ArmHomePosition)
+
+                {
+                    robot.ArmMotor.setPower(-.6);
+                    robot.LinkMotor.setPower(0);
+                    telemetry.addData("I am in less than 20", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
+                }
+                else if (robot.ArmMotor.getCurrentPosition() > robot.ArmHomePosition && robot.LinkMotor.getCurrentPosition() > -500) {
+                    robot.ArmMotor.setPower(-.6);
+                    robot.LinkMotor.setPower(0);
+                    telemetry.addData("I am in less than 20", (robot.LinkMotor.getCurrentPosition() / robot.TickPerDeg));
+                }
+
+                else {
+                    robot.ArmMotor.setPower(0);
+                    robot.LinkMotor.setPower(0);
+                }
             }
             else {
                 robot.ArmMotor.setPower(0);
@@ -132,11 +166,9 @@ public class Qualifier2019Teleop extends LinearOpMode {
             }
 
 
-            telemetry.addData("ARM  stopped at ", (robot.ArmMotor.getCurrentPosition()/ robot.TickPerDeg));
-            telemetry.addData("Link  stopped at ", (robot.LinkMotor.getCurrentPosition() ));
-            telemetry.addData("Link Final Pos ", (robot.LinkFinalPosition));
-
-
+            telemetry.addData("ARM  stopped at ", (robot.ArmMotor.getCurrentPosition()));
+            telemetry.addData("Link  stopped at ", (robot.LinkMotor.getCurrentPosition()));
+            telemetry.addData("Link Final Pos ", (robot.LinkFinalPosition/robot.TickPerDeg));
 
             telemetry.update();
 

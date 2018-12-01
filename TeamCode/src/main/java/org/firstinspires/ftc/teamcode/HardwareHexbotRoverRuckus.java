@@ -49,10 +49,10 @@ public class HardwareHexbotRoverRuckus {
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
     final static double WHEEL_DIAMETER = 3.97401575;
-    final static double ArmFinalPosition = 160 * TickPerDeg;
-    final static double ArmLiftPosition = 80* TickPerDeg;
+    final static double ArmFinalPosition = 10608; //160 * TickPerDeg;
+    final static double ArmLiftPosition = 5972; //80* TickPerDeg;
     final static double ArmHomePosition = 0;
-    final static double LinkFinalPosition = (90 * TickPerDeg)/8 ;
+    final static double LinkFinalPosition = 966;// (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
     final static double BucketHomePosition = .33;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
