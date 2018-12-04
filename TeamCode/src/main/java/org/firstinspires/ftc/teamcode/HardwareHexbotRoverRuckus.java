@@ -5,7 +5,6 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -184,6 +183,85 @@ public class HardwareHexbotRoverRuckus {
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
+    //----------------------------------------------------------------------------------------------
+
+    //CS-------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------
+    // Methods for Drive Motors
+
+    public void tankDrivecs (double drivePower, double robotAngle, int inches, double timeout, LinearOpMode aStop)
+    {
+        double angleInRad = (robotAngle + 180)*(Math.PI/180);
+        int counts = (int) Math.round(COUNTS_PER_INCH * inches);
+
+
+        double wheelSpeeds[] = new double[4];
+
+//must set direction first
+        setMotorDirections();
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4));
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) );
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4));
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4));
+
+
+        int wheelCounts[]= new int[4];
+
+        wheelCounts[0]  =  (int)(counts* wheelSpeeds[0]);
+        wheelCounts[1]  =  (int) -(counts*  wheelSpeeds[1]);
+        wheelCounts[2]  =  (int) (counts* wheelSpeeds[2]);
+        wheelCounts[3]  =  (int) -(counts*  wheelSpeeds[3]);
+
+//then set position
+
+        leftFrontMotor.setTargetPosition( wheelCounts[0]);
+        rightFrontMotor.setTargetPosition( wheelCounts[1]);
+        leftRearMotor.setTargetPosition(wheelCounts[2]);
+        rightRearMotor.setTargetPosition(wheelCounts[3]);
+
+
+//then set the mode
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        normalize(wheelSpeeds);
+
+        //make sure all motors run forward when set to positive power
+
+        leftFrontMotor.setPower(wheelSpeeds[0]);
+        rightFrontMotor.setPower(wheelSpeeds[1]);
+        leftRearMotor.setPower(wheelSpeeds[2]);
+        rightRearMotor.setPower(wheelSpeeds[3]);
+
+        while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy()) {
+
+            if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
+                break;
+            }
+
+            // Display it for the driver.
+            localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
+            localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
+            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d",
+                    leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
+            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d",
+                    leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+            localtelemetry.update();
+        }
+
+        resetMotors();
+        setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    //__End_cs_____________________________________________________________________________________________
+
+
+    //--------------------------------------------------------------------------------------------------
 
     public void tankDrive2(double drivePower, double robotAngle, double rotPwr, int inches, LinearOpMode aStop)
     {
