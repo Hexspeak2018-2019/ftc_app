@@ -44,14 +44,14 @@ public class HardwareHexbotRoverRuckus {
 
     final static double ANDYMARK_TICKS_PER_REV = 1120;
 
-    final static double WormGearRatio = 9;
+    final static double WormGearRatio = 20;
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
     final static double WHEEL_DIAMETER = 3.97401575;
-    final static double ArmFinalPosition = 210 * TickPerDeg;
-    final static double ArmLiftPosition =115 * TickPerDeg;
+    final static double ArmFinalPosition = 10608; //160 * TickPerDeg;
+    final static double ArmLiftPosition = 5972; //80* TickPerDeg;
     final static double ArmHomePosition = 0;
-    final static double LinkFinalPosition = -55 * TickPerDeg;
+    final static double LinkFinalPosition = 966;// (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
     final static double BucketHomePosition = .33;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
@@ -89,16 +89,19 @@ public class HardwareHexbotRoverRuckus {
         leadScrewMotor = hwMap.get(DcMotor.class, "lead_ScrewMotor");
 
         // Define and initialize ALL installed servos.
+
         BucketServo = hwMap.get(Servo.class, "bucket_Servo");
+        TeamMarker = hwMap.get(Servo.class, "tm_Servo");
 
 
-        LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
+
+        /*LimitSwitchLinkBottom = hwMap.get(DigitalChannel.class, "SwitchLinkBottom");
         LimitSwitchLinkTop = hwMap.get(DigitalChannel.class, "SwitchLinkTop");
-        LimitSwitchLsBottom = hwMap.get(DigitalChannel.class, "SwitchLsBottom");
+        LimitSwitchLsBottom = hwMap.get(DigitalChannel.class, "SwitchLsBottom");*/
 
-        LimitSwitchLinkBottom.setMode(DigitalChannel.Mode.INPUT);
+        /*LimitSwitchLinkBottom.setMode(DigitalChannel.Mode.INPUT);
         LimitSwitchLinkTop.setMode(DigitalChannel.Mode.INPUT);
-        LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);
+        LimitSwitchLsBottom.setMode(DigitalChannel.Mode.INPUT);*/
 
         //adding rev imu (gyro,accelerometer,etc.)
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -128,10 +131,10 @@ public class HardwareHexbotRoverRuckus {
 
     public void setMotorDirections() {
 
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftRearMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
         leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -180,6 +183,85 @@ public class HardwareHexbotRoverRuckus {
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
+    //----------------------------------------------------------------------------------------------
+
+    //CS-------------------------------------------------------------------------
+
+    //----------------------------------------------------------------------------------------------
+    // Methods for Drive Motors
+
+    public void tankDrivecs (double drivePower, double robotAngle, int inches, double timeout, LinearOpMode aStop)
+    {
+        double angleInRad = (robotAngle + 180)*(Math.PI/180);
+        int counts = (int) Math.round(COUNTS_PER_INCH * inches);
+
+
+        double wheelSpeeds[] = new double[4];
+
+//must set direction first
+        setMotorDirections();
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4));
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) );
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4));
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4));
+
+
+        int wheelCounts[]= new int[4];
+
+        wheelCounts[0]  =  (int)(counts* wheelSpeeds[0]);
+        wheelCounts[1]  =  (int) -(counts*  wheelSpeeds[1]);
+        wheelCounts[2]  =  (int) (counts* wheelSpeeds[2]);
+        wheelCounts[3]  =  (int) -(counts*  wheelSpeeds[3]);
+
+//then set position
+
+        leftFrontMotor.setTargetPosition( wheelCounts[0]);
+        rightFrontMotor.setTargetPosition( wheelCounts[1]);
+        leftRearMotor.setTargetPosition(wheelCounts[2]);
+        rightRearMotor.setTargetPosition(wheelCounts[3]);
+
+
+//then set the mode
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        normalize(wheelSpeeds);
+
+        //make sure all motors run forward when set to positive power
+
+        leftFrontMotor.setPower(wheelSpeeds[0]);
+        rightFrontMotor.setPower(wheelSpeeds[1]);
+        leftRearMotor.setPower(wheelSpeeds[2]);
+        rightRearMotor.setPower(wheelSpeeds[3]);
+
+        while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy()) {
+
+            if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
+                break;
+            }
+
+            // Display it for the driver.
+            localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
+            localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
+            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d",
+                    leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
+            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d",
+                    leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+            localtelemetry.update();
+        }
+
+        resetMotors();
+        setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    //__End_cs_____________________________________________________________________________________________
+
+
+    //--------------------------------------------------------------------------------------------------
 
     public void tankDrive2(double drivePower, double robotAngle, double rotPwr, int inches, LinearOpMode aStop)
     {
@@ -189,21 +271,46 @@ public class HardwareHexbotRoverRuckus {
         int counts = (int) Math.round(COUNTS_PER_INCH * inches);
 //must set direction first
         setMotorDirections();
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
+
 //then set position
-        leftFrontMotor.setTargetPosition(counts);
-        rightFrontMotor.setTargetPosition(-counts);
-        leftRearMotor.setTargetPosition(counts);
-        rightRearMotor.setTargetPosition(-counts);
+        if (wheelSpeeds[0] >= 0) {
+            leftFrontMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            leftFrontMotor.setTargetPosition(-counts);
+        }
+        if (wheelSpeeds[1] >= 0) {
+            rightFrontMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            rightFrontMotor.setTargetPosition(-counts);
+        }
+        if (wheelSpeeds[2] >= 0) {
+            leftRearMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            leftRearMotor.setTargetPosition(-counts);
+        }
+        if (wheelSpeeds[3] >= 0) {
+            rightRearMotor.setTargetPosition(counts);
+        }
+        else
+        {
+            rightRearMotor.setTargetPosition(-counts);
+        }
+
 //then set the mode
         leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
-        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
-        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
-        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
 
         normalize(wheelSpeeds);
 
@@ -255,7 +362,7 @@ public class HardwareHexbotRoverRuckus {
             localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
             localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
             localtelemetry.update();
-    }
+        }
         resetMotors();
     }
     public void tankDrive(double drivePower, double robotAngle, double rotPwr)
