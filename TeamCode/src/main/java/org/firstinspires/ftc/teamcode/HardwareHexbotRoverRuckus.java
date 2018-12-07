@@ -209,9 +209,9 @@ public class HardwareHexbotRoverRuckus {
         int wheelCounts[]= new int[4];
 
         wheelCounts[0]  =  (int)(counts* wheelSpeeds[0]);
-        wheelCounts[1]  =  (int) -(counts*  wheelSpeeds[1]);
-        wheelCounts[2]  =  (int) (counts* wheelSpeeds[2]);
-        wheelCounts[3]  =  (int) -(counts*  wheelSpeeds[3]);
+        wheelCounts[1]  =  (int) (counts*  wheelSpeeds[1]);
+        wheelCounts[2]  =  (int)(counts* wheelSpeeds[2]);
+        wheelCounts[3]  =  (int) (counts*  wheelSpeeds[3]);
 
 //then set position
 
@@ -254,7 +254,7 @@ public class HardwareHexbotRoverRuckus {
             localtelemetry.update();
         }
 
-        resetMotors();
+        resetMotorsAndEncoders();
         setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
