@@ -56,6 +56,9 @@ public class HardwareHexbotRoverRuckus {
     final static double BucketHomePosition = .33;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
 
+    Orientation             lastAngles = new Orientation();
+    double globalAngle;
+
 
 
 
@@ -118,6 +121,8 @@ public class HardwareHexbotRoverRuckus {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
+
+
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         runtime.reset();
@@ -157,6 +162,14 @@ public class HardwareHexbotRoverRuckus {
         LinkMotor.setPower(0);
         ArmMotor.setPower(0);
         leadScrewMotor.setPower(0);
+
+    }
+
+    public void setDriveMotorBevaiorToBrake(){
+        leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void resetEncoderValues() {
@@ -182,28 +195,86 @@ public class HardwareHexbotRoverRuckus {
     }
 
     //----------------------------------------------------------------------------------------------
-    // Methods for Drive Motors
+    // Methods for Gyro  http://stemrobotics.cs.pdx.edu/node/7265
     //----------------------------------------------------------------------------------------------
+    private void resetAngle()
+    {
+        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        globalAngle = 0;
+    }
+
+    private double getAngle()
+    {
+        // We experimentally determined the Z axis is the axis we want to use for heading angle.
+        // We have to process the angle because the imu works in euler angles so the Z axis is
+        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
+        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
+
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
+
+        if (deltaAngle < -180)
+            deltaAngle += 360;
+        else if (deltaAngle > 180)
+            deltaAngle -= 360;
+
+        globalAngle += deltaAngle;
+
+        lastAngles = angles;
+
+        return globalAngle;
+    }
+
+    /**
+     * See if we are moving in a along the desired angle and if not return a power correction value.
+     * @return Power adjustment, + is adjust left - is adjust right.
+     */
+    private double gyroCorrection( double targetAngle, double correctionFactor)
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, angle;
+        double gain = correctionFactor; // start with 0.1
+
+        angle = getAngle();
+
+        if (Math.abs(angle - targetAngle)<= 1)
+            correction = 0;             // no adjustment.
+        else
+            correction = angle - targetAngle;        // reverse sign of angle for correction.
+
+        correction = correction * gain;
+
+        return correction;
+    }
 
     //CS-------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
 
-    public void tankDrivecs (double drivePower, double robotAngle, int inches, double timeout, LinearOpMode aStop)
+
+
+
+    public void tankDrivecs (double drivePower,  double rotPwr, double robotAngle, int inches, double timeout, LinearOpMode aStop)
     {
         double angleInRad = (robotAngle + 180)*(Math.PI/180);
         int counts = (int) Math.round(COUNTS_PER_INCH * inches);
+
+
 
 
         double wheelSpeeds[] = new double[4];
 
 //must set direction first
         setMotorDirections();
-        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4));
-        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) );
-        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4));
-        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4));
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4) +rotPwr);
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) - rotPwr);
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4) + rotPwr);
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4) - rotPwr);
 
 
         int wheelCounts[]= new int[4];
@@ -244,6 +315,20 @@ public class HardwareHexbotRoverRuckus {
                 break;
             }
 
+            double correction = gyroCorrection(robotAngle, 0.1);
+
+            wheelSpeeds[0]  +=     correction;
+            wheelSpeeds[1]  -=     correction;
+            wheelSpeeds[2]  +=     correction;
+            wheelSpeeds[3]  -=     correction;
+
+            normalize(wheelSpeeds);
+
+            leftFrontMotor.setPower(wheelSpeeds[0]);
+            rightFrontMotor.setPower(wheelSpeeds[1]);
+            leftRearMotor.setPower(wheelSpeeds[2]);
+            rightRearMotor.setPower(wheelSpeeds[3]);
+
             // Display it for the driver.
             localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
             localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
@@ -255,8 +340,10 @@ public class HardwareHexbotRoverRuckus {
         }
 
         resetMotorsAndEncoders();
-        setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setDriveMotorBevaiorToBrake();
+
     }
+
 
     //__End_cs_____________________________________________________________________________________________
 
