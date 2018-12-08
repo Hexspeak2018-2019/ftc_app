@@ -16,6 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import java.util.Locale;
+
 
 public class HardwareHexbotRoverRuckus {
 
@@ -56,8 +58,6 @@ public class HardwareHexbotRoverRuckus {
     final static double BucketHomePosition = .33;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
 
-    Orientation             lastAngles = new Orientation();
-    double globalAngle;
 
 
 
@@ -197,40 +197,30 @@ public class HardwareHexbotRoverRuckus {
     //----------------------------------------------------------------------------------------------
     // Methods for Gyro  http://stemrobotics.cs.pdx.edu/node/7265
     //----------------------------------------------------------------------------------------------
-    private void resetAngle()
-    {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    //----------------------------------------------------------------------------------------------
+    // Angle Measurement Formatting
+    //----------------------------------------------------------------------------------------------
 
-        globalAngle = 0;
+    public double getCurrentAngle() {
+        double anglesNorm;
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        anglesNorm = NormalizeDegrees(angles.angleUnit, angles.firstAngle);
+        return anglesNorm;
     }
 
-    private double getAngle()
-    {
-        // We experimentally determined the Z axis is the axis we want to use for heading angle.
-        // We have to process the angle because the imu works in euler angles so the Z axis is
-        // returned as 0 to +180 or 0 to -180 rolling back to -179 or +179 when rotation passes
-        // 180 degrees. We detect this transition and track the total cumulative angle of rotation.
 
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
-
-        if (deltaAngle < -180)
-            deltaAngle += 360;
-        else if (deltaAngle > 180)
-            deltaAngle -= 360;
-
-        globalAngle += deltaAngle;
-
-        lastAngles = angles;
-
-        return globalAngle;
+    public double NormalizeDegrees(AngleUnit angleUnit, double angle) {
+        double degrees;
+        degrees = AngleUnit.DEGREES.fromUnit(angleUnit, angle);
+        degrees = AngleUnit.DEGREES.normalize(degrees);
+        return degrees;
     }
 
-    /**
-     * See if we are moving in a along the desired angle and if not return a power correction value.
-     * @return Power adjustment, + is adjust left - is adjust right.
-     */
+
+
+    // Method to figure out correction value
+
+
     private double gyroCorrection( double targetAngle, double correctionFactor)
     {
         // The gain value determines how sensitive the correction is to direction changes.
@@ -239,7 +229,7 @@ public class HardwareHexbotRoverRuckus {
         double correction, angle;
         double gain = correctionFactor; // start with 0.1
 
-        angle = getAngle();
+        angle = getCurrentAngle();
 
         if (Math.abs(angle - targetAngle)<= 1)
             correction = 0;             // no adjustment.
@@ -251,7 +241,7 @@ public class HardwareHexbotRoverRuckus {
         return correction;
     }
 
-    //CS-------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
@@ -332,10 +322,8 @@ public class HardwareHexbotRoverRuckus {
             // Display it for the driver.
             localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
             localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
-            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d",
-                    leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
-            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d",
-                    leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d", leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
+            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d", leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
             localtelemetry.update();
         }
 
