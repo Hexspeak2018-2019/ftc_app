@@ -23,7 +23,9 @@ public class CraterSideFinal extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            robot.tankRotate(30,10,this);
        telemetry.addData("Gyro Angle is ",robot.getCurrentAngle());
+            telemetry.addData("Gyro correction is ",robot.gyroCorrection(45,0.1));
        telemetry.update();
 
         }
