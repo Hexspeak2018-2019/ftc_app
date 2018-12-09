@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -181,14 +182,116 @@ public class HardwareHexbotRoverRuckus {
 
     }
 
+
+
+    public void setDriveMotorBehaviorToBrake(){
+        leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+
+
     //----------------------------------------------------------------------------------------------
-    // Methods for Drive Motors
+    // Methods for Gyro  http://stemrobotics.cs.pdx.edu/node/7265
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
+    // Angle Measurement Formatting
     //----------------------------------------------------------------------------------------------
 
-    //CS-------------------------------------------------------------------------
+    public double getCurrentAngle() {
+        double anglesNorm;
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        anglesNorm = NormalizeDegrees(angles.angleUnit, angles.firstAngle);
+        return anglesNorm;
+    }
+
+
+    public double NormalizeDegrees(AngleUnit angleUnit, double angle) {
+        double degrees;
+        degrees = AngleUnit.DEGREES.fromUnit(angleUnit, angle);
+        degrees = AngleUnit.DEGREES.normalize(degrees);
+        return degrees;
+    }
+
+
+
+    // Method to figure out correction value
+
+
+    public double gyroCorrection( double targetAngle, double correctionFactor)
+    {
+        // The gain value determines how sensitive the correction is to direction changes.
+        // You will have to experiment with your robot to get small smooth direction changes
+        // to stay on a straight line.
+        double correction, angle;
+        double gain = correctionFactor; // start with 0.1
+
+        angle = getCurrentAngle();
+
+        if (Math.abs(angle - targetAngle)<= 1)
+            correction = 0;             // no adjustment.
+        else
+            correction = angle - targetAngle;        // reverse sign of angle for correction.
+
+        correction = Range.clip(correction * gain,-0.7,0.7);
+
+        return correction ;
+    }
+
+    //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
+
+
+
+
+    public void tankRotate ( double targetAngle, double rotPwr, LinearOpMode aStop)
+    {
+        resetMotorsAndEncoders();
+
+
+        double wheelSpeeds[] = new double[4];
+
+        setMotorDirections();
+        wheelSpeeds[0]  =   rotPwr;
+        wheelSpeeds[1]  =    - rotPwr;
+        wheelSpeeds[2]  =    rotPwr;
+        wheelSpeeds[3]  =   - rotPwr;
+
+        double startingAngle = getCurrentAngle();
+        double finalAngle = targetAngle;
+        double tolerance = 3;
+        //wrap final Angle to +/- 180
+        if (finalAngle > 180)
+            finalAngle -= 360;
+        if (finalAngle <= -180)
+            finalAngle += 360;
+
+        setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if (finalAngle > startingAngle) {
+            wheelSpeeds[0]  =   rotPwr;
+            wheelSpeeds[1]  =    - rotPwr;
+            wheelSpeeds[2]  =    rotPwr;
+            wheelSpeeds[3]  =   - rotPwr;
+        } else {
+            wheelSpeeds[0]  =   - rotPwr;
+            wheelSpeeds[1]  =     rotPwr;
+            wheelSpeeds[2]  =   - rotPwr;
+            wheelSpeeds[3]  =     rotPwr;
+        }
+        while (Math.abs(finalAngle - getCurrentAngle()) > tolerance) {
+            localtelemetry.addData("Heading:", getCurrentAngle());
+            localtelemetry.addData("start angle:", startingAngle);
+            localtelemetry.addData("final angle:", finalAngle);
+            localtelemetry.update();
+        }
+
+        resetMotorsAndEncoders();
+        setDriveMotorBehaviorToBrake();
+
+    }
 
 
 
