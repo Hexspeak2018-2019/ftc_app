@@ -247,7 +247,7 @@ public class HardwareHexbotRoverRuckus {
 
 
 
-    public void tankRotate ( double targetAngle, double rotPwr, LinearOpMode aStop)
+    public void tankRotate ( double targetAngle, LinearOpMode aStop)
     {
         resetMotorsAndEncoders();
 
@@ -255,36 +255,63 @@ public class HardwareHexbotRoverRuckus {
         double wheelSpeeds[] = new double[4];
 
         setMotorDirections();
-        wheelSpeeds[0]  =   rotPwr;
-        wheelSpeeds[1]  =    - rotPwr;
-        wheelSpeeds[2]  =    rotPwr;
-        wheelSpeeds[3]  =   - rotPwr;
+
+        double rotPwr =0.3;
 
         double startingAngle = getCurrentAngle();
         double finalAngle = targetAngle;
         double tolerance = 3;
         //wrap final Angle to +/- 180
-        if (finalAngle > 180)
+/*        if (finalAngle > 180)
             finalAngle -= 360;
         if (finalAngle <= -180)
-            finalAngle += 360;
+            finalAngle += 360;*/
 
         setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        if (finalAngle > startingAngle) {
+        if (finalAngle < startingAngle) {
             wheelSpeeds[0]  =   rotPwr;
-            wheelSpeeds[1]  =    - rotPwr;
+            wheelSpeeds[1]  =    rotPwr;
             wheelSpeeds[2]  =    rotPwr;
-            wheelSpeeds[3]  =   - rotPwr;
+            wheelSpeeds[3]  =    rotPwr;
         } else {
             wheelSpeeds[0]  =   - rotPwr;
-            wheelSpeeds[1]  =     rotPwr;
-            wheelSpeeds[2]  =   - rotPwr;
-            wheelSpeeds[3]  =     rotPwr;
+            wheelSpeeds[1]  =     -rotPwr;
+            wheelSpeeds[2]  =    - rotPwr;
+            wheelSpeeds[3]  =    - rotPwr;
         }
-        while (Math.abs(finalAngle - getCurrentAngle()) > tolerance) {
+
+        leftFrontMotor.setPower(wheelSpeeds[0]);
+        rightFrontMotor.setPower(wheelSpeeds[1]);
+        leftRearMotor.setPower(wheelSpeeds[2]);
+        rightRearMotor.setPower(wheelSpeeds[3]);
+
+        runtime.reset();
+
+     /*   while (runtime.seconds() < 10) {
+
+            localtelemetry.addData("Run Time:", runtime.seconds());
             localtelemetry.addData("Heading:", getCurrentAngle());
             localtelemetry.addData("start angle:", startingAngle);
             localtelemetry.addData("final angle:", finalAngle);
+            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+
+            localtelemetry.update();
+
+        }*/
+
+
+        while ((Math.abs(finalAngle - getCurrentAngle()) > tolerance) && aStop.opModeIsActive()) {
+            localtelemetry.addData("Heading:", getCurrentAngle());
+            localtelemetry.addData("start angle:", startingAngle);
+            localtelemetry.addData("final angle:", finalAngle);
+            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+
             localtelemetry.update();
         }
 
@@ -353,10 +380,8 @@ public class HardwareHexbotRoverRuckus {
             // Display it for the driver.
             localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
             localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
-            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d",
-                    leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
-            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d",
-                    leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d", leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
+            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d", leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
             localtelemetry.addData("hi", leftFrontMotor.getPower());
             localtelemetry.update();
         }

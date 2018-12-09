@@ -23,11 +23,21 @@ public class CraterSideFinal extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            robot.tankRotate(30,10,this);
-      
-            telemetry.addData("Servo Position is ",robot.BucketServo.getPosition());
-       telemetry.update();
 
+            robot.tankRotate(45,this);
+            sleep(3000);
+            robot.tankRotate(90,this);
+            sleep(3000);
+            robot.tankRotate(180,this);
+            sleep(3000);
+
+
+
+
+      
+            /*telemetry.addData("Servo Position is ",robot.BucketServo.getPosition());
+       telemetry.update();*/
+break;
         }
     }
 }
