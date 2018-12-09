@@ -35,9 +35,10 @@ public class TestCrater extends LinearOpMode {
                     //robot.tankDrive2(1, 180, 0, 3, this);
                     telemetry.addData("Gold Mineral Position 0", "Left");
                     telemetry.update();
-                    robot.leadScrewUp(36, 1, 18, this);
-                    robot.tankDrive(.4, 90, 0, .5, this);
-                    robot.tankDrivecs(.5, 160, 30, 4.5, this);
+                  //  robot.leadScrewUp(36, 1, 18, this);
+                    robot.tankDrivecs(.4, 90, 3, 10, this);
+                    robot.tankDrivecs(.5, 160, 60, 10, this);
+                    robot.tankDrivecs(.5,340,20,10,this);
                    /* robot.tankDrive(.5, 0, 0, .9, this);
                     robot.tankDrive(.5, 90, 0, 6.9, this);
                     robot.tankDrive(1, 45, 0, 1.2, this);
@@ -49,9 +50,10 @@ public class TestCrater extends LinearOpMode {
 
                 case 1: //center
                     //robot.tankDrive2(1, 90, 0, 3, this);
-                    robot.leadScrewUp(36, 1, 18, this);
-                    robot.tankDrive(.4, 90, 0, .5, this);
-                    robot.tankDrivecs(.5, 185, 30, 2.4, this);
+                   // robot.leadScrewUp(36, 1, 18, this);
+                    robot.tankDrivecs(.4, 90, 3, 10, this);
+                    robot.tankDrivecs(.5, 185, 60, 10, this);
+                    robot.tankDrivecs(.5,10,20,10,this);
                    /* robot.tankDrive(.5, 0, 0, .9, this);
                     robot.tankDrive(.5, 90, 0, 5, this);
                     robot.tankDrive(1, 45, 0, 1, this);
@@ -63,9 +65,10 @@ public class TestCrater extends LinearOpMode {
                     telemetry.update();
                     break;
                 case 2: //right
-                    robot.leadScrewUp(36, 1, 18, this);
-                    robot.tankDrive(.5, 90, 0, .5, this);
-                    robot.tankDrivecs(.5, 215, 30, 2.5, this);
+                  //  robot.leadScrewUp(36, 1, 18, this);
+                    robot.tankDrivecs(.5, 90, 3, 10, this);
+                    robot.tankDrivecs(.5, 215, 60,10, this);
+                    robot.tankDrivecs(.5,40,20,10,this);
                    /* robot.tankDrive(.5, 0, 0, 1, this);
                     robot.tankDrive(.5, 90, 0, 2.43, this);
                     robot.tankDrive(1, 45, 0, 1.3, this);*/
@@ -78,9 +81,10 @@ public class TestCrater extends LinearOpMode {
                     break;
                 case -1: // center / unknown
                     //robot.tankDrive2(1, 90, 0, 3, this);
-                    robot.leadScrewUp(36, 1, 18, this);
-                    robot.tankDrive(.4, 90, 0, .5, this);
-                    robot.tankDrive(.5, 185, 0, 2.4, this);
+                    // robot.leadScrewUp(36, 1, 18, this);
+                    robot.tankDrivecs(.4, 90, 3, 10, this);
+                    robot.tankDrivecs(.5, 185, 60, 10, this);
+                    robot.tankDrivecs(.5,10,20,10,this);
                    /* robot.tankDrive(.5, 0, 0, .9, this);
                     robot.tankDrive(.5, 90, 0, 5, this);
                     robot.tankDrive(1, 45, 0, 1, this);

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleopProjectC", group = "Linear")
+@TeleOp(name = "TeleopProjectB", group = "Linear")
 
 public class Qualifier2019Teleop extends LinearOpMode {
 
@@ -59,7 +59,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
             robot.tankDrive(drivePower, robotAngle, rotPwr);
 
 
-            /*if (gamepad1.y && bucketPosition > robot.BucketHomePosition)
+            if (gamepad1.y && bucketPosition > robot.BucketHomePosition)
                 bucketPosition -= 0.0005;
 
 
@@ -70,39 +70,11 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
             robot.BucketServo.setPosition(Range.clip(bucketPosition, robot.BucketHomePosition, bucketMaxPosition));
 
-*/
+
             //Arm drive*/
 
-            if (gamepad1.dpad_up)
-            {
-                if (robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) {
-                    robot.ArmMotor.setPower(.6);
 
-                    bucketPosition += 0.004;
-                }
-                else
-                {
-                    robot.ArmMotor.setPower(0);
-                }
-            }
-
-
-
-            else if (gamepad1.dpad_down) {
-                if (robot.ArmMotor.getCurrentPosition() > robot.ArmHomePosition) {
-                    robot.ArmMotor.setPower(-.6);
-
-                    bucketPosition -= 0.004;
-                } else {
-                    robot.ArmMotor.setPower(0);
-                }
-            }
-            else
-            {
-                robot.ArmMotor.setPower(0);
-            }
-            robot.BucketServo.setPosition(Range.clip(bucketPosition, robot.BucketHomePosition, bucketMaxPosition));
-            /*if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_up) {
 
                 if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition)
                         && robot.LinkMotor.getCurrentPosition() <  robot.LinkFinalPosition ) {
@@ -179,7 +151,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 robot.ArmMotor.setPower(0);
                 robot.LinkMotor.setPower(0);
             }
-*/
+
 
             if (gamepad1.left_bumper) {
 
@@ -195,7 +167,6 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
 
             telemetry.addData("ARM  stopped at ", (robot.ArmMotor.getCurrentPosition()));
-
             telemetry.addData("Link  stopped at ", (robot.LinkMotor.getCurrentPosition()));
             telemetry.addData("Link Final Pos ", (robot.LinkFinalPosition/robot.TickPerDeg));
 
