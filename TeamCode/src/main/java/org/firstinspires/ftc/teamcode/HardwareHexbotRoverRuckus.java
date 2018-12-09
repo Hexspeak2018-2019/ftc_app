@@ -17,8 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import java.util.Locale;
-
 
 public class HardwareHexbotRoverRuckus {
 
@@ -250,11 +248,9 @@ public class HardwareHexbotRoverRuckus {
 
 
 
-    public void tankRotate ( double robotAngle, double timeout, LinearOpMode aStop)
+    public void tankRotate ( double robotAngle, double rotPwr, LinearOpMode aStop)
     {
-
-
-        double rotPwr = gyroCorrection(robotAngle,0.1)+0.3;
+        resetMotorsAndEncoders();
 
 
         double wheelSpeeds[] = new double[4];
@@ -267,30 +263,33 @@ public class HardwareHexbotRoverRuckus {
         wheelSpeeds[3]  =   - rotPwr;
 
 
-        runtime.reset();
+        double startingAngle = getCurrentAngle();
+        double finalAngle = robotAngle;
+        double tolerance = 3;
+        //wrap final Angle to +/- 180
+        if (finalAngle > 180)
+            finalAngle -= 360;
+        if (finalAngle <= -180)
+            finalAngle += 360;
 
-        normalize(wheelSpeeds);
-
-        //make sure all motors run forward when set to positive power
-
-        leftFrontMotor.setPower(wheelSpeeds[0]);
-        rightFrontMotor.setPower(wheelSpeeds[1]);
-        leftRearMotor.setPower(wheelSpeeds[2]);
-        rightRearMotor.setPower(wheelSpeeds[3]);
-
-        while (Math.abs(robotAngle-getCurrentAngle()) <=2 || runtime.seconds() > timeout || !aStop.opModeIsActive()) {
-
-            rotPwr = gyroCorrection(robotAngle,0.1)+0.3;
-
-            setMotorDirections();
+        setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if (finalAngle > startingAngle) {
             wheelSpeeds[0]  =   rotPwr;
             wheelSpeeds[1]  =    - rotPwr;
             wheelSpeeds[2]  =    rotPwr;
             wheelSpeeds[3]  =   - rotPwr;
-
-            localtelemetry.addData("Desired Angle , Current Angle",  "Running to %7d :%7d", robotAngle,  getCurrentAngle());
-            }
-
+        } else {
+            wheelSpeeds[0]  =   - rotPwr;
+            wheelSpeeds[1]  =     rotPwr;
+            wheelSpeeds[2]  =   - rotPwr;
+            wheelSpeeds[3]  =     rotPwr;
+        }
+        while (Math.abs(finalAngle - getCurrentAngle()) > tolerance) {
+            localtelemetry.addData("Heading:", getCurrentAngle());
+            localtelemetry.addData("start angle:", startingAngle);
+            localtelemetry.addData("final angle:", finalAngle);
+            localtelemetry.update();
+        }
 
         resetMotorsAndEncoders();
         setDriveMotorBevaiorToBrake();
