@@ -201,7 +201,7 @@ public class HardwareHexbotRoverRuckus {
 //must set direction first
         setMotorDirections();
         wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4));
-        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4) );
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4));
         wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4));
         wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4));
 
@@ -209,14 +209,14 @@ public class HardwareHexbotRoverRuckus {
         int wheelCounts[]= new int[4];
 
         wheelCounts[0]  =  (int)(counts* wheelSpeeds[0]);
-        wheelCounts[1]  =  (int) (counts*  wheelSpeeds[1]);
+        wheelCounts[1]  =  (int)(counts*  wheelSpeeds[1]);
         wheelCounts[2]  =  (int)(counts* wheelSpeeds[2]);
-        wheelCounts[3]  =  (int) (counts*  wheelSpeeds[3]);
+        wheelCounts[3]  =  (int)(counts*  wheelSpeeds[3]);
 
 //then set position
 
-        leftFrontMotor.setTargetPosition( wheelCounts[0]);
-        rightFrontMotor.setTargetPosition( wheelCounts[1]);
+        leftFrontMotor.setTargetPosition(wheelCounts[0]);
+        rightFrontMotor.setTargetPosition(wheelCounts[1]);
         leftRearMotor.setTargetPosition(wheelCounts[2]);
         rightRearMotor.setTargetPosition(wheelCounts[3]);
 
@@ -238,7 +238,7 @@ public class HardwareHexbotRoverRuckus {
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
 
-        while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy()) {
+        while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy())  {
 
             if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
                 break;
@@ -251,6 +251,7 @@ public class HardwareHexbotRoverRuckus {
                     leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
             localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d",
                     leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+            localtelemetry.addData("hi", leftFrontMotor.getPower());
             localtelemetry.update();
         }
 
@@ -261,7 +262,7 @@ public class HardwareHexbotRoverRuckus {
     //__End_cs_____________________________________________________________________________________________
 
 
-    //--------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
 
     public void tankDrive2(double drivePower, double robotAngle, double rotPwr, int inches, LinearOpMode aStop)
     {
