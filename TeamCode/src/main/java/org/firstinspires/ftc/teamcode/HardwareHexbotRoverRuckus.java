@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -56,7 +55,6 @@ public class HardwareHexbotRoverRuckus {
     final static double LinkHomePosition = 0;
     final static double BucketHomePosition = .33;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
-
 
 
 
@@ -120,8 +118,6 @@ public class HardwareHexbotRoverRuckus {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-
-
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         runtime.reset();
@@ -161,14 +157,6 @@ public class HardwareHexbotRoverRuckus {
         LinkMotor.setPower(0);
         ArmMotor.setPower(0);
         leadScrewMotor.setPower(0);
-
-    }
-
-    public void setDriveMotorBevaiorToBrake(){
-        leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void resetEncoderValues() {
@@ -194,53 +182,10 @@ public class HardwareHexbotRoverRuckus {
     }
 
     //----------------------------------------------------------------------------------------------
-    // Methods for Gyro  http://stemrobotics.cs.pdx.edu/node/7265
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-    // Angle Measurement Formatting
+    // Methods for Drive Motors
     //----------------------------------------------------------------------------------------------
 
-    public double getCurrentAngle() {
-        double anglesNorm;
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        anglesNorm = NormalizeDegrees(angles.angleUnit, angles.firstAngle);
-        return anglesNorm;
-    }
-
-
-    public double NormalizeDegrees(AngleUnit angleUnit, double angle) {
-        double degrees;
-        degrees = AngleUnit.DEGREES.fromUnit(angleUnit, angle);
-        degrees = AngleUnit.DEGREES.normalize(degrees);
-        return degrees;
-    }
-
-
-
-    // Method to figure out correction value
-
-
-    public double gyroCorrection( double targetAngle, double correctionFactor)
-    {
-        // The gain value determines how sensitive the correction is to direction changes.
-        // You will have to experiment with your robot to get small smooth direction changes
-        // to stay on a straight line.
-        double correction, angle;
-        double gain = correctionFactor; // start with 0.1
-
-        angle = getCurrentAngle();
-
-        if (Math.abs(angle - targetAngle)<= 1)
-            correction = 0;             // no adjustment.
-        else
-            correction = angle - targetAngle;        // reverse sign of angle for correction.
-
-        correction = Range.clip(correction * gain,-0.7,0.7);
-
-        return correction ;
-    }
-
-    //----------------------------------------------------------------------------------------------
+    //CS-------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
     // Methods for Drive Motors
@@ -248,59 +193,79 @@ public class HardwareHexbotRoverRuckus {
 
 
 
-    public void tankRotate ( double robotAngle, double rotPwr, LinearOpMode aStop)
+    public void tankDrivecs (double drivePower, double robotAngle, int inches, double timeout, LinearOpMode aStop)
     {
-        resetMotorsAndEncoders();
+        double angleInRad = (robotAngle + 180)*(Math.PI/180);
+        int counts = (int) Math.round(COUNTS_PER_INCH * inches);
 
 
         double wheelSpeeds[] = new double[4];
 
 //must set direction first
         setMotorDirections();
-        wheelSpeeds[0]  =   rotPwr;
-        wheelSpeeds[1]  =    - rotPwr;
-        wheelSpeeds[2]  =    rotPwr;
-        wheelSpeeds[3]  =   - rotPwr;
+        wheelSpeeds[0]  =   (drivePower* Math.sin(angleInRad + Math.PI/4));
+        wheelSpeeds[1]  =   -(drivePower*  Math.cos(angleInRad + Math.PI/4));
+        wheelSpeeds[2]  =   (drivePower* Math.cos(angleInRad + Math.PI/4));
+        wheelSpeeds[3]  =   -(drivePower*  Math.sin(angleInRad + Math.PI/4));
 
 
-        double startingAngle = getCurrentAngle();
-        double finalAngle = robotAngle;
-        double tolerance = 3;
-        //wrap final Angle to +/- 180
-        if (finalAngle > 180)
-            finalAngle -= 360;
-        if (finalAngle <= -180)
-            finalAngle += 360;
+        int wheelCounts[]= new int[4];
 
-        setEncoderMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        if (finalAngle > startingAngle) {
-            wheelSpeeds[0]  =   rotPwr;
-            wheelSpeeds[1]  =    - rotPwr;
-            wheelSpeeds[2]  =    rotPwr;
-            wheelSpeeds[3]  =   - rotPwr;
-        } else {
-            wheelSpeeds[0]  =   - rotPwr;
-            wheelSpeeds[1]  =     rotPwr;
-            wheelSpeeds[2]  =   - rotPwr;
-            wheelSpeeds[3]  =     rotPwr;
-        }
-        while (Math.abs(finalAngle - getCurrentAngle()) > tolerance) {
-            localtelemetry.addData("Heading:", getCurrentAngle());
-            localtelemetry.addData("start angle:", startingAngle);
-            localtelemetry.addData("final angle:", finalAngle);
+        wheelCounts[0]  =  (int)(counts* wheelSpeeds[0]);
+        wheelCounts[1]  =  (int)(counts*  wheelSpeeds[1]);
+        wheelCounts[2]  =  (int)(counts* wheelSpeeds[2]);
+        wheelCounts[3]  =  (int)(counts*  wheelSpeeds[3]);
+
+//then set position
+
+        leftFrontMotor.setTargetPosition(wheelCounts[0]);
+        rightFrontMotor.setTargetPosition(wheelCounts[1]);
+        leftRearMotor.setTargetPosition(wheelCounts[2]);
+        rightRearMotor.setTargetPosition(wheelCounts[3]);
+
+
+//then set the mode
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+
+        normalize(wheelSpeeds);
+
+        //make sure all motors run forward when set to positive power
+
+        leftFrontMotor.setPower(wheelSpeeds[0]);
+        rightFrontMotor.setPower(wheelSpeeds[1]);
+        leftRearMotor.setPower(wheelSpeeds[2]);
+        rightRearMotor.setPower(wheelSpeeds[3]);
+
+        while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy())  {
+
+            if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
+                break;
+            }
+
+            // Display it for the driver.
+            localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
+            localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
+            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d",
+                    leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
+            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d",
+                    leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+            localtelemetry.addData("hi", leftFrontMotor.getPower());
             localtelemetry.update();
         }
 
         resetMotorsAndEncoders();
-        setDriveMotorBevaiorToBrake();
-
+        setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
 
     //__End_cs_____________________________________________________________________________________________
 
 
-    //--------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------
 
     public void tankDrive2(double drivePower, double robotAngle, double rotPwr, int inches, LinearOpMode aStop)
     {
