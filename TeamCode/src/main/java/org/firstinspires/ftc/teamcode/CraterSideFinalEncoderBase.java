@@ -23,7 +23,7 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            int position = 1;//detector.detectObject2(telemetry);
+            int position = 0;//detector.detectObject2(telemetry);
             detector.shutdownTF();
             telemetry.addData("Gold Mineral Position is", position);
             telemetry.update();
@@ -33,16 +33,24 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
             //robot.leadScrewUp(15, 1, 20, this);
 
 
-            switch (position) {
+            switch (position) {//it works DONT CHANGE time: 18 sec left
                 case 0: // if ( position == 0) /left
                     //if unknown, assume center and continue
                     //robot.tankDrive2(1, 180, 0, 3, this);
                     telemetry.addData("Gold Mineral Position 0", "Left");
                     telemetry.update();
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 215, 30, 20, this);
-                    robot.tankDrivecs(.5, 35, 9, 10, this);
-                    robot.tankDrivecs(.5, 90, 9, 10, this);
+                    robot.tankDrivecs(1, 150, 32, 20, this);
+                    robot.tankDrivecs(1, 350, 9, 10, this);
+                    robot.tankDrivecs(1, 90, 33, 10, this);
+                    robot.tankDrivecs(1, 45, 45, 10, this);
+
+                    /*robot.tankDrivecs(.5, 90, 9, 10, this);
+                    robot.tankDrivecs(.5, 163, 60, 20, this);
+                    robot.tankDrivecs(.5, 350, 9, 10, this);
+                    robot.tankDrivecs(.5, 90, 100, 10, this);
+                    robot.tankDrivecs(.5, 45, 90, 10, this);*/
+
                    /* robot.tankDrive(.5, 0, 0, .9, this);
                     robot.tankDrive(.5, 90, 0, 6.9, this);
                     robot.tankDrive(1, 45, 0, 1.2, this);
@@ -52,30 +60,36 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrive(1, 225, 0, 2.5, this);*/
                     break;
 
-                case 1: //center
-                    //robot.tankDrive2(1, 90, 0, 3, this);
-                    robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 180, 30, 20, this);
+                case 1: //center//it works DONT CHANGE time: 15 sec
+
+                    /*robot.tankDrivecs(.5, 90, 9, 10, this);
+                    robot.tankDrivecs(.5, 180, 47, 20, this);
                     robot.tankDrivecs(.5, 0, 8, 10, this);
-                    robot.tankDrivecs(.5, 90, 120, 10, this);
-                    robot.tankDrivecs(.5, 45,108, 10, this);
-                   /* robot.tankDrive(.5, 0, 0, .9, this);
-                    robot.tankDrive(.5, 90, 0, 5, this);
-                    robot.tankDrive(1, 45, 0, 1, this);
-                    sleep(500);
+                    robot.tankDrivecs(.5, 90, 110, 10, this);
+                    robot.tankDrivecs(.5, 45,90, 10, this);*/
+                    robot.tankDrivecs(.5, 90, 9, 10, this);
+                    robot.tankDrivecs(1, 180, 25, 20, this);
+                    robot.tankDrivecs(1, 0, 9, 10, this);
+                    robot.tankDrivecs(1, 90, 53, 10, this);
+                    robot.tankDrivecs(1, 45, 45, 10, this);
+                    /*sleep(500);
                     robot.TeamMarker.setPosition(-100);
                     sleep(500);
                     robot.tankDrive(1, 225, 0, 2.5, this);*/
                     telemetry.addData("Gold Mineral Position 1", "Center");
                     telemetry.update();
                     break;
-                case 2: //right
-
+                case 2: //right//it works DONT CHANGE time: 15 sec with out leadscrew
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 220, 57, 20, this);
-                    robot.tankDrivecs(.5, 50, 15, 2.5, this);
-                    robot.tankDrivecs(.5, 90, 120, 10, this);
-                    robot.tankDrivecs(.5, 45, 108, 10, this);
+                    robot.tankDrivecs(1, 217, 30, 20, this);
+                    robot.tankDrivecs(1, 340, 10, 10, this);
+                    robot.tankDrivecs(1, 90, 74, 10, this);
+                    robot.tankDrivecs(1, 45, 50, 10, this);
+                    /*robot.tankDrivecs(.5, 90, 9, 10, this);
+                    robot.tankDrivecs(.5, 215, 74, 20, this);
+                    robot.tankDrivecs(.5, 340, 15, 10, this);
+                    robot.tankDrivecs(.5, 90, 125, 10, this);
+                    robot.tankDrivecs(.5, 45, 108, 10, this);*/
                     /*robot.tankDrive(.5, 90, 0, 2.43, this);
                     robot.tankDrive(1, 45, 0, 1.3, this);*/
                     //sleep(500);
@@ -85,15 +99,19 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     telemetry.update();
                     //robot.tankDrive2(1, 45, 0, 3, this);
                     break;
-                case -1: // center / unknown
+                case -1: // center / unknown//it works DONT CHANGE
                     //robot.tankDrive2(1, 90, 0, 3, this);
+                    /*robot.tankDrivecs(.5, 90, 9, 10, this);
+                    robot.tankDrivecs(.5, 180, 47, 20, this);
+                    robot.tankDrivecs(.5, 0, 8, 10, this);
+                    robot.tankDrivecs(.5, 90, 110, 10, this);
+                    robot.tankDrivecs(.5, 45,90, 10, this);*/
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 215, 87, 20, this);
-                    robot.tankDrivecs(.5, 185, 0, 2.4, this);
-                   /* robot.tankDrive(.5, 0, 0, .9, this);
-                    robot.tankDrive(.5, 90, 0, 5, this);
-                    robot.tankDrive(1, 45, 0, 1, this);
-                    sleep(500);
+                    robot.tankDrivecs(1, 180, 25, 20, this);
+                    robot.tankDrivecs(1, 0, 9, 10, this);
+                    robot.tankDrivecs(1, 90, 53, 10, this);
+                    robot.tankDrivecs(1, 45, 45, 10, this);
+                    /*sleep(500);
                     robot.TeamMarker.setPosition(-100);
                     sleep(500);
                     robot.tankDrive(1, 225, 0, 2.5, this);*/

@@ -36,7 +36,7 @@ public class DepotSideEncoderBase extends LinearOpMode {
 
 
             switch (position) {
-                case 0: // if ( position == 0) /left
+                case 0: // if ( position == 0) /left time:15 sec
                     //if unknown, assume center and continue
                     //robot.tankDrive2(1, 180, 0, 3, this);
                     telemetry.addData("Gold Mineral Position 0", "Left");
@@ -46,7 +46,6 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(.5, 155, 100, 10, this);
                     robot.tankDrivecs(.5, 340, 15, 10, this);
                     robot.tankDrivecs(.5, 215, 60, 10, this);
-
                    /* robot.tankDrive(.5, 0, 0, .9, this);
                     robot.tankDrive(.5, 90, 0, 6.9, this);
                     robot.tankDrive(1, 45, 0, 1.2, this);
@@ -58,13 +57,14 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     */
                     break;
 
-                case 1: //center
+                case 1: //center time: 22sec
                     //robot.tankDrive2(1, 90, 0, 3, this);
                     //robot.leadScrewUp(36, 1, 18, this);
                     telemetry.addData("Gold Mineral Position 1", "Center");
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9,10 , this);
                     robot.tankDrivecs(.5, 180, 120, 10, this);
+                    //robot.BucketServo.setPosition(.3);
                     //robot.tankDrivecs(.5, 225, 50, 2,this);
 
 
@@ -80,10 +80,11 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     //robot.tankDrive(1, 225, 0, 2.5, this);
 
                     break;
-                case 2: //right
+                case 2: //right /NOT WORKING PROTO TYPE CHANGE PLEASE
                     //robot.leadScrewUp(36, 1, 18, this);
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 215, 87, 20, this);
+                    robot.tankDrivecs(.5, 215, 93, 20, this);
+                    //robot.tankDrivecs(.5, 35, 9, 10, this);
                     robot.tankDrivecs(.5, 135, 60, 10, this);
                     // robot.tankDrive(.5, 90, 0, 2.43, this);
                     //robot.tankDrive(1, 45, 0, 1.3, this);*/
