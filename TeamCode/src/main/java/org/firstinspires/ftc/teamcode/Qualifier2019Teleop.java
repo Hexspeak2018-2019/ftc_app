@@ -168,6 +168,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
             telemetry.addData("ARM  stopped at ", (robot.ArmMotor.getCurrentPosition()));
             telemetry.addData("Link  stopped at ", (robot.LinkMotor.getCurrentPosition()));
+            telemetry.addData("Bucket Position ", (robot.BucketServo.getPosition()));
             telemetry.addData("Link Final Pos ", (robot.LinkFinalPosition/robot.TickPerDeg));
 
             telemetry.update();
