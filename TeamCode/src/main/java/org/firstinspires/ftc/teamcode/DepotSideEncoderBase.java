@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //@Disabled
-@Autonomous(name = "DepotSideBaseOnbot", group = "Linear")
+@Autonomous(name = "DepotSideA", group = "Linear")
 
 public class DepotSideEncoderBase extends LinearOpMode {
 
@@ -25,7 +25,7 @@ public class DepotSideEncoderBase extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            int position = detector.detectObject2(telemetry);
+            int position = 2;//detector.detectObject2(telemetry);
             detector.shutdownTF();
             telemetry.addData("Gold Mineral Position is", position);
             telemetry.update();
@@ -43,9 +43,12 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     telemetry.update();
                     //robot.leadScrewUp(36, 1, 18, this);
                     robot.tankDrivecs(.4, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 155, 100, 10, this);
-                    robot.tankDrivecs(.5, 340, 15, 10, this);
-                    robot.tankDrivecs(.5, 215, 60, 10, this);
+                    robot.tankDrivecs(.5, 155, 110, 10, this);
+                    robot.tankRotate(-125,this);
+                    //robot.tankDrivecs(.5, 340, 15, 10, this);
+                    robot.tankDrivecs(.5, 90, 60, 10, this);
+                   // robot.tankRotate();
+                    robot.tankDrivecs(1, 270, 76, 10, this);
                    /* robot.tankDrive(.5, 0, 0, .9, this);
                     robot.tankDrive(.5, 90, 0, 6.9, this);
                     robot.tankDrive(1, 45, 0, 1.2, this);
@@ -63,7 +66,9 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     telemetry.addData("Gold Mineral Position 1", "Center");
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9,10 , this);
-                    robot.tankDrivecs(.5, 180, 120, 10, this);
+                    robot.tankDrivecs(.5, 180, 128, 10, this);
+                    robot.tankRotate(-45,this);
+                    robot.tankDrivecs(1, 0, 76, 20, this);
                     //robot.BucketServo.setPosition(.3);
                     //robot.tankDrivecs(.5, 225, 50, 2,this);
 
@@ -83,9 +88,13 @@ public class DepotSideEncoderBase extends LinearOpMode {
                 case 2: //right /NOT WORKING PROTO TYPE CHANGE PLEASE
                     //robot.leadScrewUp(36, 1, 18, this);
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 215, 93, 20, this);
+                    robot.tankDrivecs(.5, 215, 88, 20, this);
                     //robot.tankDrivecs(.5, 35, 9, 10, this);
-                    robot.tankDrivecs(.5, 135, 60, 10, this);
+                    robot.tankRotate(-35,this);
+                    robot.tankDrivecs(.5, 90, 83, 10, this);
+                    robot.tankRotate(-130,this);
+                    robot.tankDrivecs(1, 272, 76, 20, this);
+
                     // robot.tankDrive(.5, 90, 0, 2.43, this);
                     //robot.tankDrive(1, 45, 0, 1.3, this);*/
                     //sleep(500);
