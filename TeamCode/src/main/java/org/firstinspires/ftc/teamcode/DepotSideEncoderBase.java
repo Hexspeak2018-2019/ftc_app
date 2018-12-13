@@ -16,19 +16,23 @@ public class DepotSideEncoderBase extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap, telemetry);
         detector.activateTF(hardwareMap);
-        //sleep(700);
+        sleep(700);
         telemetry.addData("Camera is :", "Activated, Ready to Start Recognition");
         telemetry.update();
 
+        int position = detector.detectObject2(telemetry);
+        //detector.shutdownTF();
+        telemetry.addData("Gold Mineral Position is", position);
+        telemetry.update();
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            int position = 2;//detector.detectObject2(telemetry);
+          /*  int position = detector.detectObject2(telemetry);
             detector.shutdownTF();
             telemetry.addData("Gold Mineral Position is", position);
-            telemetry.update();
+            telemetry.update();*/
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 

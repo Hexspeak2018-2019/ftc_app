@@ -22,16 +22,20 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
         telemetry.update();*/
        // detector.shutdownTF();*/
 
+        int position = detector.detectObject2(telemetry);
+       //\ detector.shutdownTF();
+        telemetry.addData("Gold Mineral Position is", position);
+        telemetry.update();
 
         //robot.BucketServo.setPosition(0.48);
         waitForStart();
 
         while (opModeIsActive()) {
 
-             int position = detector.detectObject2(telemetry);
+           /* int position = detector.detectObject2(telemetry);
             detector.shutdownTF();
             telemetry.addData("Gold Mineral Position is", position);
-            telemetry.update();
+            telemetry.update();*/
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
