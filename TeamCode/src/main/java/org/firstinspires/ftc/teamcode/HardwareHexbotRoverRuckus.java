@@ -497,10 +497,10 @@ public class HardwareHexbotRoverRuckus {
         runtime.reset();
 
         while ((runtime.seconds () < duration) && aStop.opModeIsActive()) {
-            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", rightRearMotor.getPower());
             localtelemetry.update();
         }
         resetMotors();
@@ -535,7 +535,7 @@ public class HardwareHexbotRoverRuckus {
      */
     double scaleInput(double dVal)  {
         double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
-                0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
+                0.40, 0.50, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00 };
 
         // get the corresponding index for the scaleInput array.
         int index = (int) (dVal * 16.0);
