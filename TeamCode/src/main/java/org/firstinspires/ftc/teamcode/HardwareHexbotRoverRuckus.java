@@ -49,12 +49,12 @@ public class HardwareHexbotRoverRuckus {
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
     final static double WHEEL_DIAMETER = 3.97401575;
-    final static double ArmFinalPosition = 10608; //160 * TickPerDeg;
-    final static double ArmLiftPosition = 5972; //80* TickPerDeg;
+    final static double ArmFinalPosition = 16319; //160 * TickPerDeg;
+    final static double ArmLiftPosition = 8500; //80* TickPerDeg;
     final static double ArmHomePosition = 0;
     final static double LinkFinalPosition = 966;// (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
-    final static double BucketHomePosition = .35;
+    final static double BucketHomePosition = .37;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
 
 
@@ -519,13 +519,48 @@ public class HardwareHexbotRoverRuckus {
 
         //make sure all motors run forward when set to positive power
 
-        leftFrontMotor.setPower(wheelSpeeds[0]);
-        rightFrontMotor.setPower(wheelSpeeds[1]);
-        leftRearMotor.setPower(wheelSpeeds[2]);
-        rightRearMotor.setPower(wheelSpeeds[3]);
+        leftFrontMotor.setPower(scaleInput(wheelSpeeds[0]));
+        rightFrontMotor.setPower(scaleInput(wheelSpeeds[1]));
+        leftRearMotor.setPower(scaleInput(wheelSpeeds[2]));
+        rightRearMotor.setPower(scaleInput(wheelSpeeds[3]));
 
     }
 
+
+
+    /*
+     * This method scales the joystick input so for low joystick values, the
+     * scaled value is less than linear.  This is to make it easier to drive
+     * the robot more precisely at slower speeds.
+     */
+    double scaleInput(double dVal)  {
+        double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
+                0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00, 1.00 };
+
+        // get the corresponding index for the scaleInput array.
+        int index = (int) (dVal * 16.0);
+
+        // index should be positive.
+        if (index < 0) {
+            index = -index;
+        }
+
+        // index cannot exceed size of array minus 1.
+        if (index > 16) {
+            index = 16;
+        }
+
+        // get value from the array.
+        double dScale = 0.0;
+        if (dVal < 0) {
+            dScale = -scaleArray[index];
+        } else {
+            dScale = scaleArray[index];
+        }
+
+        // return scaled value.
+        return dScale;
+    }
 
 
 

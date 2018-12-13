@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "CraterSideB", group = "Linear")
+@Autonomous(name = "CraterSideC", group = "Linear")
 
 public class CraterSideFinalEncoderBase extends LinearOpMode {
 
@@ -28,14 +28,14 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-             int position = 0;//detector.detectObject2(telemetry);
+             int position = detector.detectObject2(telemetry);
             detector.shutdownTF();
             telemetry.addData("Gold Mineral Position is", position);
             telemetry.update();
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-           // robot.leadScrewUp(36, 1, 18, this);
+            robot.leadScrewUp(36, 1, 18, this);
 
 
             switch (position) {//it works DONT CHANGE time: 18 sec left Not COMPLETE
@@ -51,8 +51,8 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 33, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 45, 10, this);
-                   /* robot.BucketServo.setPosition(0.52);
-                    sleep(2000);*/
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
                     robot.tankDrivecs(1, 266, 75, 10, this);
                     //robot.tankRotate(45,this);
 
@@ -86,8 +86,8 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    /*robot.BucketServo.setPosition(0.52);
-                    sleep(2000);*/
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
                     robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
@@ -108,8 +108,8 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 82, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 42, 10, this);
-                    /*robot.BucketServo.setPosition(0.52);
-                    sleep(2000);*/
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
                     robot.tankDrivecs(1, 270, 85, 10, this);
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 215, 74, 20, this);
@@ -126,7 +126,7 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     //robot.tankDrive2(1, 45, 0, 3, this);
                     break;
                 case -1: // center / unknown//it works DONT CHANGE
-                    telemetry.addData("Gold Mineral Position 1", "Center");
+                    telemetry.addData("Gold Mineral Position 1", "Missing Center");
                     telemetry.update();
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 180, 47, 20, this);
@@ -140,9 +140,9 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    /*robot.BucketServo.setPosition(0.52);
-                    sleep(2000);*/
-                    robot.tankDrivecs(1, 270, 85, 10, this);
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
+                    robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
 

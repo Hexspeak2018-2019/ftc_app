@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //@Disabled
-@Autonomous(name = "DepotSideA", group = "Linear")
+@Autonomous(name = "DepotSideC", group = "Linear")
 
 public class DepotSideEncoderBase extends LinearOpMode {
 
@@ -32,7 +32,7 @@ public class DepotSideEncoderBase extends LinearOpMode {
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-            //robot.leadScrewUp(15, 1, 20, this);
+            robot.leadScrewUp(15, 1, 20, this);
 
 
             switch (position) {
@@ -45,6 +45,8 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(.4, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 155, 110, 10, this);
                     robot.tankRotate(-125,this);
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
                     //robot.tankDrivecs(.5, 340, 15, 10, this);
                     robot.tankDrivecs(.5, 90, 60, 10, this);
                    // robot.tankRotate();
@@ -68,6 +70,8 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(.4, 90, 9,10 , this);
                     robot.tankDrivecs(.5, 180, 128, 10, this);
                     robot.tankRotate(-45,this);
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
                     robot.tankDrivecs(1, 0, 76, 20, this);
                     //robot.BucketServo.setPosition(.3);
                     //robot.tankDrivecs(.5, 225, 50, 2,this);
@@ -93,6 +97,8 @@ public class DepotSideEncoderBase extends LinearOpMode {
                     robot.tankRotate(-35,this);
                     robot.tankDrivecs(.5, 90, 83, 10, this);
                     robot.tankRotate(-130,this);
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
                     robot.tankDrivecs(1, 272, 76, 20, this);
 
                     // robot.tankDrive(.5, 90, 0, 2.43, this);
@@ -109,9 +115,16 @@ public class DepotSideEncoderBase extends LinearOpMode {
                 case -1: // center / unknown
                     //robot.tankDrive2(1, 90, 0, 3, this);
                     //robot.leadScrewUp(36, 1, 18, this);
-                    robot.tankDrive(.4, 90, 0, .5, this);
-                    robot.tankDrive(.5, 176, 0, 4.3, this);
-                    robot.tankDrive(.5, 225, 0, 2,this);
+                    telemetry.addData("Gold Mineral Position 1", "Missing Center");
+                    telemetry.update();
+                    robot.tankDrivecs(.4, 90, 9,10 , this);
+                    robot.tankDrivecs(.5, 180, 128, 10, this);
+                    robot.tankRotate(-45,this);
+                    robot.BucketServo.setPosition(0.52);
+                    sleep(2000);
+                    robot.tankDrivecs(1, 0, 76, 20, this);
+                    //robot.BucketServo.setPosition(.3);
+                    //robot.tankDrivecs(.5, 225, 50, 2,this);
 
 
                    /* robot.tankDrive(.5, 0, 0, .9, this);
@@ -124,8 +137,7 @@ public class DepotSideEncoderBase extends LinearOpMode {
 
 */
                     //robot.tankDrive(1, 225, 0, 2.5, this);
-                    telemetry.addData("Gold Mineral Position 1", "Center");
-                    telemetry.update();
+
                     break;
             }
             break;

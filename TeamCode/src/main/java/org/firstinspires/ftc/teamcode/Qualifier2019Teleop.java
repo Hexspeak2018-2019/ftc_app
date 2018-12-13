@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleopProjectB", group = "Linear")
+@TeleOp(name = "TeleopProjectC", group = "Linear")
 
 public class Qualifier2019Teleop extends LinearOpMode {
 
@@ -54,27 +54,86 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
             double drivePower = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 2;
-            double rotPwr = gamepad1.right_stick_x;
+            double rotPwr = gamepad1.right_stick_x * 0.7;
 
             robot.tankDrive(drivePower, robotAngle, rotPwr);
 
 
-            if (gamepad1.y && bucketPosition > robot.BucketHomePosition)
-                bucketPosition -= 0.0005;
 
 
-            else if (gamepad1.b && bucketPosition < bucketMaxPosition) {
-                bucketPosition += 0.0005;
-            }
 
-
-            robot.BucketServo.setPosition(Range.clip(bucketPosition, robot.BucketHomePosition, bucketMaxPosition));
+           // robot.BucketServo.setPosition(Range.clip(bucketPosition, robot.BucketHomePosition, bucketMaxPosition));
 
 
             //Arm drive*/
-
-
             if (gamepad1.dpad_up) {
+                if (robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition) {
+                    telemetry.addData("Bucket Servo < lift ", "hi");
+                    robot.ArmMotor.setPower(.7);//.5
+                    // robot.BucketServo.setPosition(0.35);
+
+
+                } else if (robot.ArmMotor.getCurrentPosition() >= robot.ArmLiftPosition && robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) {
+                    telemetry.addData("Bucket Servo > lift < final ", "hi");
+                    robot.ArmMotor.setPower(.4);//.4
+                    robot.BucketServo.setPosition(0.78);
+
+
+                } else {
+                    robot.ArmMotor.setPower(0);
+
+
+                }
+                telemetry.update();
+
+            } else if (gamepad1.dpad_down) {
+
+                if (robot.ArmMotor.getCurrentPosition() >= robot.ArmLiftPosition) {
+                    telemetry.addData("Bucket Servo > final ", "hi");
+                    robot.ArmMotor.setPower(-.7);//.5
+                    //robot.BucketServo.setPosition(0.35);
+
+                } else if (robot.ArmMotor.getCurrentPosition() >= robot.ArmLiftPosition && robot.ArmMotor.getCurrentPosition() > robot.ArmLiftPosition) {
+                    telemetry.addData("Bucket Servo >=lift ", "hi");
+
+                    robot.ArmMotor.setPower(-.5);//.5
+
+
+                } else if (robot.ArmMotor.getCurrentPosition() <= robot.ArmLiftPosition && robot.ArmMotor.getCurrentPosition() > robot.ArmHomePosition) {
+                    telemetry.addData("Bucket Servo <= final ", "hi");
+                    robot.ArmMotor.setPower(-.5);//.5
+                    // robot.BucketServo.setPosition(0.35);
+
+
+                } else if (robot.ArmMotor.getCurrentPosition() < robot.ArmHomePosition) {
+                    telemetry.addData("Bucket Servo < home ", "hi");
+                    robot.ArmMotor.setPower(0);
+
+                } else {
+                    robot.ArmMotor.setPower(0);
+
+                }
+                telemetry.update();
+            } else {
+                robot.ArmMotor.setPower(0);
+
+            }
+
+
+            if (gamepad1.y) {
+                bucketPosition = robot.BucketServo.getPosition()-.0005;
+                robot.BucketServo.setPosition(bucketPosition);
+            }
+
+            else if (gamepad1.b) {
+                bucketPosition = robot.BucketServo.getPosition()+.0005;
+                robot.BucketServo.setPosition(bucketPosition);
+            }
+
+
+
+
+            /*if (gamepad1.dpad_up) {
 
                 if ((robot.ArmMotor.getCurrentPosition() < robot.ArmLiftPosition)
                         && robot.LinkMotor.getCurrentPosition() <  robot.LinkFinalPosition ) {
@@ -151,8 +210,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 robot.ArmMotor.setPower(0);
                 robot.LinkMotor.setPower(0);
             }
-
-
+*/
             if (gamepad1.left_bumper) {
 
                 robot.BucketMotor.setPower(-1);
