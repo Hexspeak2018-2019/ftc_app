@@ -73,12 +73,12 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
                 } else if (robot.ArmMotor.getCurrentPosition() >= robot.ArmLiftPosition && robot.ArmMotor.getCurrentPosition() < robot.ArmFinalPosition) {
 
-                    robot.ArmMotor.setPower(.4);//.4
+                    robot.ArmMotor.setPower(.7);//.4
                     robot.BucketServo.setPosition(0.7);
                 } else {
                     robot.ArmMotor.setPower(0);
                 }
-                telemetry.update();
+
 
             } else if (gamepad1.dpad_down) {
 
@@ -102,8 +102,18 @@ public class Qualifier2019Teleop extends LinearOpMode {
                     robot.ArmMotor.setPower(0);
 
                 }
-                telemetry.update();
-            } else {
+            }
+            else if (gamepad1.dpad_right)
+                {
+                    robot.ArmMotor.setPower(.6);
+
+                }
+            else if (gamepad1.dpad_left)
+                {
+                    robot.ArmMotor.setPower(-.6);
+                }
+             else {
+
                 robot.ArmMotor.setPower(0);
 
             }
@@ -112,6 +122,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 bucketPosition = robot.BucketServo.getPosition()-0.0008;
                 robot.BucketServo.setPosition(bucketPosition);
             }
+
 
             else if (gamepad1.b) {
                 bucketPosition = robot.BucketServo.getPosition()+0.0008;
@@ -127,11 +138,16 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
                 robot.BucketMotor.setPower(1);
 
-            } else if(gamepad1.a){
+            } else if(gamepad1.a) {
                 robot.BucketMotor.setPower(-1);
                 robot.BucketServo.setPosition(0.6);
+            }
+            else if (gamepad1.x){
+                robot.BucketMotor.setPower(1);
+                robot.BucketServo.setPosition(0.5);
 
-            } else {
+                }
+             else {
                 robot.BucketMotor.setPower(0);
             }
 
