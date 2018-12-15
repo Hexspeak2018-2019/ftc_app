@@ -142,11 +142,6 @@ public class Qualifier2019Teleop extends LinearOpMode {
                 robot.BucketMotor.setPower(-1);
                 robot.BucketServo.setPosition(0.6);
             }
-            else if (gamepad1.x){
-                robot.BucketMotor.setPower(1);
-                robot.BucketServo.setPosition(0.5);
-
-                }
              else {
                 robot.BucketMotor.setPower(0);
             }

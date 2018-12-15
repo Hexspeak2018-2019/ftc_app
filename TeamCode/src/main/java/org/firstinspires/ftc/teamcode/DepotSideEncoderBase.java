@@ -30,7 +30,7 @@ public class DepotSideEncoderBase extends LinearOpMode {
             telemetry.addData("Gold Mineral Position is", position);
             telemetry.update();
 
-            robot.leadScrewUp(15, 1, 20, this);
+            robot.leadScrewUp(36, 1, 20, this);
 
             switch (position) {
                 case 0:
