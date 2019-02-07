@@ -5,10 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //@Disabled
-@Autonomous(name = "DepotSideC", group = "Linear")
+@Autonomous(name = "DepotSideF", group = "Linear")
 
 public class DepotSideEncoderBase extends LinearOpMode {
-
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     GoldDetection detector = new GoldDetection();
 
@@ -30,10 +29,10 @@ public class DepotSideEncoderBase extends LinearOpMode {
             telemetry.addData("Gold Mineral Position is", position);
             telemetry.update();
 
-            robot.leadScrewUp(36, 1, 20, this);
-
+            robot.leadScrewUp(300, 1, 20, this);
+/*
             switch (position) {
-                case 0:
+                case 0:`
                     telemetry.addData("Gold Mineral Position 0", "Left");
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9, 10, this);
@@ -95,3 +94,4 @@ public class DepotSideEncoderBase extends LinearOpMode {
 
 
 
+*/}}}
