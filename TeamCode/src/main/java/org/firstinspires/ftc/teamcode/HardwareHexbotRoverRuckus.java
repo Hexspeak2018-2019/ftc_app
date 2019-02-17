@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -30,6 +31,8 @@ public class HardwareHexbotRoverRuckus {
     public DcMotor ArmMotor = null;
     public DcMotor LinkMotor = null;
     public DcMotor BucketMotor = null;
+    public DcMotor GiantArmMotor = null;
+    public DcMotor RetracterMotor = null;
     public Servo BucketServo = null;
 
     public Servo TeamMarker = null;
@@ -54,7 +57,7 @@ public class HardwareHexbotRoverRuckus {
     final static double ArmHomePosition = 0;
     final static double LinkFinalPosition = 966;// (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
-    final static double BucketHomePosition = .37;
+    final static double BucketHomePosition = 0;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
 
 
@@ -136,9 +139,9 @@ public class HardwareHexbotRoverRuckus {
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
         rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        ArmMotor.setDirection(DcMotor.Direction.REVERSE);
-        LinkMotor.setDirection(DcMotor.Direction.FORWARD);
-        leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
+        ArmMotor.setDirection(DcMotor.Direction.FORWARD);
+        LinkMotor.setDirection(DcMotor.Direction.REVERSE);
+        leadScrewMotor.setDirection(DcMotor.Direction.REVERSE);
         BucketMotor.setDirection(DcMotor.Direction.FORWARD);
 
     }
@@ -598,7 +601,7 @@ public class HardwareHexbotRoverRuckus {
         int leadScrewPitch = 2;
         int counts = (int) Math.round(distance/leadScrewPitch * ANDYMARK_TICKS_PER_REV);
 //must set direction first
-        leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
+
 //then set position
         leadScrewMotor.setTargetPosition(counts);
 //then set the mode

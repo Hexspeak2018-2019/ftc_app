@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "Crater", group = "Linear")
+@Autonomous(name = "CraterState", group = "Linear")
 
-public class CraterSideFinalEncoderBase extends LinearOpMode {
+public class CraterSideState extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     GoldDetection detector = new GoldDetection();
@@ -40,7 +40,7 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-            robot.leadScrewUp(27, 1, 20, this);
+            robot.leadScrewUp(22, 1, 20, this);
 
 
             switch (position) {//it works DONT CHANGE time: 18 sec left Not COMPLETE
@@ -56,8 +56,11 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 33, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 45, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    //robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
+                    robot.BucketMotor.setPower(0);
+                    //(2000);
                     robot.tankDrivecs(1, 266, 75, 10, this);
                     //robot.tankRotate(45,this);
 
@@ -91,8 +94,11 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    //robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
+                    robot.BucketMotor.setPower(0);
+                    //sleep(2000);
                     robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
@@ -113,8 +119,9 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 82, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 42, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
+                    robot.BucketMotor.setPower(0);
                     robot.tankDrivecs(1, 270, 85, 10, this);
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 215, 74, 20, this);
@@ -145,8 +152,9 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
+                    robot.BucketMotor.setPower(0);
                     robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
