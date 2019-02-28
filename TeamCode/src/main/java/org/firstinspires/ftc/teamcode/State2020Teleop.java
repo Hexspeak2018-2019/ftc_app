@@ -224,11 +224,15 @@ public class State2020Teleop extends LinearOpMode {
 
 
             robot.ArmMotor.setPower(Math.abs(arm_motor_power));
-
+          
+            if(gamepad1.dpad_left){
+                robot.ArmMotor.setTargetPosition(2205);
+                robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
             if (gamepad1.left_bumper) {
                 robot.BucketMotor.setPower(1);
             } else if (gamepad1.right_bumper) {
-                robot.BucketMotor.setPower(-1);
+                robot.BucketMotor.setPower(-.3);
             } else if (gamepad1.y) {
 
                 robot.BucketServo.setPosition(.7);
@@ -251,6 +255,7 @@ public class State2020Teleop extends LinearOpMode {
             telemetry.addData("LeftRear Motor Power", robot.leftRearMotor.getPower());
             telemetry.addData("RightRear Motor Power", robot.rightRearMotor.getPower());
             telemetry.addData("Encoder value", encoderValue);
+            telemetry.addData("Bucket Motor Power", (robot.BucketMotor.getPower()));
             //telemetry.addData("Encoder value on MotorL", .getCurrentPosition());
             telemetry.addData("Encoder value on MotorR", robot.ArmMotor.getCurrentPosition());
            // telemetry.addData("Motor powerL ", "%5.2f", leftDrive.getPower());
