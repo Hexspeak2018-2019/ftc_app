@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -49,12 +50,12 @@ public class HardwareHexbotRoverRuckus {
     final static double TickPerDeg = (ANDYMARK_TICKS_PER_REV * WormGearRatio) / 360;
     final static double rotation = ANDYMARK_TICKS_PER_REV*3;
     final static double WHEEL_DIAMETER = 3.97401575;
-    final static double ArmFinalPosition = 10608; //160 * TickPerDeg;
-    final static double ArmLiftPosition = 5972; //80* TickPerDeg;
+    final static double ArmFinalPosition = 13500; //160 * TickPerDeg;
+    final static double ArmLiftPosition = 8500; //80* TickPerDeg;
     final static double ArmHomePosition = 0;
     final static double LinkFinalPosition = 966;// (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
-    final static double BucketHomePosition = .33;
+    final static double BucketHomePosition = .37;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
 
 
@@ -138,7 +139,7 @@ public class HardwareHexbotRoverRuckus {
         rightRearMotor.setDirection(DcMotor.Direction.REVERSE);
         ArmMotor.setDirection(DcMotor.Direction.REVERSE);
         LinkMotor.setDirection(DcMotor.Direction.FORWARD);
-        leadScrewMotor.setDirection(DcMotor.Direction.FORWARD);
+        leadScrewMotor.setDirection(DcMotor.Direction.REVERSE);
         BucketMotor.setDirection(DcMotor.Direction.FORWARD);
 
     }
@@ -327,7 +328,7 @@ public class HardwareHexbotRoverRuckus {
     {
         double angleInRad = (robotAngle + 180)*(Math.PI/180);
         int counts = (int) Math.round(COUNTS_PER_INCH * inches);
-
+        int tolerance = 50;
 
         double wheelSpeeds[] = new double[4];
 
@@ -371,8 +372,12 @@ public class HardwareHexbotRoverRuckus {
         leftRearMotor.setPower(wheelSpeeds[2]);
         rightRearMotor.setPower(wheelSpeeds[3]);
 
-        while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy())  {
-
+        /*while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy())  {
+*/          while ((Math.abs(leftFrontMotor.getTargetPosition() - leftFrontMotor.getCurrentPosition()) > tolerance) ||
+            (Math.abs(rightFrontMotor.getTargetPosition() - rightFrontMotor.getCurrentPosition()) > tolerance) ||
+            (Math.abs(leftRearMotor.getTargetPosition() - leftRearMotor.getCurrentPosition()) > tolerance) ||
+            (Math.abs(rightRearMotor.getTargetPosition() - rightRearMotor.getCurrentPosition()) > tolerance))
+             {
             if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
                 break;
             }
@@ -382,7 +387,11 @@ public class HardwareHexbotRoverRuckus {
             localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
             localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d", leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
             localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d", leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
-            localtelemetry.addData("hi", leftFrontMotor.getPower());
+           // localtelemetry.addData("hi", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
             localtelemetry.update();
         }
 
@@ -489,10 +498,10 @@ public class HardwareHexbotRoverRuckus {
         runtime.reset();
 
         while ((runtime.seconds () < duration) && aStop.opModeIsActive()) {
-            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", leftFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", rightFrontMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", leftRearMotor.getPower());
+            localtelemetry.addData("LeftMotorCurrent Power", rightRearMotor.getPower());
             localtelemetry.update();
         }
         resetMotors();
@@ -511,13 +520,48 @@ public class HardwareHexbotRoverRuckus {
 
         //make sure all motors run forward when set to positive power
 
-        leftFrontMotor.setPower(wheelSpeeds[0]);
-        rightFrontMotor.setPower(wheelSpeeds[1]);
-        leftRearMotor.setPower(wheelSpeeds[2]);
-        rightRearMotor.setPower(wheelSpeeds[3]);
+        leftFrontMotor.setPower(scaleInput(wheelSpeeds[0]));
+        rightFrontMotor.setPower(scaleInput(wheelSpeeds[1]));
+        leftRearMotor.setPower(scaleInput(wheelSpeeds[2]));
+        rightRearMotor.setPower(scaleInput(wheelSpeeds[3]));
 
     }
 
+
+
+    /*
+     * This method scales the joystick input so for low joystick values, the
+     * scaled value is less than linear.  This is to make it easier to drive
+     * the robot more precisely at slower speeds.
+     */
+    double scaleInput(double dVal)  {
+        double[] scaleArray = { 0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
+                0.40, 0.50, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00 };
+
+        // get the corresponding index for the scaleInput array.
+        int index = (int) (dVal * 16.0);
+
+        // index should be positive.
+        if (index < 0) {
+            index = -index;
+        }
+
+        // index cannot exceed size of array minus 1.
+        if (index > 16) {
+            index = 16;
+        }
+
+        // get value from the array.
+        double dScale = 0.0;
+        if (dVal < 0) {
+            dScale = -scaleArray[index];
+        } else {
+            dScale = scaleArray[index];
+        }
+
+        // return scaled value.
+        return dScale;
+    }
 
 
 
@@ -594,8 +638,7 @@ public class HardwareHexbotRoverRuckus {
         leadScrewMotor.setPower(power);
 
         while (Math.abs(leadScrewMotor.getTargetPosition() - leadScrewMotor.getCurrentPosition())
-                > tolerance || Math.abs(leadScrewMotor.getTargetPosition() - leadScrewMotor.getCurrentPosition())
-                > tolerance) {
+                > tolerance ) {
             if (runtime.seconds() > timeout) {
                 break;
             }
