@@ -1,23 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+@Autonomous(name = "CraterState", group = "Linear")
 
-@Autonomous(name = "CraterSideC", group = "Linear")
+public class CraterSideState extends LinearOpMode {
 
-public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
-    ModernRoboticsI2cRangeSensor rangeSensor;
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     GoldDetection detector = new GoldDetection();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        rangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
-
-        robot.init(hardwareMap, telemetry);
+       robot.init(hardwareMap, telemetry);
         detector.activateTF(hardwareMap);
         sleep(700);
         telemetry.addData("Camera is :", "Activated, Ready to Start Recognition");
@@ -25,7 +20,7 @@ public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
         /*int position = detector.detectObject2(telemetry);
         telemetry.addData("Gold Mineral Position is", position);
         telemetry.update();*/
-        // detector.shutdownTF();*/
+       // detector.shutdownTF();*/
 
 
 
@@ -45,7 +40,7 @@ public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-            robot.leadScrewUp(1, 1, 18, this); //FIX THIS URGENT!!!!!!!1
+            robot.leadScrewUp(22, 1, 20, this);
 
 
             switch (position) {//it works DONT CHANGE time: 18 sec left Not COMPLETE
@@ -61,26 +56,12 @@ public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
                     robot.tankDrivecs(1, 90, 33, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 45, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    //robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
-                    if (rangeSensor.getDistance(DistanceUnit.CM) > 20) {
-                        telemetry.addData("hi","Hi");
-                        robot.tankDrivecs(0.5, 0, 5, 10, this);//RobotAngle = 260
-                        sleep(100);
-
-                    }
-                    else if (rangeSensor.getDistance(DistanceUnit.CM) < 20 && rangeSensor.getDistance(DistanceUnit.CM)> 18) {
-                        robot.tankDrivecs(0.5, 266, 5, 10, this);
-                        sleep(100);
-                    }
-                    else if( rangeSensor.getDistance(DistanceUnit.CM) < 18 ) {
-                        robot.tankDrivecs(0.5, 180, 5, 10, this);//RobotAngle = 272
-                        sleep(100);
-                    } else {
-
-                    }
-
-
+                    robot.BucketMotor.setPower(0);
+                    //(2000);
+                    robot.tankDrivecs(1, 266, 75, 10, this);
                     //robot.tankRotate(45,this);
 
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
@@ -106,32 +87,19 @@ public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
                     robot.tankDrivecs(.5, 0, 8, 10, this);
                     robot.tankDrivecs(.5, 90, 110, 10, this);
                     robot.tankDrivecs(.5, 45,90, 10, this);*/
-                    // robot.leadScrewUp(36,1,18,this);
+                   // robot.leadScrewUp(36,1,18,this);
                     robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(1, 190, 25, 20, this);
                     robot.tankDrivecs(1, 0, 9, 10, this);
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    //robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
-
-                    if (rangeSensor.getDistance(DistanceUnit.CM) > 20) {
-                        telemetry.addData("hi","Hi");
-                        robot.tankDrivecs(0.5, 0, 5, 10, this);//robot angle = 260
-                        sleep(100);
-
-                    }
-                    else if (rangeSensor.getDistance(DistanceUnit.CM) < 20 && rangeSensor.getDistance(DistanceUnit.CM)> 18) {
-                        robot.tankDrivecs(0.5, 266, 5, 10, this);
-                        sleep(100);
-                    }
-                    else if( rangeSensor.getDistance(DistanceUnit.CM) < 18 ) {
-                        robot.tankDrivecs(0.5, 180, 5, 10, this);//robot angle = 272
-                        sleep(100);
-                    } else {
-
-                    }
+                    robot.BucketMotor.setPower(0);
+                    //sleep(2000);
+                    robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
 
@@ -151,24 +119,10 @@ public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
                     robot.tankDrivecs(1, 90, 82, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 42, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
-                    if (rangeSensor.getDistance(DistanceUnit.CM) > 20) {
-                        telemetry.addData("hi","Hi");
-                        robot.tankDrivecs(0.5, 0, 5, 10, this);//robot angle = 264
-                        sleep(100);
-
-                    }
-                    else if (rangeSensor.getDistance(DistanceUnit.CM) < 20 && rangeSensor.getDistance(DistanceUnit.CM)> 18) {
-                        robot.tankDrivecs(0.5, 270, 5, 10, this);
-                        sleep(100);
-                    }
-                    else if( rangeSensor.getDistance(DistanceUnit.CM) < 18 ) {
-                        robot.tankDrivecs(0.5, 180, 5, 10, this);//robot angle = 274
-                        sleep(100);
-                    } else {
-
-                    }
+                    robot.BucketMotor.setPower(0);
+                    robot.tankDrivecs(1, 270, 85, 10, this);
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 215, 74, 20, this);
                     robot.tankDrivecs(.5, 340, 15, 10, this);
@@ -192,32 +146,16 @@ public class CraterSideFinalUltraSonicSensor extends LinearOpMode{
                     robot.tankDrivecs(.5, 90, 110, 10, this);
                     robot.tankDrivecs(.5, 45,90, 10, this);*/
                     // robot.leadScrewUp(36,1,18,this);
-
                     robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(1, 190, 25, 20, this);
                     robot.tankDrivecs(1, 0, 9, 10, this);
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    robot.BucketServo.setPosition(0.52);
+                    robot.BucketMotor.setPower(1);
                     sleep(2000);
-
-                    if (rangeSensor.getDistance(DistanceUnit.CM) > 20) {
-                        telemetry.addData("hi","Hi");
-                        robot.tankDrivecs(0.5, 0, 5, 10, this);//robotAngle = 260
-                        sleep(100);
-
-                    }
-                    else if (rangeSensor.getDistance(DistanceUnit.CM) < 20 && rangeSensor.getDistance(DistanceUnit.CM)> 18) {
-                        robot.tankDrivecs(0.5, 266, 5, 10, this);
-                        sleep(100);
-                    }
-                    else if( rangeSensor.getDistance(DistanceUnit.CM) < 18 ) {
-                        robot.tankDrivecs(0.5, 180, 5, 10, this);//robot angle = 272
-                        sleep(100);
-                    } else {
-
-                    }
+                    robot.BucketMotor.setPower(0);
+                    robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
 

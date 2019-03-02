@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "testing", group = "Linear")
+@Autonomous(name = "Crater", group = "Linear")
 
 public class CraterSideFinalEncoderBase extends LinearOpMode {
 
@@ -40,7 +40,7 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-            robot.leadScrewUp(1, 1, 18, this);
+            robot.leadScrewUp(27, 1, 20, this);
 
 
             switch (position) {//it works DONT CHANGE time: 18 sec left Not COMPLETE

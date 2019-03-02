@@ -30,12 +30,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -51,27 +52,54 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "Arm Test", group = "Arm")
-public class ArmTestCs extends LinearOpMode {
-
+@TeleOp(name = "Arm TestCs Android Studio", group = "Arm")
+public class ArmCS extends LinearOpMode {
+    //HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     /* Declare OpMode members. */
     private DcMotor leftDrive = null;
-
+    private DcMotor rightDrive = null;
+    private DcMotor BucketMotor = null;
+    private Servo BucketServo = null;
     @Override
     public void runOpMode() {
-
-
+        //robot.init(hardwareMap, telemetry);
+        BucketMotor = hardwareMap.get(DcMotor.class, "bucket_Motor");
+        BucketServo = hardwareMap.get(Servo.class, "bucket_Servo");
         leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
-        int increment = 5;
+        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        int increment = 10;
         int encoderValue = 0;
-        int max_arm_position = 5000;
+        int max_arm_position = 3300;
         int min_arm_position = 0;
         double arm_motor_power = 0.5;
 
         waitForStart();
-
+        leftDrive.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        rightDrive.setMode(DcMotor.RunMode.RESET_ENCODERS);
         while (opModeIsActive()) {
+     /*       double leadScrewPower;
+            double leadScrewUpPower = gamepad1.left_trigger * 0.7;
+            double leadScrewDownPower = -gamepad1.right_trigger * 0.7;
+            leadScrewPower = Range.clip(leadScrewUpPower + leadScrewDownPower, -1.0, 1.0);
 
+            if (leadScrewUpPower > leadScrewDownPower) {
+                robot.leadScrewMotor.setPower(leadScrewPower);
+            } else if ((leadScrewDownPower > leadScrewUpPower)) //&& robot.LimitSwitchLsBottom.getState() == false)
+            {
+                robot.leadScrewMotor.setPower(leadScrewPower);
+            } else {
+                robot.leadScrewMotor.setPower(0);
+            }
+*/
+
+            //Tank Drive with Joystick
+
+          /*  double drivePower = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+            double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 2;
+            double rotPwr = gamepad1.right_stick_x * 0.7;
+*/
             if (gamepad1.dpad_up && encoderValue <= max_arm_position) {
                 encoderValue += increment;
             } else if (gamepad1.dpad_down && encoderValue > min_arm_position) {
@@ -79,16 +107,34 @@ public class ArmTestCs extends LinearOpMode {
             }
 
             leftDrive.setTargetPosition(encoderValue);
+            rightDrive.setTargetPosition(encoderValue);
 
             leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             leftDrive.setPower(Math.abs(arm_motor_power));
+            rightDrive.setPower(Math.abs(arm_motor_power));
+            if (gamepad1.left_bumper) {
+                BucketMotor.setPower(1);
+            } else if (gamepad1.right_bumper) {
+                BucketMotor.setPower(-1);
+            } else if (gamepad1.y) {
 
+                BucketServo.setPosition(.7);
+            } else if (gamepad1.b) {
+
+                BucketServo.setPosition(.2);
+            } else {
+                BucketServo.setPosition(.5);
+                BucketMotor.setPower(0);
+            }
             telemetry.addData("Encoder value", encoderValue);
-            telemetry.addData("Encoder value on Motor", leftDrive.getCurrentPosition());
-            telemetry.addData("Motor power ", "%5.2f", leftDrive.getPower());
+            telemetry.addData("Encoder value on MotorL", leftDrive.getCurrentPosition());
+            telemetry.addData("Encoder value on MotorR", rightDrive.getCurrentPosition());
+            telemetry.addData("Motor powerL ", "%5.2f", leftDrive.getPower());
+            telemetry.addData("Motor powerR ", "%5.2f", rightDrive.getPower());
             telemetry.update();
-            telemetry.update();
+
 
         }
 

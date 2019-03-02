@@ -119,13 +119,13 @@ public class Qualifier2019Teleop extends LinearOpMode {
             }
 
             if (gamepad1.y) {
-                bucketPosition = robot.BucketServo.getPosition()-0.0008;
+                bucketPosition = robot.BucketServo.getPosition()-0.009;
                 robot.BucketServo.setPosition(bucketPosition);
             }
 
 
             else if (gamepad1.b) {
-                bucketPosition = robot.BucketServo.getPosition()+0.0008;
+                bucketPosition = robot.BucketServo.getPosition()+0.009;
                 robot.BucketServo.setPosition(bucketPosition);
             }
 
@@ -149,7 +149,7 @@ public class Qualifier2019Teleop extends LinearOpMode {
 
             telemetry.addData("ARM  stopped at ", (robot.ArmMotor.getCurrentPosition()));
             telemetry.addData("Link  stopped at ", (robot.LinkMotor.getCurrentPosition()));
-            telemetry.addData("LeadScrew", (robot.leadScrewMotor.getCurrentPosition()));
+            telemetry.addData("Lead Screw  stopped at ", (robot.leadScrewMotor.getCurrentPosition()));
             telemetry.addData("Bucket Position ", (robot.BucketServo.getPosition()));
             telemetry.addData("Link Final Pos ", (robot.LinkFinalPosition/robot.TickPerDeg));
             telemetry.addData("LeftFront Motor Power", robot.leftFrontMotor.getPower());
