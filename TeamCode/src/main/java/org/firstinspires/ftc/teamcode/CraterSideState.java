@@ -57,11 +57,13 @@ public class CraterSideState extends LinearOpMode {
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 45, 10, this);
                     //robot.BucketServo.setPosition(0.52);
-                    robot.BucketMotor.setPower(1);
+                    robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     //(2000);
+
                     robot.tankDrivecs(1, 266, 75, 10, this);
+
                     //robot.tankRotate(45,this);
 
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
@@ -95,7 +97,7 @@ public class CraterSideState extends LinearOpMode {
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
                     //robot.BucketServo.setPosition(0.52);
-                    robot.BucketMotor.setPower(1);
+                    robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     //sleep(2000);
@@ -119,7 +121,7 @@ public class CraterSideState extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 82, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 42, 10, this);
-                    robot.BucketMotor.setPower(1);
+                    robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     robot.tankDrivecs(1, 270, 85, 10, this);
@@ -152,7 +154,7 @@ public class CraterSideState extends LinearOpMode {
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 88, 40, 10, this);
-                    robot.BucketMotor.setPower(1);
+                    robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     robot.tankDrivecs(1, 266, 80, 10, this);

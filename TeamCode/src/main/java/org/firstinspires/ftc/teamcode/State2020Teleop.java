@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleopProject2020", group = "Linear")
+@TeleOp(name = "TeleopProject2020ANDROID", group = "Linear")
 
 public class State2020Teleop extends LinearOpMode {
 
@@ -41,11 +41,11 @@ public class State2020Teleop extends LinearOpMode {
         telemetry.addData("LM Starting value is", (robot.LinkMotor.getCurrentPosition()));
         telemetry.addData("AM Starting value is", (robot.ArmMotor.getCurrentPosition()));
         telemetry.update();
-        int increment = 10;
+        int increment = 8;
         int encoderValue = 0;
         int max_arm_position = 3300;
         int min_arm_position = 0;
-        double arm_motor_power = 0.5;
+        double arm_motor_power = 0.7;
         while (opModeIsActive()) {
             double leadScrewPower;
             double leadScrewUpPower = gamepad1.left_trigger * 0.7;
@@ -66,7 +66,7 @@ public class State2020Teleop extends LinearOpMode {
 
             double drivePower = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
             double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 2;
-            double rotPwr = gamepad1.right_stick_x * 0.7;
+            double rotPwr = gamepad1.right_stick_x * 0.5;
 
             robot.tankDrive(drivePower, robotAngle, rotPwr);
 
@@ -217,31 +217,54 @@ public class State2020Teleop extends LinearOpMode {
                 encoderValue -= increment;
             }
 
+
             robot.ArmMotor.setTargetPosition(encoderValue);
 
 
             robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-            robot.ArmMotor.setPower(Math.abs(arm_motor_power));
-          
-            if(gamepad1.dpad_left){
-                robot.ArmMotor.setTargetPosition(2205);
-                robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            /*if (gamepad1.dpad_up && encoderValue > max_arm_position - 800) {
+            arm_motor_power = arm_motor_power*0.7;
+
             }
+
+            else if (gamepad1.dpad_down && encoderValue < 2300)  {
+            arm_motor_power = arm_motor_power*0.7;
+
+
+            }
+            else if ( gamepad1.dpad_down && encoderValue <1500)
+                    {
+                        arm_motor_power = arm_motor_power*.4;
+            }*/
+
+            robot.ArmMotor.setPower(arm_motor_power);
+
+
+
+
+
+
+
             if (gamepad1.left_bumper) {
                 robot.BucketMotor.setPower(1);
-            } else if (gamepad1.right_bumper) {
-                robot.BucketMotor.setPower(-.3);
-            } else if (gamepad1.y) {
-
-                robot.BucketServo.setPosition(.7);
-            } else if (gamepad1.b) {
-
-                robot.BucketServo.setPosition(.2);
-            } else {
-                robot.BucketServo.setPosition(.5);
+            }
+            else if (gamepad1.right_bumper) {
+                robot.BucketMotor.setPower(-1);
+            }
+            else{
                 robot.BucketMotor.setPower(0);
+            }
+            if (gamepad1.y) {
+                robot.BucketServo.setPosition(.75);
+
+            }
+
+
+            else if (gamepad1.b) {
+                robot.BucketServo.setPosition(0);
+
             }
 
 
@@ -255,10 +278,9 @@ public class State2020Teleop extends LinearOpMode {
             telemetry.addData("LeftRear Motor Power", robot.leftRearMotor.getPower());
             telemetry.addData("RightRear Motor Power", robot.rightRearMotor.getPower());
             telemetry.addData("Encoder value", encoderValue);
-            telemetry.addData("Bucket Motor Power", (robot.BucketMotor.getPower()));
             //telemetry.addData("Encoder value on MotorL", .getCurrentPosition());
             telemetry.addData("Encoder value on MotorR", robot.ArmMotor.getCurrentPosition());
-           // telemetry.addData("Motor powerL ", "%5.2f", leftDrive.getPower());
+            // telemetry.addData("Motor powerL ", "%5.2f", leftDrive.getPower());
             telemetry.addData("Motor powerR ", "%5.2f", robot.ArmMotor.getPower());
             telemetry.update();
 

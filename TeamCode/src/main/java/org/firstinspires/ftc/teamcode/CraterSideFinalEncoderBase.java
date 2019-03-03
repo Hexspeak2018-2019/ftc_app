@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "Crater", group = "Linear")
 
@@ -147,6 +148,9 @@ public class CraterSideFinalEncoderBase extends LinearOpMode {
                     robot.tankDrivecs(1, 88, 40, 10, this);
                     robot.BucketServo.setPosition(0.52);
                     sleep(2000);
+                    robot.ArmMotor.setTargetPosition(2710);
+                    robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.BucketServo.setPosition(.75);
                     robot.tankDrivecs(1, 266, 80, 10, this);
                     //robot.tankRotate(45,this);
 
