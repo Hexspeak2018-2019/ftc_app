@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import java.lang.annotation.Target;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "CraterStateArmLaunch", group = "Linear")
+@Autonomous(name = "CraterStateArmLaunch2", group = "Linear")
 
-public class CraterSideState extends LinearOpMode {
+public class CraterSideStateAdvanced extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     GoldDetection detector = new GoldDetection();
@@ -57,7 +56,7 @@ public class CraterSideState extends LinearOpMode {
                     robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(1, 150, 32, 20, this);
                     robot.tankDrivecs(1, 350, 9, 10, this);
-                    robot.tankDrivecs(1, 90, 33, 10, this);
+                    robot.tankDrivecs(1, 90, 35, 10, this);
                     robot.tankRotate(42,this);
                     robot.tankDrivecs(1, 90, 45, 10, this);
                     //robot.BucketServo.setPosition(0.52);
@@ -65,14 +64,12 @@ public class CraterSideState extends LinearOpMode {
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     //(2000);
+                    robot.ArmMotor.setPower(0.4);
+                    robot.tankDrivecs(1, 264, 70, 10, this);
 
-                    robot.tankDrivecs(1, 264, 72, 10, this);
-
-                    robot.ArmMotor.setTargetPosition(encoderValue);
-                    robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.ArmMotor.setPower(arm_motor_power);
                     robot.BucketServo.setPosition(.75);
-                    sleep(5000);
+                    robot.ArmMotor.setPower(0);
+                    sleep(500000000);
 
                     //robot.tankRotate(45,this);
 
@@ -109,13 +106,12 @@ public class CraterSideState extends LinearOpMode {
                     robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
-                    robot.tankDrivecs(1, 264, 78, 10, this);//80
+                    robot.ArmMotor.setPower(0.4);
+                    robot.tankDrivecs(1, 264, 70, 10, this);//80
 
-                    robot.ArmMotor.setTargetPosition(encoderValue);
-                    robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.ArmMotor.setPower(arm_motor_power);
                     robot.BucketServo.setPosition(.75);
-                    sleep(5000);
+                    robot.ArmMotor.setPower(0);
+                    sleep(50000000);
 
 
 
@@ -144,13 +140,11 @@ public class CraterSideState extends LinearOpMode {
                     robot.BucketMotor.setPower(0);
                     //robot.ArmMotor.setPower(.2);
                     sleep(1000);
-                    robot.tankDrivecs(1, 264, 83, 10, this);
-
-                    robot.ArmMotor.setTargetPosition(encoderValue);
-                    robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.ArmMotor.setPower(arm_motor_power);
+                    robot.ArmMotor.setPower(0.4);
+                    robot.tankDrivecs(1, 264, 65, 10, this);
                     robot.BucketServo.setPosition(.75);
-                    sleep(5000);
+                    robot.ArmMotor.setPower(0);
+                    sleep(50000000);
                     //robot.ArmMotor.setPower(0);
 
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
@@ -186,13 +180,12 @@ public class CraterSideState extends LinearOpMode {
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     sleep(1000);
-                    robot.tankDrivecs(1, 264, 78, 10, this);
+                    robot.ArmMotor.setPower(0.4);
+                    robot.tankDrivecs(1, 264, 65, 10, this);
                     //slow speed
-                    robot.ArmMotor.setTargetPosition(encoderValue);
-                    robot.ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.ArmMotor.setPower(arm_motor_power);
                     robot.BucketServo.setPosition(.75);
-                    sleep(5000);
+                    robot.ArmMotor.setPower(0);
+                    sleep(50000000);
 
 
 

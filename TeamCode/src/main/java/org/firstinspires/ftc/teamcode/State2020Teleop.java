@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "TeleopProject2020ANDROID", group = "Linear")
+@TeleOp(name = "StateTeleOp", group = "Linear")
 
 public class State2020Teleop extends LinearOpMode {
 
@@ -41,11 +41,11 @@ public class State2020Teleop extends LinearOpMode {
         telemetry.addData("LM Starting value is", (robot.LinkMotor.getCurrentPosition()));
         telemetry.addData("AM Starting value is", (robot.ArmMotor.getCurrentPosition()));
         telemetry.update();
-        int increment = 8;
+        int increment = 11;
         int encoderValue = 0;
         int max_arm_position = 3300;
         int min_arm_position = 0;
-        double arm_motor_power = 0.7;
+        double arm_motor_power = 0.6;
         while (opModeIsActive()) {
             double leadScrewPower;
             double leadScrewUpPower = gamepad1.left_trigger * 0.7;
@@ -211,9 +211,9 @@ public class State2020Teleop extends LinearOpMode {
             double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 2;
             double rotPwr = gamepad1.right_stick_x * 0.7;
 */
-            if (gamepad1.dpad_up && encoderValue <= max_arm_position) {
+            if (gamepad1.dpad_up ) {
                 encoderValue += increment;
-            } else if (gamepad1.dpad_down && encoderValue > min_arm_position) {
+            } else if (gamepad1.dpad_down) {
                 encoderValue -= increment;
             }
 
