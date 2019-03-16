@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "CraterStateArmLaunch2", group = "Linear")
+@Autonomous(name = "CraterStateArmLaunch2A", group = "Linear")
 
 public class CraterSideStateAdvanced extends LinearOpMode {
 
@@ -43,7 +43,7 @@ public class CraterSideStateAdvanced extends LinearOpMode {
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-            robot.leadScrewUp(24, 1, 20, this);
+            robot.leadScrewUp(robot.lsDistance, robot.lsPower, robot.lsTimeout, this);
 
 
             switch (position) {//it works DONT CHANGE time: 18 sec left Not COMPLETE

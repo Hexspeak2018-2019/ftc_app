@@ -40,6 +40,9 @@ public class HardwareHexbotRoverRuckus {
     public DigitalChannel LimitSwitchLinkBottom;
     public DigitalChannel LimitSwitchLinkTop;
     public DigitalChannel LimitSwitchLsBottom;
+    public double lsPower = 1;
+    public double lsDistance = 23;
+    public double lsTimeout = 20;
 
     BNO055IMU imu;
     Orientation angles;
@@ -57,7 +60,7 @@ public class HardwareHexbotRoverRuckus {
     final static double ArmHomePosition = 0;
     final static double LinkFinalPosition = 966;// (90 * TickPerDeg)/8 ;
     final static double LinkHomePosition = 0;
-    final static double BucketHomePosition = 0;
+    final static double BucketHomePosition = .2;
     final static double COUNTS_PER_INCH = ANDYMARK_TICKS_PER_REV / (WHEEL_DIAMETER * Math.PI);
 
 
@@ -375,27 +378,27 @@ public class HardwareHexbotRoverRuckus {
         rightRearMotor.setPower(wheelSpeeds[3]);
 
         /*while (leftFrontMotor.isBusy() || rightFrontMotor.isBusy() || leftRearMotor.isBusy() || rightRearMotor.isBusy())  {
-*/          while ((Math.abs(leftFrontMotor.getTargetPosition() - leftFrontMotor.getCurrentPosition()) > tolerance) ||
+         */          while ((Math.abs(leftFrontMotor.getTargetPosition() - leftFrontMotor.getCurrentPosition()) > tolerance) ||
             (Math.abs(rightFrontMotor.getTargetPosition() - rightFrontMotor.getCurrentPosition()) > tolerance) ||
             (Math.abs(leftRearMotor.getTargetPosition() - leftRearMotor.getCurrentPosition()) > tolerance) ||
             (Math.abs(rightRearMotor.getTargetPosition() - rightRearMotor.getCurrentPosition()) > tolerance))
-             {
-            if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
-                break;
-            }
-
-            // Display it for the driver.
-            localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
-            localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
-            localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d", leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
-            localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d", leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
-           // localtelemetry.addData("hi", leftFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
-            localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
-            localtelemetry.update();
+    {
+        if (runtime.seconds() > timeout || !aStop.opModeIsActive()) {
+            break;
         }
+
+        // Display it for the driver.
+        localtelemetry.addData("Left F , Right F",  "Running to %7d :%7d", wheelCounts[0],  wheelCounts[1]);
+        localtelemetry.addData("Left R , Right R",  "Running to %7d :%7d", wheelCounts[2],  wheelCounts[3]);
+        localtelemetry.addData("Left F , Right F",  "Running at %7d :%7d", leftFrontMotor.getCurrentPosition(), rightFrontMotor.getCurrentPosition());
+        localtelemetry.addData("Left R , Right R",  "Running at %7d :%7d", leftRearMotor.getCurrentPosition(), rightRearMotor.getCurrentPosition());
+        // localtelemetry.addData("hi", leftFrontMotor.getPower());
+        localtelemetry.addData("LeftMotorCurrent position", leftFrontMotor.getPower());
+        localtelemetry.addData("LeftMotorCurrent position", rightFrontMotor.getPower());
+        localtelemetry.addData("LeftMotorCurrent position", leftRearMotor.getPower());
+        localtelemetry.addData("LeftMotorCurrent position", rightRearMotor.getPower());
+        localtelemetry.update();
+    }
 
         resetMotorsAndEncoders();
         setEncoderMode(DcMotor.RunMode.RUN_USING_ENCODER);

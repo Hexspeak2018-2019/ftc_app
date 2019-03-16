@@ -44,7 +44,7 @@ public class CraterSideState extends LinearOpMode {
 
             //telemetry.addData("# Object Detected", detector.updatedRecognitions.size());
 
-            robot.leadScrewUp(24, 1, 20, this);
+            robot.leadScrewUp(robot.lsDistance, robot.lsPower, robot.lsTimeout, this);
 
 
             switch (position) {//it works DONT CHANGE time: 18 sec left Not COMPLETE

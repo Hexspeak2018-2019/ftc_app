@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //@Disabled
-@Autonomous(name = "DepotArmLaunchA", group = "Linear")
+@Autonomous(name = "DepotArmLaunch2.0Slow", group = "Linear")
 
-public class DepotSideEncoderBaseAdvanced extends LinearOpMode {
+public class RevisedDepot extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
     GoldDetection detector = new GoldDetection();
@@ -36,7 +36,7 @@ public class DepotSideEncoderBaseAdvanced extends LinearOpMode {
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 155, 110, 10, this);
-                    robot.tankRotate(-125,this);
+                    robot.tankRotate(125,this);//-125 angle rotate
                     robot.tankDrivecs(.4, 90,40,10,this);
 
                     sleep(2000);
@@ -57,17 +57,17 @@ public class DepotSideEncoderBaseAdvanced extends LinearOpMode {
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9,10 , this);
                     robot.tankDrivecs(.5, 180, 128, 10, this);
-                    robot.tankRotate(-45,this);
-                    robot.tankDrive(.4, 90,40,10,this);
+                    robot.tankRotate(-135,this);//-45 was 315
+                    robot.tankDrivecs(.4, 0,5,10,this);
+                    //robot.tankDrivecs(.4, 0,5,10,this);
 
-
-                    sleep(2000);
+                    //sleep(2000);
                     robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     sleep(1000);
                     robot.ArmMotor.setPower(0.4);
-                    robot.tankDrivecs(1,0,76,20,this);
+                    robot.tankDrivecs(1,270,76,20,this);
                     robot.BucketServo.setPosition(.75);
                     robot.ArmMotor.setPower(0);
                     sleep(50000000);
@@ -80,7 +80,7 @@ public class DepotSideEncoderBaseAdvanced extends LinearOpMode {
                     robot.tankRotate(-35,this);
                     robot.tankDrivecs(.5, 90, 83, 10, this);
                     robot.tankRotate(-140,this);
-                    robot.tankDrive(.4, 90,40,10,this);
+                    robot.tankDrivecs(.4, 90,40,10,this);
                     robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
@@ -100,8 +100,8 @@ public class DepotSideEncoderBaseAdvanced extends LinearOpMode {
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9,10 , this);
                     robot.tankDrivecs(.5, 180, 128, 10, this);
-                    robot.tankRotate(-45,this);
-                    robot.tankDrive(.4, 90,40,10,this);
+                    robot.tankRotate(45,this);//-45
+                    robot.tankDrivecs(.4, 90,40,10,this);
 
 
                     sleep(2000);

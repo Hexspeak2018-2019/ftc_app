@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //@Disabled
-@Autonomous(name = "Depter", group = "Linear")
+@Autonomous(name = "DepterArmLaunch", group = "Linear")
 
 public class Depter extends LinearOpMode {
 
@@ -28,7 +28,8 @@ public class Depter extends LinearOpMode {
             telemetry.addData("Gold Mineral Position is", position);
             telemetry.update();
 
-            robot.leadScrewUp(25, 1, 20, this);
+            robot.leadScrewUp(robot.lsDistance, robot.lsPower, robot.lsTimeout, this);
+
 
             switch (position) {
                 case 0:
@@ -37,7 +38,7 @@ public class Depter extends LinearOpMode {
                     robot.tankDrivecs(.4, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 155, 110, 10, this);
                     robot.tankRotate(-125,this);
-                    robot.BucketServo.setPosition(0.52);
+
                     sleep(2000);
                     robot.tankDrivecs(1, 180, 75, 10, this);
                     break;
@@ -47,7 +48,7 @@ public class Depter extends LinearOpMode {
                     robot.tankDrivecs(.4, 90, 9,10 , this);
                     robot.tankDrivecs(.5, 180, 128, 10, this);
                     robot.tankRotate(-45,this);
-                    robot.BucketServo.setPosition(0.52);
+
                     sleep(2000);
                     robot.tankDrivecs(1, 180, 12, 10, this);
                     robot.tankDrivecs(1, 270, 85, 10, this);
@@ -60,7 +61,7 @@ public class Depter extends LinearOpMode {
                     robot.tankRotate(-35,this);
                     robot.tankDrivecs(.5, 90, 83, 10, this);
                     robot.tankRotate(-130,this);
-                    robot.BucketServo.setPosition(0.52);
+
                     sleep(2000);
                     robot.tankDrivecs(1, 180, 85, 10, this);
 
