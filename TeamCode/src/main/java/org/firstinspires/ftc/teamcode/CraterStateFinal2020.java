@@ -90,7 +90,7 @@ public class CraterStateFinal2020 extends LinearOpMode {
                     break;
 
                 case 1: //center//it works DONT CHANGE time: 15 sec COMPLETE
-                    telemetry.addData("Gold Mineral Position 1", "Missing Center");
+                    telemetry.addData("Gold Mineral Position 1", " Center");
                     telemetry.update();
                     /*robot.tankDrivecs(.5, 90, 9, 10, this);
                     robot.tankDrivecs(.5, 180, 47, 20, this);
@@ -103,7 +103,7 @@ public class CraterStateFinal2020 extends LinearOpMode {
                     robot.tankDrivecs(1, 0, 9, 10, this);
                     robot.tankDrivecs(1, 90, 60, 10, this);
                     robot.tankRotate(42,this);
-                    robot.tankDrivecs(1, 88, 40, 10, this);
+                    robot.tankDrivecs(1, 88, 36, 10, this);
                     robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
@@ -131,18 +131,18 @@ public class CraterStateFinal2020 extends LinearOpMode {
                     telemetry.update();//right//it works DONT CHANGE time: 15 sec with out leadscrew COMPLETE
                     //robot.leadScrewUp(36,1,18,this);
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(1, 217, 30, 20, this);
+                    robot.tankDrivecs(1, 217, 33, 20, this);
                     robot.tankDrivecs(1, 340, 10, 10, this);
                     robot.tankDrivecs(1, 90, 82, 10, this);
                     robot.tankRotate(42,this);
-                    robot.tankDrivecs(1, 90, 42, 10, this);
-                    robot.BucketMotor.setPower(-1);
+                    robot.tankDrivecs(1, 90, 25, 10, this);
+                    robot.BucketMotor.setPower(-.7);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     //robot.ArmMotor.setPower(.2);
                     sleep(1000);
-                    robot.ArmMotor.setPower(0.4);
-                    robot.tankDrivecs(1, 264, 65, 10, this);
+                    robot.ArmMotor.setPower(0.3);
+                    robot.tankDrivecs(1, 264, 80, 10, this);
                     robot.BucketServo.setPosition(.75);
                     robot.ArmMotor.setPower(0);
                     sleep(50000000);
@@ -175,19 +175,17 @@ public class CraterStateFinal2020 extends LinearOpMode {
                     robot.tankDrivecs(1, 190, 25, 20, this);
                     robot.tankDrivecs(1, 0, 9, 10, this);
                     robot.tankDrivecs(1, 90, 60, 10, this);
-                    robot.tankRotate(38,this); //42
-                    robot.tankDrivecs(1, 88, 40, 10, this);
+                    robot.tankRotate(42,this);
+                    robot.tankDrivecs(1, 88, 36, 10, this);
                     robot.BucketMotor.setPower(-1);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
-                    sleep(1000);
                     robot.ArmMotor.setPower(0.4);
-                    robot.tankDrivecs(1, 264, 65, 10, this);
-                    //slow speed
+                    robot.tankDrivecs(1, 264, 70, 10, this);//80
+
                     robot.BucketServo.setPosition(.4);
                     robot.ArmMotor.setPower(0);
                     sleep(50000000);
-
 
 
 

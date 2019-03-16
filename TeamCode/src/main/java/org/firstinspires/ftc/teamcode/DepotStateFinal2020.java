@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //@Disabled
-@Autonomous(name = "Depot", group = "Linear")
+@Autonomous(name = "DepotArmLaunch", group = "Linear")
 
 public class DepotStateFinal2020 extends LinearOpMode {
 
