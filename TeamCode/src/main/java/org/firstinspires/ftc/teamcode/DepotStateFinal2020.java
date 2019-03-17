@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //@Disabled
-@Autonomous(name = "DepotArmLaunch", group = "Linear")
+@Autonomous(name = "Depot", group = "Linear")
 
 public class DepotStateFinal2020 extends LinearOpMode {
 
@@ -35,9 +35,9 @@ public class DepotStateFinal2020 extends LinearOpMode {
                     telemetry.addData("Gold Mineral Position 0", "Left");
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9, 10, this);
-                    robot.tankDrivecs(1, 155, 54, 10, this);
+                    robot.tankDrivecs(1, 155, 48, 10, this);
                     robot.tankRotate(-124,this);//-125 angle rotate
-                    robot.tankDrivecs(.4, 90,45,10,this);
+                    robot.tankDrivecs(.4, 90,51,10,this);
 
                     robot.BucketMotor.setPower(-.6);
                     sleep(2000);
@@ -61,7 +61,7 @@ public class DepotStateFinal2020 extends LinearOpMode {
                     robot.tankDrivecs(.4, 270,20,10,this);
 
                     //sleep(2000);
-                    robot.BucketMotor.setPower(-1);
+                    robot.BucketMotor.setPower(-.6);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     sleep(1000);
@@ -75,21 +75,21 @@ public class DepotStateFinal2020 extends LinearOpMode {
 
                 case 2:
                     robot.tankDrivecs(.5, 90, 9, 10, this);
-                    robot.tankDrivecs(.5, 215, 88, 20, this);
+                    robot.tankDrivecs(1, 215, 51, 20, this);
                     robot.tankRotate(-35,this);
-                    robot.tankDrivecs(.5, 90, 83, 10, this);
+                    robot.tankDrivecs(1, 90, 46, 10, this);
                     robot.tankRotate(-95,this);//140
                     //robot.tankDrivecs(.4,0,15,10,this);
-                    robot.tankDrivecs(.4,45,5,10,this);
+                    //robot.tankDrivecs(.4,45,5,10,this);
                     //robot.tankDrivecs(.4, 90,40,10,this);
                     robot.BucketMotor.setPower(-.6);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     sleep(1000);
                     //robot.tankDrivecs(.4,270,10,10,this);
-                    robot.tankRotate(-140,this);
+                    robot.tankRotate(-136,this);
                     robot.ArmMotor.setPower(0.4);
-                    robot.tankDrivecs(1,270,67,20,this);
+                    robot.tankDrivecs(1,268,72,20,this);
                     robot.BucketServo.setPosition(.4);
                     robot.ArmMotor.setPower(0);
                     sleep(50000000);
@@ -99,7 +99,7 @@ public class DepotStateFinal2020 extends LinearOpMode {
 
                     break;
                 case -1: // center / unknown
-                    telemetry.addData("Gold Mineral Position 1", "Center");
+                    telemetry.addData("Gold Mineral Position 1", "Missing Center");
                     telemetry.update();
                     robot.tankDrivecs(.4, 90, 9,10 , this);
                     robot.tankDrivecs(1, 180,64,10, this);//128
@@ -108,7 +108,7 @@ public class DepotStateFinal2020 extends LinearOpMode {
                     robot.tankDrivecs(.4, 270,20,10,this);
 
                     //sleep(2000);
-                    robot.BucketMotor.setPower(-1);
+                    robot.BucketMotor.setPower(-.6);
                     sleep(2000);
                     robot.BucketMotor.setPower(0);
                     sleep(1000);
@@ -118,7 +118,6 @@ public class DepotStateFinal2020 extends LinearOpMode {
                     robot.ArmMotor.setPower(0);
                     sleep(50000000);
                     break;
-
 
 
 

@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "StateTeleOp", group = "Linear")
-
+@TeleOp(name = "TeleopProject2020", group = "Linear")
+//@Disabled
 public class State2020Teleop extends LinearOpMode {
 
     HardwareHexbotRoverRuckus robot = new HardwareHexbotRoverRuckus();
@@ -51,7 +51,13 @@ public class State2020Teleop extends LinearOpMode {
             double leadScrewUpPower = gamepad1.left_trigger * 0.7;
             double leadScrewDownPower = -gamepad1.right_trigger * 0.7;
             leadScrewPower = Range.clip(leadScrewUpPower + leadScrewDownPower, -1.0, 1.0);
+            if(gamepad1.x){
+                robot.BucketMotor.setPower(-.5);
 
+            }
+            else{
+                robot.BucketMotor.setPower(0);
+            }
             if (leadScrewUpPower > leadScrewDownPower) {
                 robot.leadScrewMotor.setPower(leadScrewPower);
             } else if ((leadScrewDownPower > leadScrewUpPower)) //&& robot.LimitSwitchLsBottom.getState() == false)
